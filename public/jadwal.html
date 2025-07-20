@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jadwal Kelas - XI A & XI B</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="jadwal.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container header-content">
+        <h1 class="page-title">Jadwal Kelas</h1>
+        <p class="page-subtitle">Jadwal Pelajaran Mingguan Kelas XI</p>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- Status pelajaran saat ini -->
+      <div id="currentClassStatus" class="current-status">
+        <i class="fas fa-chalkboard-teacher"></i>
+        <span id="statusText">Memuat status pelajaran...</span>
+      </div>
+
+      <!-- Time format toggle -->
+      <div class="time-format-toggle">
+        <button class="format-btn active" id="btn24Format">Format 24 Jam</button>
+        <button class="format-btn" id="btn12Format">Format 12 Jam</button>
+      </div>
+
+      <!-- Class Toggle -->
+      <div class="class-toggle">
+        <button class="class-btn active" id="btnClassA"><i class="fas fa-user-graduate"></i> Kelas XI A</button>
+        <button class="class-btn" id="btnClassB"><i class="fas fa-user-graduate"></i> Kelas XI B</button>
+      </div>
+
+      <!-- Schedule for Class A (Visible by default) -->
+      <div id="scheduleA" class="schedule-content">
+        <div class="schedule-grid">
+          <!-- Senin -->
+          <div class="day-card monday">
+            <div class="day-header">Senin</div>
+            <div class="class-list">
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-calculator"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Matematika</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">15:00 - 16:45</span></div>
+                  <div class="class-teacher">Bu Dian S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-book"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Bahasa Indonesia</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:45 - 08:30</span></div>
+                  <div class="class-teacher">Bu Rita M.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-atom"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Fisika</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">08:30 - 09:15</span></div>
+                  <div class="class-teacher">Pak Budi S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-laptop-code"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Teknologi Informasi</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">10:00 - 11:30</span></div>
+                  <div class="class-teacher">Pak Andi M.Kom</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-palette"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Seni Budaya</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">13:30 - 15:00</span></div>
+                  <div class="class-teacher">Bu Siti S.Sn</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selasa -->
+          <div class="day-card tuesday">
+            <div class="day-header">Selasa</div>
+            <div class="class-list">
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-flask"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Kimia</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:00 - 08:30</span></div>
+                  <div class="class-teacher">Bu Rina M.Si</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-globe-asia"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Geografi</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">08:30 - 09:15</span></div>
+                  <div class="class-teacher">Pak Joko S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-running"></i></div>
+                <div class="class-info">
+                  <div class="class-name">PJOK</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">13:00 - 14:30</span></div>
+                  <div class="class-teacher">Pak Agus S.Pd</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rabu -->
+          <div class="day-card wednesday">
+            <div class="day-header">Rabu</div>
+            <div class="class-list">
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-language"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Bahasa Inggris</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:00 - 08:30</span></div>
+                  <div class="class-teacher">Bu Maya M.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-dna"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Biologi</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">08:30 - 10:00</span></div>
+                  <div class="class-teacher">Bu Desi S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Ekonomi</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">14:00 - 15:30</span></div>
+                  <div class="class-teacher">Pak Dedi S.E</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kamis -->
+          <div class="day-card thursday">
+            <div class="day-header">Kamis</div>
+            <div class="class-list">
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-calculator"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Matematika</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:00 - 07:45</span></div>
+                  <div class="class-teacher">Bu Dian S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-landmark"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Sejarah</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:45 - 09:15</span></div>
+                  <div class="class-teacher">Bu Tuti M.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-laptop-code"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Teknologi Informasi</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">13:00 - 14:30</span></div>
+                  <div class="class-teacher">Pak Andi M.Kom</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jumat -->
+          <div class="day-card friday">
+            <div class="day-header">Jumat</div>
+            <div class="class-list">
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-mosque"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Pendidikan Agama</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:00 - 07:45</span></div>
+                  <div class="class-teacher">Pak Ahmad S.Ag</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-users"></i></div>
+                <div class="class-info">
+                  <div class="class-name">PKN</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:45 - 08:30</span></div>
+                  <div class="class-teacher">Bu Yuni S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-flask"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Kimia</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">13:45 - 15:15</span></div>
+                  <div class="class-teacher">Bu Rina M.Si</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-comments"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Bimbingan Konseling</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">15:30 - 16:15</span></div>
+                  <div class="class-teacher">Bu Fitri M.Psi</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schedule for Class B (Hidden by default) -->
+      <div id="scheduleB" class="schedule-content" style="display: none">
+        <div class="schedule-grid">
+          <!-- Senin -->
+          <div class="day-card monday">
+            <div class="day-header">Senin</div>
+            <div class="class-list">
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-landmark"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Sejarah</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">14:00 - 17:45</span></div>
+                  <div class="class-teacher">Bu Tuti M.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-calculator"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Matematika</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:45 - 08:30</span></div>
+                  <div class="class-teacher">Bu Dian S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-laptop-code"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Teknologi Informasi</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">13:00 - 14:30</span></div>
+                  <div class="class-teacher">Pak Andi M.Kom</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-book"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Bahasa Indonesia</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">14:45 - 15:30</span></div>
+                  <div class="class-teacher">Bu Rita M.Pd</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selasa -->
+          <div class="day-card tuesday">
+            <div class="day-header">Selasa</div>
+            <div class="class-list">
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-atom"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Fisika</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:00 - 08:30</span></div>
+                  <div class="class-teacher">Pak Budi S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-language"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Bahasa Inggris</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">13:15 - 14:45</span></div>
+                  <div class="class-teacher">Bu Maya M.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-running"></i></div>
+                <div class="class-info">
+                  <div class="class-name">PJOK</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">15:00 - 16:30</span></div>
+                  <div class="class-teacher">Pak Agus S.Pd</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rabu -->
+          <div class="day-card wednesday">
+            <div class="day-header">Rabu</div>
+            <div class="class-list">
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-flask"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Kimia</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:00 - 07:45</span></div>
+                  <div class="class-teacher">Bu Rina M.Si</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-dna"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Biologi</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:45 - 09:15</span></div>
+                  <div class="class-teacher">Bu Desi S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-globe-asia"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Geografi</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">13:30 - 14:15</span></div>
+                  <div class="class-teacher">Pak Joko S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Ekonomi</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">14:30 - 15:15</span></div>
+                  <div class="class-teacher">Pak Dedi S.E</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kamis -->
+          <div class="day-card thursday">
+            <div class="day-header">Kamis</div>
+            <div class="class-list">
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-calculator"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Matematika</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:00 - 08:30</span></div>
+                  <div class="class-teacher">Bu Dian S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-palette"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Seni Budaya</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">13:00 - 14:30</span></div>
+                  <div class="class-teacher">Bu Siti S.Sn</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-book"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Bahasa Indonesia</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">14:45 - 15:30</span></div>
+                  <div class="class-teacher">Bu Rita M.Pd</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jumat -->
+          <div class="day-card friday">
+            <div class="day-header">Jumat</div>
+            <div class="class-list">
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-mosque"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Pendidikan Agama</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:00 - 07:45</span></div>
+                  <div class="class-teacher">Pak Ahmad S.Ag</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-users"></i></div>
+                <div class="class-info">
+                  <div class="class-name">PKN</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">07:45 - 08:30</span></div>
+                  <div class="class-teacher">Bu Yuni S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-atom"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Fisika</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">13:30 - 14:15</span></div>
+                  <div class="class-teacher">Pak Budi S.Pd</div>
+                </div>
+              </div>
+              <div class="class-item">
+                <div class="class-icon"><i class="fas fa-comments"></i></div>
+                <div class="class-info">
+                  <div class="class-name">Bimbingan Konseling</div>
+                  <div class="class-time"><i class="far fa-clock"></i> <span class="time-value">15:30 - 16:15</span></div>
+                  <div class="class-teacher">Bu Fitri M.Psi</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="footer-nav">
+        <button class="nav-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</button>
+        <button class="nav-btn" onclick="window.print()"><i class="fas fa-print"></i> Cetak Jadwal</button>
+      </div>
+
+      <!-- Debug info -->
+      <div class="debug-info" id="debugInfo">
+        <strong>Debug Info:</strong>
+        <div id="debugContent">Memuat informasi debug...</div>
+      </div>
+    </div>
+
+    <script>
+      // Daftar hari dalam bahasa Indonesia
+      const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+      // Format waktu default
+      let timeFormat = "24";
+
+      // Fungsi untuk mengonversi waktu ke format 12 jam
+      function convertTo12Hour(timeStr) {
+        const [hours, minutes] = timeStr.split(":").map((part) => parseInt(part, 10));
+        const period = hours >= 12 ? "PM" : "AM";
+        const hours12 = hours % 12 || 12;
+        return `${hours12}:${minutes.toString().padStart(2, "0")} ${period}`;
+      }
+
+      // Fungsi untuk mengonversi waktu ke format 24 jam
+      function convertTo24Hour(timeStr) {
+        // Cek apakah format 12 jam (mengandung AM/PM)
+        const match = timeStr.match(/(\d{1,2}):(\d{2})\s*([ap]m)?/i);
+        if (!match) return timeStr;
+
+        let hours = parseInt(match[1]);
+        const minutes = parseInt(match[2]);
+        const period = match[3] ? match[3].toLowerCase() : "";
+
+        // Konversi ke format 24 jam
+        if (period === "pm" && hours < 12) hours += 12;
+        if (period === "am" && hours === 12) hours = 0;
+
+        return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+      }
+
+      // Fungsi untuk mengonversi rentang waktu
+      function convertTimeRange(timeRange, format) {
+        const [startTime, endTime] = timeRange.split(" - ");
+
+        if (format === "12") {
+          return `${convertTo12Hour(startTime)} - ${convertTo12Hour(endTime)}`;
+        }
+
+        return `${convertTo24Hour(startTime)} - ${convertTo24Hour(endTime)}`;
+      }
+
+      // Fungsi untuk memperbarui tampilan waktu
+      function updateTimeDisplay() {
+        document.querySelectorAll(".time-value").forEach((element) => {
+          const originalTime = element.dataset.original || element.textContent;
+          element.dataset.original = originalTime;
+
+          if (timeFormat === "12") {
+            element.textContent = convertTimeRange(originalTime, "12");
+          } else {
+            element.textContent = convertTimeRange(originalTime, "24");
+          }
+        });
+      }
+
+      // Fungsi untuk menandai kelas yang sedang berlangsung
+      function markCurrentClass() {
+        // Reset semua status aktif
+        document.querySelectorAll(".class-item").forEach((item) => {
+          item.classList.remove("active");
+          const timeLeft = item.querySelector(".time-left");
+          if (timeLeft) timeLeft.remove();
+        });
+
+        // Fungsi konversi waktu string ke menit
+        function timeToMinutes(timeStr) {
+          // Konversi ke format 24 jam terlebih dahulu
+          const convertedTime = convertTo24Hour(timeStr);
+          const [hours, minutes] = convertedTime.split(":").map((part) => parseInt(part, 10));
+          return hours * 60 + minutes;
+        }
+
+        // Dapatkan hari dan waktu saat ini
+        const now = new Date();
+        const currentDayIndex = now.getDay();
+        const currentDay = days[currentDayIndex];
+        const currentHours = now.getHours();
+        const currentMinutes = now.getMinutes();
+        const currentTime = `${currentHours.toString().padStart(2, "0")}:${currentMinutes.toString().padStart(2, "0")}`;
+        const currentTimeInMinutes = currentHours * 60 + currentMinutes;
+
+        // Debug info
+        let debugInfo = `Hari: ${currentDay} (${currentDayIndex})<br>`;
+        debugInfo += `Waktu: ${currentTime} (${now.toLocaleTimeString()})<br>`;
+        debugInfo += `Menit: ${currentTimeInMinutes}<br>`;
+        debugInfo += `Format: ${timeFormat} jam<br>`;
+
+        // Reset status text
+        document.getElementById("currentClassStatus").className = "current-status";
+        document.getElementById("statusText").textContent = "Tidak ada kelas yang berlangsung saat ini";
+
+        // Cek jika hari ini adalah hari libur (Sabtu atau Minggu)
+        if (currentDayIndex === 0 || currentDayIndex === 6) {
+          document.getElementById("currentClassStatus").className = "current-status holiday";
+          document.getElementById("statusText").innerHTML = '<i class="fas fa-umbrella-beach"></i> Hari ini libur, tidak ada kelas.';
+          debugInfo += "Status: Hari libur";
+          document.getElementById("debugContent").innerHTML = debugInfo;
+          return;
+        }
+
+        // Cari semua kartu hari
+        // Hanya cari day-card pada tab yang aktif ditampilkan
+        const scheduleAVisible = document.getElementById("scheduleA").style.display !== "none";
+        const activeSchedule = scheduleAVisible ? document.getElementById("scheduleA") : document.getElementById("scheduleB");
+        const dayCards = activeSchedule.querySelectorAll(".day-card");
+
+        let todayCard = null;
+
+        // Cari kartu yang sesuai dengan hari ini
+        dayCards.forEach((card) => {
+          const dayHeader = card.querySelector(".day-header");
+          if (dayHeader && dayHeader.textContent.includes(currentDay)) {
+            todayCard = card;
+
+            // Highlight hari ini
+            card.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.15)";
+            card.style.transform = "translateY(-5px)";
+
+            // Tambahkan indikator hari ini
+            let todayBadge = card.querySelector(".today-highlight");
+            if (!todayBadge) {
+              todayBadge = document.createElement("div");
+              todayBadge.className = "today-highlight";
+              todayBadge.innerHTML = '<i class="fas fa-star"></i> HARI INI';
+              card.appendChild(todayBadge);
+            }
+          } else {
+            // Reset style untuk hari lain
+            card.style.boxShadow = "";
+            card.style.transform = "";
+            const todayBadge = card.querySelector(".today-highlight");
+            if (todayBadge) todayBadge.remove();
+          }
+        });
+
+        if (!todayCard) {
+          debugInfo += "Status: Kartu hari ini tidak ditemukan";
+          document.getElementById("debugContent").innerHTML = debugInfo;
+          return;
+        }
+
+        // Cari semua pelajaran pada hari ini
+        const classItems = todayCard.querySelectorAll(".class-item");
+        let activeItemFound = false;
+
+        classItems.forEach((item) => {
+          // Dapatkan elemen waktu
+          const timeElement = item.querySelector(".class-time");
+          if (!timeElement) return;
+
+          // Ekstrak waktu mulai dan selesai
+          const timeValue = item.querySelector(".time-value");
+          const timeText = timeValue.textContent;
+          const timeMatch = timeText.match(/(\d{1,2}:\d{2}\s*[ap]?m?)\s*[–-]\s*(\d{1,2}:\d{2}\s*[ap]?m?)/i);
+          if (!timeMatch) return;
+
+          const startTime = timeMatch[1];
+          const endTime = timeMatch[2];
+
+          // Konversi ke menit
+          const startTimeInMinutes = timeToMinutes(startTime);
+          const endTimeInMinutes = timeToMinutes(endTime);
+
+          // Debug info
+          debugInfo += `<br>Mata Pelajaran: ${item.querySelector(".class-name").textContent}<br>`;
+          debugInfo += `Waktu: ${startTime} - ${endTime}<br>`;
+          debugInfo += `Rentang: ${startTimeInMinutes} - ${endTimeInMinutes}<br>`;
+
+          // Periksa apakah pelajaran sedang berlangsung
+          if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes <= endTimeInMinutes && !activeItemFound) {
+            debugInfo += "<strong>Status: SEDANG BERLANGSUNG</strong><br>";
+
+            // Tandai sebagai sedang berlangsung
+            item.classList.add("active");
+
+            // Hitung waktu sisa
+            const minutesLeft = endTimeInMinutes - currentTimeInMinutes;
+
+            // Tambahkan indikator waktu sisa
+            const timeLeftElement = document.createElement("span");
+            timeLeftElement.className = "time-left";
+            timeLeftElement.textContent = `Sedang berlangsung, ${minutesLeft} menit lagi selesai`;
+
+            timeElement.appendChild(timeLeftElement);
+            activeItemFound = true;
+
+            // Update status
+            const className = item.querySelector(".class-name").textContent;
+            document.getElementById("currentClassStatus").style.display = "flex";
+            document.getElementById("statusText").textContent = `${className} sedang berlangsung, ${minutesLeft} menit lagi selesai`;
+          } else {
+            debugInfo += "Status: Tidak berlangsung<br>";
+          }
+        });
+
+        // Update debug info
+        document.getElementById("debugContent").innerHTML = debugInfo;
+      }
+
+      // Toggle between classes
+      document.getElementById("btnClassA").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btnClassB").classList.remove("active");
+        document.getElementById("scheduleA").style.display = "block";
+        document.getElementById("scheduleB").style.display = "none";
+        markCurrentClass();
+      });
+
+      document.getElementById("btnClassB").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btnClassA").classList.remove("active");
+        document.getElementById("scheduleA").style.display = "none";
+        document.getElementById("scheduleB").style.display = "block";
+        markCurrentClass();
+      });
+
+      // Toggle time format
+      document.getElementById("btn12Format").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btn24Format").classList.remove("active");
+        timeFormat = "12";
+        updateTimeDisplay();
+        markCurrentClass();
+      });
+
+      document.getElementById("btn24Format").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btn12Format").classList.remove("active");
+        timeFormat = "24";
+        updateTimeDisplay();
+        markCurrentClass();
+      });
+
+      // Panggil fungsi saat halaman dimuat
+      document.addEventListener("DOMContentLoaded", function () {
+        // Simpan waktu asli
+        document.querySelectorAll(".time-value").forEach((element) => {
+          element.dataset.original = element.textContent;
+        });
+
+        // Panggil fungsi deteksi
+        markCurrentClass();
+        updateTimeDisplay();
+
+        // Perbarui setiap menit
+        setInterval(markCurrentClass, 60000);
+      });
+    </script>
+  </body>
+</html>
