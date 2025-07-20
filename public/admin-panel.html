@@ -318,8 +318,9 @@
 
     <script>
         // Base URL untuk API - Sesuaikan dengan endpoint backend Anda
-        const API_BASE_URL = 'https://your-vercel-app.vercel.app/api/jadwal-admin';
-
+        //const API_BASE_URL = 'https://your-vercel-app.vercel.app/api/jadwal-admin';
+     const API_BASE = "/api";
+      const JADWAL_API = `${API_BASE}/jadwal`;
         // DOM Elements
         const scheduleForm = document.getElementById('scheduleForm');
         const scheduleIdInput = document.getElementById('scheduleId');
