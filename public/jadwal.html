@@ -116,7 +116,7 @@
 
         weekDays.forEach((day) => {
           const dayCard = document.createElement("div");
-          dayCard.className = `day-card ${day.toLowerCase()}`;
+          dayCard.className = `day-card ${dayClassMap[day] || ""}`;
 
           const dayHeader = document.createElement("div");
           dayHeader.className = "day-header";
