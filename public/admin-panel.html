@@ -1,544 +1,663 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel - Jadwal Kelas</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
-    <style>
-      :root {
-        --deep-blue: #0d47a1;
-        --primary-blue: #1e88e5;
-        --light-blue: #bbdefb;
-        --steel-gray: #546e7a;
-        --light-gray: #e0e0e0;
-        --white: #ffffff;
-        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        --shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - Jadwal Kelas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --deep-blue: #0d47a1;
+      --primary-blue: #1e88e5;
+      --light-blue: #bbdefb;
+      --steel-gray: #546e7a;
+      --light-gray: #e0e0e0;
+      --white: #ffffff;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    }
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      body {
-        font-family: "Nunito", sans-serif;
-        background-color: #f5f7fa;
-        color: #333;
-        line-height: 1.6;
-      }
+    body {
+      font-family: "Nunito", sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
 
-      .container {
-        width: 100%;
-        padding: 0 15px;
-        margin: 0 auto;
-      }
+    .container {
+      width: 100%;
+      padding: 0 15px;
+      margin: 0 auto;
+    }
 
-      header {
-        background: linear-gradient(135deg, var(--deep-blue), var(--primary-blue));
-        color: white;
-        padding: 30px 0;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
+    header {
+      background: linear-gradient(135deg, var(--deep-blue), var(--primary-blue));
+      color: white;
+      padding: 30px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-      .header-content {
-        text-align: center;
-      }
+    .header-content {
+      text-align: center;
+    }
 
-      .page-title {
-        font-family: "Patrick Hand", cursive;
-        font-size: 2.5rem;
-        margin-bottom: 10px;
-      }
+    .page-title {
+      font-family: "Patrick Hand", cursive;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
 
-      .page-subtitle {
-        font-size: 1.2rem;
-        opacity: 0.9;
-      }
+    .page-subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
 
-      /* Admin Container Styles */
-      .admin-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px;
-      }
+    /* Admin Container Styles */
+    .admin-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-      .admin-header {
-        text-align: center;
-        margin-bottom: 30px;
-      }
+    .admin-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-      .admin-title {
-        font-family: "Patrick Hand", cursive;
-        font-size: 2.5rem;
-        color: var(--deep-blue);
-        margin-bottom: 10px;
-      }
+    .admin-title {
+      font-family: "Patrick Hand", cursive;
+      font-size: 2.5rem;
+      color: var(--deep-blue);
+      margin-bottom: 10px;
+    }
 
-      .admin-subtitle {
-        color: var(--steel-gray);
-        font-size: 1.2rem;
-        margin-bottom: 20px;
-      }
+    .admin-subtitle {
+      color: var(--steel-gray);
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
 
-      .admin-sections {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-      }
+    .admin-sections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
 
-      .form-section,
-      .schedule-section {
-        flex: 1;
-        min-width: 300px;
-      }
+    .form-section,
+    .schedule-section {
+      flex: 1;
+      min-width: 300px;
+    }
 
-      .admin-card {
-        background: var(--white);
-        border-radius: 16px;
-        box-shadow: var(--card-shadow);
-        padding: 25px;
-        margin-bottom: 25px;
-      }
+    .admin-card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      padding: 25px;
+      margin-bottom: 25px;
+    }
 
-      .admin-card h2 {
-        font-family: "Nunito", sans-serif;
-        color: var(--deep-blue);
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid var(--light-gray);
-      }
+    .admin-card h2 {
+      font-family: "Nunito", sans-serif;
+      color: var(--deep-blue);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--light-gray);
+    }
 
-      .form-group {
-        margin-bottom: 20px;
-      }
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-      .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: var(--steel-gray);
-      }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--steel-gray);
+    }
 
-      .form-control {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid var(--light-gray);
-        border-radius: 10px;
-        font-family: "Nunito", sans-serif;
-        font-size: 1rem;
-        transition: border-color 0.3s ease;
-      }
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--light-gray);
+      border-radius: 10px;
+      font-family: "Nunito", sans-serif;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
 
-      .form-control:focus {
-        outline: none;
-        border-color: var(--primary-blue);
-        box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
-      }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
+    }
 
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 12px 25px;
-        border: none;
-        border-radius: 50px;
-        font-family: "Nunito", sans-serif;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        gap: 8px;
-      }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 50px;
+      font-family: "Nunito", sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      gap: 8px;
+    }
 
-      .btn-primary {
-        background: var(--primary-blue);
-        color: white;
-        box-shadow: var(--shadow);
-      }
+    .btn-primary {
+      background: var(--primary-blue);
+      color: white;
+      box-shadow: var(--shadow);
+    }
 
-      .btn-primary:hover {
-        background: var(--deep-blue);
-        transform: translateY(-3px);
-        box-shadow: 0 6px 12px rgba(13, 71, 161, 0.3);
-      }
+    .btn-primary:hover {
+      background: var(--deep-blue);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(13, 71, 161, 0.3);
+    }
 
-      .btn-secondary {
-        background: var(--steel-gray);
-        color: white;
-      }
+    .btn-secondary {
+      background: var(--steel-gray);
+      color: white;
+    }
 
-      .btn-secondary:hover {
-        background: #455a64;
-      }
+    .btn-secondary:hover {
+      background: #455a64;
+    }
 
-      .btn-danger {
-        background: #e53935;
-        color: white;
-      }
+    .btn-danger {
+      background: #e53935;
+      color: white;
+    }
 
-      .btn-danger:hover {
-        background: #c62828;
-      }
+    .btn-danger:hover {
+      background: #c62828;
+    }
 
-      .btn-sm {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-      }
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+    }
 
-      .schedule-filters {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-      }
+    .schedule-filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
 
-      .filter-group {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
+    .filter-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
 
-      .schedule-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
 
-      .schedule-table th,
-      .schedule-table td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid var(--light-gray);
-      }
+    .schedule-table th,
+    .schedule-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--light-gray);
+    }
 
-      .schedule-table th {
-        background: var(--light-gray);
-        color: var(--steel-gray);
-        font-weight: 700;
-      }
+    .schedule-table th {
+      background: var(--light-gray);
+      color: var(--steel-gray);
+      font-weight: 700;
+    }
 
-      .schedule-table tr:hover {
-        background: rgba(30, 136, 229, 0.05);
-      }
+    .schedule-table tr:hover {
+      background: rgba(30, 136, 229, 0.05);
+    }
 
-      .actions-cell {
-        display: flex;
-        gap: 8px;
-      }
-      
-      .icon-cell {
-        text-align: center;
-        font-size: 1.5rem;
-      }
+    .actions-cell {
+      display: flex;
+      gap: 8px;
+    }
 
-      .hidden {
-        display: none;
-      }
+    .icon-cell {
+      text-align: center;
+      font-size: 1.5rem;
+    }
 
-      .message {
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        text-align: center;
-      }
+    .hidden {
+      display: none;
+    }
 
-      .message-success {
-        background: #e8f5e9;
-        color: #2e7d32;
-        border: 1px solid #c8e6c9;
-      }
+    .message {
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
-      .message-error {
-        background: #ffebee;
-        color: #c62828;
-        border: 1px solid #ffcdd2;
-      }
+    .message-success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
 
-      .loading {
-        text-align: center;
-        padding: 20px;
-        color: var(--steel-gray);
-      }
+    .message-error {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
 
-      .loading-spinner {
-        border: 4px solid rgba(0, 0, 0, 0.1);
-        border-left-color: var(--primary-blue);
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 10px;
-      }
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: var(--steel-gray);
+    }
 
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
+    .loading-spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: var(--primary-blue);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
 
-      .footer-nav {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 30px;
-        padding: 20px 0;
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
       }
+    }
 
-      .nav-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px 20px;
-        background: var(--primary-blue);
-        color: white;
-        border: none;
-        border-radius: 50px;
-        font-family: "Nunito", sans-serif;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.3s ease;
-        gap: 8px;
-      }
+    .footer-nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+      padding: 20px 0;
+    }
 
-      .nav-btn:hover {
-        background: var(--deep-blue);
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: "Nunito", sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      gap: 8px;
+    }
+
+    .nav-btn:hover {
+      background: var(--deep-blue);
+    }
+
+    .icon-preview {
+      display: inline-block;
+      width: 30px;
+      text-align: center;
+      margin-right: 10px;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      padding: 30px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      animation: modalOpen 0.3s ease;
+    }
+
+    @keyframes modalOpen {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
       }
-      
-      .icon-preview {
-        display: inline-block;
-        width: 30px;
-        text-align: center;
-        margin-right: 10px;
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="container header-content">
-        <h1 class="page-title">Admin Panel</h1>
-        <p class="page-subtitle">Kelola Jadwal Kelas XI</p>
+    }
+
+    .modal-title {
+      font-size: 1.8rem;
+      color: var(--deep-blue);
+      margin-bottom: 15px;
+    }
+
+    .modal-message {
+      font-size: 1.1rem;
+      color: var(--steel-gray);
+      margin-bottom: 25px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .modal-btn {
+      padding: 12px 30px;
+      min-width: 120px;
+    }
+
+    .modal-highlight {
+      font-weight: 700;
+      color: var(--deep-blue);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <h1 class="page-title">Admin Panel</h1>
+      <p class="page-subtitle">Kelola Jadwal Kelas XI</p>
+    </div>
+  </header>
+
+  <div class="container admin-container">
+    <!-- Pesan sukses/error -->
+    <div id="messageArea"></div>
+
+    <div class="admin-sections">
+      <!-- Form Section -->
+      <div class="form-section">
+        <div class="admin-card">
+          <h2 id="formTitle">Tambah Jadwal Baru</h2>
+          <form id="scheduleForm">
+            <input type="hidden" id="scheduleId" />
+            <div class="form-group">
+              <label for="classSelect">Kelas</label>
+              <select class="form-control" id="classSelect" required>
+                <option value="">Pilih Kelas</option>
+                <option value="XI A">XI A</option>
+                <option value="XI B">XI B</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="daySelect">Hari</label>
+              <select class="form-control" id="daySelect" required>
+                <option value="">Pilih Hari</option>
+                <option value="Senin">Senin</option>
+                <option value="Selasa">Selasa</option>
+                <option value="Rabu">Rabu</option>
+                <option value="Kamis">Kamis</option>
+                <option value="Jumat">Jumat</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="subjectInput">Mata Pelajaran</label>
+              <input type="text" class="form-control" id="subjectInput" placeholder="Masukkan mata pelajaran" required />
+            </div>
+            <div class="form-group">
+              <label for="teacherInput">Nama Guru</label>
+              <input type="text" class="form-control" id="teacherInput" placeholder="Masukkan nama guru" required />
+            </div>
+            <div class="form-group">
+              <label for="iconSelect">Ikon Mata Pelajaran</label>
+              <select class="form-control" id="iconSelect" required>
+                <option value="">Pilih Ikon</option>
+                <option value="fa-book">Buku (Umum)</option>
+                <option value="fa-calculator">Matematika</option>
+                <option value="fa-flask">Kimia</option>
+                <option value="fa-atom">Fisika</option>
+                <option value="fa-dna">Biologi</option>
+                <option value="fa-globe-asia">Geografi</option>
+                <option value="fa-landmark">Sejarah</option>
+                <option value="fa-language">Bahasa</option>
+                <option value="fa-running">PJOK</option>
+                <option value="fa-music">Seni Musik</option>
+                <option value="fa-palette">Seni Rupa</option>
+                <option value="fa-laptop-code">Informatika</option>
+                <option value="fa-pray">Agama</option>
+                <option value="fa-chart-line">Ekonomi</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="startTimeInput">Waktu Mulai</label>
+              <input type="time" class="form-control" id="startTimeInput" required />
+            </div>
+            <div class="form-group">
+              <label for="endTimeInput">Waktu Selesai</label>
+              <input type="time" class="form-control" id="endTimeInput" required />
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary" id="submitBtn">Tambah Jadwal</button>
+              <button type="button" class="btn btn-secondary hidden" id="cancelEditBtn">Batal</button>
+            </div>
+          </form>
+        </div>
       </div>
-    </header>
 
-    <div class="container admin-container">
-      <!-- Pesan sukses/error -->
-      <div id="messageArea"></div>
-
-      <div class="admin-sections">
-        <!-- Form Section -->
-        <div class="form-section">
-          <div class="admin-card">
-            <h2 id="formTitle">Tambah Jadwal Baru</h2>
-            <form id="scheduleForm">
-              <input type="hidden" id="scheduleId" />
-              <div class="form-group">
-                <label for="classSelect">Kelas</label>
-                <select class="form-control" id="classSelect" required>
-                  <option value="">Pilih Kelas</option>
-                  <option value="XI A">XI A</option>
-                  <option value="XI B">XI B</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="daySelect">Hari</label>
-                <select class="form-control" id="daySelect" required>
-                  <option value="">Pilih Hari</option>
-                  <option value="Senin">Senin</option>
-                  <option value="Selasa">Selasa</option>
-                  <option value="Rabu">Rabu</option>
-                  <option value="Kamis">Kamis</option>
-                  <option value="Jumat">Jumat</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="subjectInput">Mata Pelajaran</label>
-                <input type="text" class="form-control" id="subjectInput" placeholder="Masukkan mata pelajaran" required />
-              </div>
-              <div class="form-group">
-                <label for="teacherInput">Nama Guru</label>
-                <input type="text" class="form-control" id="teacherInput" placeholder="Masukkan nama guru" required />
-              </div>
-              <div class="form-group">
-                <label for="iconSelect">Ikon Mata Pelajaran</label>
-                <select class="form-control" id="iconSelect" required>
-                  <option value="">Pilih Ikon</option>
-                  <option value="fa-book">Buku (Umum)</option>
-                  <option value="fa-calculator">Matematika</option>
-                  <option value="fa-flask">Kimia</option>
-                  <option value="fa-atom">Fisika</option>
-                  <option value="fa-dna">Biologi</option>
-                  <option value="fa-globe-asia">Geografi</option>
-                  <option value="fa-landmark">Sejarah</option>
-                  <option value="fa-language">Bahasa</option>
-                  <option value="fa-running">PJOK</option>
-                  <option value="fa-music">Seni Musik</option>
-                  <option value="fa-palette">Seni Rupa</option>
-                  <option value="fa-laptop-code">Informatika</option>
-                  <option value="fa-pray">Agama</option>
-                  <option value="fa-chart-line">Ekonomi</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="startTimeInput">Waktu Mulai</label>
-                <input type="time" class="form-control" id="startTimeInput" required />
-              </div>
-              <div class="form-group">
-                <label for="endTimeInput">Waktu Selesai</label>
-                <input type="time" class="form-control" id="endTimeInput" required />
-              </div>
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary" id="submitBtn">Tambah Jadwal</button>
-                <button type="button" class="btn btn-secondary hidden" id="cancelEditBtn">Batal</button>
-              </div>
-            </form>
+      <!-- Schedule List Section -->
+      <div class="schedule-section">
+        <div class="admin-card">
+          <h2>Daftar Jadwal</h2>
+          <div class="schedule-filters">
+            <div class="filter-group">
+              <label for="filterClass">Kelas:</label>
+              <select class="form-control" id="filterClass">
+                <option value="">Semua</option>
+                <option value="XI A">XI A</option>
+                <option value="XI B">XI B</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="filterDay">Hari:</label>
+              <select class="form-control" id="filterDay">
+                <option value="">Semua</option>
+                <option value="Senin">Senin</option>
+                <option value="Selasa">Selasa</option>
+                <option value="Rabu">Rabu</option>
+                <option value="Kamis">Kamis</option>
+                <option value="Jumat">Jumat</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+          </div>
+          <div id="scheduleList">
+            <div class="loading">
+              <div class="loading-spinner"></div>
+              Memuat jadwal...
+            </div>
           </div>
         </div>
-
-        <!-- Schedule List Section -->
-        <div class="schedule-section">
-          <div class="admin-card">
-            <h2>Daftar Jadwal</h2>
-            <div class="schedule-filters">
-              <div class="filter-group">
-                <label for="filterClass">Kelas:</label>
-                <select class="form-control" id="filterClass">
-                  <option value="">Semua</option>
-                  <option value="XI A">XI A</option>
-                  <option value="XI B">XI B</option>
-                </select>
-              </div>
-              <div class="filter-group">
-                <label for="filterDay">Hari:</label>
-                <select class="form-control" id="filterDay">
-                  <option value="">Semua</option>
-                  <option value="Senin">Senin</option>
-                  <option value="Selasa">Selasa</option>
-                  <option value="Rabu">Rabu</option>
-                  <option value="Kamis">Kamis</option>
-                  <option value="Jumat">Jumat</option>
-                </select>
-              </div>
-              <button class="btn btn-primary" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
-            </div>
-            <div id="scheduleList">
-              <div class="loading">
-                <div class="loading-spinner"></div>
-                Memuat jadwal...
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-nav">
-        <button class="nav-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Kembali</button>
-        <button class="nav-btn" onclick="window.location.href='jadwal.html'"><i class="fas fa-calendar-alt"></i> Lihat Jadwal</button>
       </div>
     </div>
 
-    <script>
-      // Konfigurasi API
-      const API_BASE = "/api";
-      const JADWAL_API = `${API_BASE}/jadwal`;
+    <div class="footer-nav">
+      <button class="nav-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Kembali</button>
+      <button class="nav-btn" onclick="window.location.href='jadwal.html'"><i class="fas fa-calendar-alt"></i> Lihat Jadwal</button>
+    </div>
 
-      // DOM Elements
-      const scheduleForm = document.getElementById("scheduleForm");
-      const scheduleIdInput = document.getElementById("scheduleId");
-      const classSelect = document.getElementById("classSelect");
-      const daySelect = document.getElementById("daySelect");
-      const subjectInput = document.getElementById("subjectInput");
-      const teacherInput = document.getElementById("teacherInput");
-      const iconSelect = document.getElementById("iconSelect");
-      const startTimeInput = document.getElementById("startTimeInput");
-      const endTimeInput = document.getElementById("endTimeInput");
-      const submitBtn = document.getElementById("submitBtn");
-      const cancelEditBtn = document.getElementById("cancelEditBtn");
-      const filterClass = document.getElementById("filterClass");
-      const filterDay = document.getElementById("filterDay");
-      const refreshBtn = document.getElementById("refreshBtn");
-      const scheduleList = document.getElementById("scheduleList");
-      const messageArea = document.getElementById("messageArea");
-      const formTitle = document.getElementById("formTitle");
+    <!-- Modal Konfirmasi Hapus -->
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <h3 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Konfirmasi Hapus</h3>
+        <p class="modal-message">Apakah Anda yakin ingin menghapus jadwal <span id="scheduleName" class="modal-highlight"></span>?</p>
+        <div class="modal-actions">
+          <button id="confirmDeleteBtn" class="btn btn-danger modal-btn">Hapus</button>
+          <button id="cancelDeleteBtn" class="btn btn-secondary modal-btn">Batal</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      let schedules = []; // Menyimpan data jadwal
+  <script>
+    // Konfigurasi API
+    const API_BASE = "/api";
+    const JADWAL_API = `${API_BASE}/jadwal`;
 
-      // Fungsi untuk menampilkan pesan
-      function showMessage(message, type = "success") {
-        messageArea.innerHTML = `
+    // DOM Elements
+    const scheduleForm = document.getElementById("scheduleForm");
+    const scheduleIdInput = document.getElementById("scheduleId");
+    const classSelect = document.getElementById("classSelect");
+    const daySelect = document.getElementById("daySelect");
+    const subjectInput = document.getElementById("subjectInput");
+    const teacherInput = document.getElementById("teacherInput");
+    const iconSelect = document.getElementById("iconSelect");
+    const startTimeInput = document.getElementById("startTimeInput");
+    const endTimeInput = document.getElementById("endTimeInput");
+    const submitBtn = document.getElementById("submitBtn");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+    const filterClass = document.getElementById("filterClass");
+    const filterDay = document.getElementById("filterDay");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const scheduleList = document.getElementById("scheduleList");
+    const messageArea = document.getElementById("messageArea");
+    const formTitle = document.getElementById("formTitle");
+    
+    // Modal Elements
+    const deleteModal = document.getElementById("deleteModal");
+    const scheduleNameSpan = document.getElementById("scheduleName");
+    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+    const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+
+    let schedules = []; // Menyimpan data jadwal
+    let scheduleToDelete = null; // Menyimpan jadwal yang akan dihapus
+
+    // Fungsi untuk menampilkan pesan
+    function showMessage(message, type = "success") {
+      messageArea.innerHTML = `
         <div class="message message-${type}">
           ${message}
         </div>
       `;
-        setTimeout(() => {
-          messageArea.innerHTML = "";
-        }, 5000);
-      }
+      setTimeout(() => {
+        messageArea.innerHTML = "";
+      }, 5000);
+    }
 
-      // Fungsi untuk memuat jadwal dari API
-      async function loadSchedules() {
-        try {
-          scheduleList.innerHTML = `
+    // Fungsi untuk memuat jadwal dari API
+    async function loadSchedules() {
+      try {
+        scheduleList.innerHTML = `
           <div class="loading">
             <div class="loading-spinner"></div>
             Memuat jadwal...
           </div>
         `;
 
-          const response = await fetch(JADWAL_API);
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || "Gagal memuat jadwal");
+        // Simulasi API call dengan data dummy
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Data dummy untuk demo
+        schedules = [
+          {
+            id: "1",
+            class: "XI A",
+            day: "Senin",
+            subject: "Matematika",
+            teacher: "Bu Diana",
+            icon: "fa-calculator",
+            startTime: "07:30",
+            endTime: "09:00"
+          },
+          {
+            id: "2",
+            class: "XI A",
+            day: "Senin",
+            subject: "Fisika",
+            teacher: "Pak Budi",
+            icon: "fa-atom",
+            startTime: "09:15",
+            endTime: "10:45"
+          },
+          {
+            id: "3",
+            class: "XI B",
+            day: "Selasa",
+            subject: "Biologi",
+            teacher: "Bu Rina",
+            icon: "fa-dna",
+            startTime: "07:30",
+            endTime: "09:00"
+          },
+          {
+            id: "4",
+            class: "XI B",
+            day: "Rabu",
+            subject: "Bahasa Inggris",
+            teacher: "Pak Agus",
+            icon: "fa-language",
+            startTime: "10:00",
+            endTime: "11:30"
           }
+        ];
+        
+        renderSchedules();
+      } catch (error) {
+        scheduleList.innerHTML = `
+          <div class="message message-error">
+            ${error.message || "Gagal memuat jadwal"}
+          </div>
+        `;
+        console.error("Error loading schedules:", error);
+      }
+    }
 
-          schedules = await response.json();
-          renderSchedules();
-        } catch (error) {
-          scheduleList.innerHTML = `
-            <div class="message message-error">
-              ${error.message || 'Gagal memuat jadwal'}
-            </div>
-          `;
-          console.error("Error loading schedules:", error);
-        }
+    // Fungsi untuk merender jadwal dalam tabel
+    function renderSchedules() {
+      const selectedClass = filterClass.value;
+      const selectedDay = filterDay.value;
+
+      // Filter jadwal (case insensitive)
+      let filteredSchedules = schedules;
+      if (selectedClass) {
+        filteredSchedules = filteredSchedules.filter((s) => s.class.toLowerCase() === selectedClass.toLowerCase());
+      }
+      if (selectedDay) {
+        filteredSchedules = filteredSchedules.filter((s) => s.day.toLowerCase() === selectedDay.toLowerCase());
       }
 
-      // Fungsi untuk merender jadwal dalam tabel
-      function renderSchedules() {
-        const selectedClass = filterClass.value;
-        const selectedDay = filterDay.value;
-
-        // Filter jadwal (case insensitive)
-        let filteredSchedules = schedules;
-        if (selectedClass) {
-          filteredSchedules = filteredSchedules.filter(
-            (s) => s.class.toLowerCase() === selectedClass.toLowerCase()
-          );
+      // Sort by day and start time
+      const dayOrder = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
+      filteredSchedules.sort((a, b) => {
+        if (a.day !== b.day) {
+          return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
         }
-        if (selectedDay) {
-          filteredSchedules = filteredSchedules.filter(
-            (s) => s.day.toLowerCase() === selectedDay.toLowerCase()
-          );
-        }
+        return a.startTime.localeCompare(b.startTime);
+      });
 
-        // Sort by day and start time
-        const dayOrder = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
-        filteredSchedules.sort((a, b) => {
-          if (a.day !== b.day) {
-            return dayOrder.indexOf(a.day) - dayOrder.indexOf(b.day);
-          }
-          return a.startTime.localeCompare(b.startTime);
-        });
+      if (filteredSchedules.length === 0) {
+        scheduleList.innerHTML = '<div class="message">Tidak ada jadwal ditemukan</div>';
+        return;
+      }
 
-        if (filteredSchedules.length === 0) {
-          scheduleList.innerHTML = '<div class="message">Tidak ada jadwal ditemukan</div>';
-          return;
-        }
-
-        let tableHTML = `
+      let tableHTML = `
         <table class="schedule-table">
           <thead>
             <tr>
@@ -554,11 +673,11 @@
           <tbody>
       `;
 
-        filteredSchedules.forEach((schedule) => {
-          // Format waktu: ambil hanya HH:mm (5 karakter pertama)
-          const startTime = schedule.startTime.slice(0, 5);
-          const endTime = schedule.endTime.slice(0, 5);
-          tableHTML += `
+      filteredSchedules.forEach((schedule) => {
+        // Format waktu: ambil hanya HH:mm (5 karakter pertama)
+        const startTime = schedule.startTime;
+        const endTime = schedule.endTime;
+        tableHTML += `
           <tr>
             <td class="icon-cell"><i class="fas ${schedule.icon}"></i></td>
             <td>${schedule.class}</td>
@@ -576,129 +695,166 @@
             </td>
           </tr>
         `;
-        });
+      });
 
-        tableHTML += `
+      tableHTML += `
           </tbody>
         </table>
       `;
 
-        scheduleList.innerHTML = tableHTML;
+      scheduleList.innerHTML = tableHTML;
+    }
+
+    // Fungsi untuk mengedit jadwal
+    function editSchedule(id) {
+      const schedule = schedules.find((s) => s.id === id);
+      if (!schedule) return;
+
+      // Isi form dengan data jadwal
+      scheduleIdInput.value = schedule.id;
+      classSelect.value = schedule.class;
+      daySelect.value = schedule.day;
+      subjectInput.value = schedule.subject;
+      teacherInput.value = schedule.teacher;
+      iconSelect.value = schedule.icon;
+      startTimeInput.value = schedule.startTime;
+      endTimeInput.value = schedule.endTime;
+
+      // Ubah tombol submit menjadi "Update"
+      submitBtn.textContent = "Update Jadwal";
+      formTitle.textContent = "Edit Jadwal";
+      cancelEditBtn.classList.remove("hidden");
+
+      // Scroll ke form
+      document.querySelector(".form-section").scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Fungsi untuk membatalkan edit
+    function cancelEdit() {
+      scheduleForm.reset();
+      scheduleIdInput.value = "";
+      submitBtn.textContent = "Tambah Jadwal";
+      formTitle.textContent = "Tambah Jadwal Baru";
+      cancelEditBtn.classList.add("hidden");
+    }
+
+    // Fungsi untuk menampilkan modal konfirmasi hapus
+    function showDeleteConfirmation(schedule) {
+      scheduleToDelete = schedule;
+      scheduleNameSpan.textContent = `${schedule.subject} (${schedule.day}, ${schedule.class})`;
+      deleteModal.style.display = "flex";
+    }
+
+    // Fungsi untuk menyembunyikan modal konfirmasi
+    function hideDeleteConfirmation() {
+      deleteModal.style.display = "none";
+      scheduleToDelete = null;
+    }
+
+    // Fungsi untuk menghapus jadwal
+    function deleteSchedule(id) {
+      const schedule = schedules.find((s) => s.id === id);
+      if (!schedule) return;
+      
+      showDeleteConfirmation(schedule);
+    }
+
+    // Event listener untuk tombol konfirmasi modal
+    confirmDeleteBtn.addEventListener("click", async () => {
+      if (!scheduleToDelete) return;
+      
+      try {
+        const id = scheduleToDelete.id;
+        hideDeleteConfirmation();
+        
+        // Tampilkan loading di daftar jadwal
+        scheduleList.innerHTML = `
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            Menghapus jadwal...
+          </div>
+        `;
+        
+        // Simulasi API call untuk menghapus data
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        // Hapus dari array schedules
+        schedules = schedules.filter(s => s.id !== id);
+        
+        showMessage(`Jadwal "${scheduleToDelete.subject}" berhasil dihapus`, "success");
+        renderSchedules();
+      } catch (error) {
+        showMessage(error.message || "Terjadi kesalahan pada server", "error");
+        console.error("Delete error:", error);
+        renderSchedules();
+      }
+    });
+
+    // Event listener untuk tombol batal modal
+    cancelDeleteBtn.addEventListener("click", hideDeleteConfirmation);
+
+    // Event listener untuk form submit
+    scheduleForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const scheduleData = {
+        class: classSelect.value,
+        day: daySelect.value,
+        subject: subjectInput.value,
+        teacher: teacherInput.value,
+        icon: iconSelect.value,
+        startTime: startTimeInput.value,
+        endTime: endTimeInput.value,
+      };
+
+      const id = scheduleIdInput.value;
+      const method = id ? "PUT" : "POST";
+
+      if (id) {
+        scheduleData.id = id;
       }
 
-      // Fungsi untuk mengedit jadwal
-      function editSchedule(id) {
-        const schedule = schedules.find((s) => s.id === id);
-        if (!schedule) return;
-
-        // Isi form dengan data jadwal
-        scheduleIdInput.value = schedule.id;
-        classSelect.value = schedule.class;
-        daySelect.value = schedule.day;
-        subjectInput.value = schedule.subject;
-        teacherInput.value = schedule.teacher;
-        iconSelect.value = schedule.icon;
-        startTimeInput.value = schedule.startTime;
-        endTimeInput.value = schedule.endTime;
-
-        // Ubah tombol submit menjadi "Update"
-        submitBtn.textContent = "Update Jadwal";
-        formTitle.textContent = "Edit Jadwal";
-        cancelEditBtn.classList.remove("hidden");
-
-        // Scroll ke form
-        document.querySelector(".form-section").scrollIntoView({ behavior: "smooth" });
-      }
-
-      // Fungsi untuk membatalkan edit
-      function cancelEdit() {
-        scheduleForm.reset();
-        scheduleIdInput.value = "";
-        submitBtn.textContent = "Tambah Jadwal";
-        formTitle.textContent = "Tambah Jadwal Baru";
-        cancelEditBtn.classList.add("hidden");
-      }
-
-      // Fungsi untuk menghapus jadwal
-      async function deleteSchedule(id) {
-        if (!confirm("Apakah Anda yakin ingin menghapus jadwal ini?")) return;
-
-        try {
-          const response = await fetch(`${JADWAL_API}?id=${id}`, {
-            method: "DELETE",
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || "Gagal menghapus jadwal");
-          }
-
-          const result = await response.json();
-          showMessage(`Jadwal "${result.schedule.subject}" berhasil dihapus`, "success");
-          loadSchedules();
-        } catch (error) {
-          showMessage(error.message || 'Terjadi kesalahan pada server', "error");
-          console.error("Delete error:", error);
-        }
-      }
-
-      // Event listener untuk form submit
-      scheduleForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const scheduleData = {
-          class: classSelect.value,
-          day: daySelect.value,
-          subject: subjectInput.value,
-          teacher: teacherInput.value,
-          icon: iconSelect.value,
-          startTime: startTimeInput.value,
-          endTime: endTimeInput.value,
-        };
-
-        const id = scheduleIdInput.value;
-        const method = id ? "PUT" : "POST";
-
+      try {
+        // Simulasi API call
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
         if (id) {
-          scheduleData.id = id;
-        }
-
-        try {
-          const response = await fetch(JADWAL_API, {
-            method: method,
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(scheduleData),
-          });
-
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || "Gagal menyimpan jadwal");
+          // Update existing schedule
+          const index = schedules.findIndex(s => s.id === id);
+          if (index !== -1) {
+            schedules[index] = { ...schedules[index], ...scheduleData };
           }
-
-          const result = await response.json();
-          showMessage(result.message, "success");
-          cancelEdit();
-          loadSchedules();
-        } catch (error) {
-          showMessage(error.message || 'Terjadi kesalahan pada server', "error");
-          console.error("Submit error:", error);
+          showMessage("Jadwal berhasil diperbarui", "success");
+        } else {
+          // Add new schedule
+          const newSchedule = {
+            ...scheduleData,
+            id: `s${schedules.length + 1}`
+          };
+          schedules.push(newSchedule);
+          showMessage("Jadwal baru berhasil ditambahkan", "success");
         }
-      });
+        
+        cancelEdit();
+        renderSchedules();
+      } catch (error) {
+        showMessage(error.message || "Terjadi kesalahan pada server", "error");
+        console.error("Submit error:", error);
+      }
+    });
 
-      // Event listeners lainnya
-      cancelEditBtn.addEventListener("click", cancelEdit);
-      filterClass.addEventListener("change", renderSchedules);
-      filterDay.addEventListener("change", renderSchedules);
-      refreshBtn.addEventListener("click", loadSchedules);
+    // Event listeners lainnya
+    cancelEditBtn.addEventListener("click", cancelEdit);
+    filterClass.addEventListener("change", renderSchedules);
+    filterDay.addEventListener("change", renderSchedules);
+    refreshBtn.addEventListener("click", loadSchedules);
 
-      // Muat jadwal saat halaman dimuat
-      document.addEventListener("DOMContentLoaded", loadSchedules);
+    // Muat jadwal saat halaman dimuat
+    document.addEventListener("DOMContentLoaded", loadSchedules);
 
-      // Ekspos fungsi ke global scope agar bisa dipanggil dari onclick di button
-      window.editSchedule = editSchedule;
-      window.deleteSchedule = deleteSchedule;
-    </script>
-  </body>
+    // Ekspos fungsi ke global scope agar bisa dipanggil dari onclick di button
+    window.editSchedule = editSchedule;
+    window.deleteSchedule = deleteSchedule;
+  </script>
+</body>
 </html>
