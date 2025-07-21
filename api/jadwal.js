@@ -24,15 +24,11 @@ function githubRequest(path, method = "GET", data = null) {
       res.on("data", (chunk) => (body += chunk));
       res.on("end", () => {
         try {
-          const json = JSON.parse(body || "{}");
-          if (res.statusCode >= 200 && res.statusCode < 300) {
-            resolve(json);
+          // Terima response text jika bukan JSON
+          if (res.headers["content-type"].includes("application/json")) {
+            resolve(JSON.parse(body || "{}"));
           } else {
-            reject({
-              statusCode: res.statusCode,
-              message: json.message || `GitHub API error: ${res.statusCode}`,
-              errors: json.errors,
-            });
+            resolve(body);
           }
         } catch (e) {
           reject({
@@ -63,6 +59,10 @@ async function getCurrentSchedules() {
   try {
     const fileData = await githubRequest(`/repos/${REPO}/contents/${FILEPATH}?ref=${BRANCH}`);
 
+    if (typeof fileData === "string") {
+      return { schedules: [], sha: null };
+    }
+
     if (!fileData.content) return { schedules: [], sha: null };
 
     const content = Buffer.from(fileData.content, "base64").toString("utf8");
@@ -76,48 +76,7 @@ async function getCurrentSchedules() {
   }
 }
 
-function generateScheduleId() {
-  return "jadwal_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
-}
-
-function validateSchedule(schedule) {
-  const errors = [];
-
-  if (!schedule.class || !["XI A", "XI B"].includes(schedule.class)) {
-    errors.push("Kelas harus diisi dan harus 'XI A' atau 'XI B'");
-  }
-
-  if (!schedule.day || !["Senin", "Selasa", "Rabu", "Kamis", "Jumat"].includes(schedule.day)) {
-    errors.push("Hari harus diisi dan harus Senin, Selasa, Rabu, Kamis, atau Jumat");
-  }
-
-  if (!schedule.subject) {
-    errors.push("Mata pelajaran wajib diisi");
-  }
-
-  if (!schedule.teacher) {
-    errors.push("Nama guru wajib diisi");
-  }
-
-  if (!schedule.startTime || !/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(schedule.startTime)) {
-    errors.push("Waktu mulai harus diisi dengan format HH:mm");
-  }
-
-  if (!schedule.endTime || !/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(schedule.endTime)) {
-    errors.push("Waktu selesai harus diisi dengan format HH:mm");
-  }
-
-  // Validasi jika waktu selesai lebih awal dari waktu mulai
-  if (schedule.startTime && schedule.endTime) {
-    const start = new Date(`1970-01-01T${schedule.startTime}:00`);
-    const end = new Date(`1970-01-01T${schedule.endTime}:00`);
-    if (end <= start) {
-      errors.push("Waktu selesai harus setelah waktu mulai");
-    }
-  }
-
-  return errors;
-}
+// ... (bagian lainnya tetap sama)
 
 module.exports = async (req, res) => {
   // Handle CORS
@@ -155,9 +114,19 @@ module.exports = async (req, res) => {
       return githubRequest(`/repos/${REPO}/contents/${FILEPATH}`, "PUT", updatePayload);
     };
 
+    // Pastikan body request adalah JSON
+    let requestBody;
+    try {
+      if (req.method === "POST" || req.method === "PUT") {
+        requestBody = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+      }
+    } catch (e) {
+      return res.status(400).json({ error: "Invalid JSON format" });
+    }
+
     // POST: Add new schedule
     if (req.method === "POST") {
-      const newSchedule = req.body;
+      const newSchedule = requestBody;
 
       // Validasi
       const errors = validateSchedule(newSchedule);
@@ -186,7 +155,7 @@ module.exports = async (req, res) => {
 
     // PUT: Update existing schedule
     if (req.method === "PUT") {
-      const updatedSchedule = req.body;
+      const updatedSchedule = requestBody;
 
       // Validasi
       if (!updatedSchedule.id) {
