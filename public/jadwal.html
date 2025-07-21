@@ -77,6 +77,15 @@
       const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
       const weekDays = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]; // Hari sekolah
 
+      // Mapping hari Bahasa Indonesia ke class CSS Bahasa Inggris
+const dayClassMap = {
+  "Senin": "monday",
+  "Selasa": "tuesday",
+  "Rabu": "wednesday",
+  "Kamis": "thursday",
+  "Jumat": "friday"
+};
+
       // Format waktu default
       let timeFormat = "24";
       let scheduleData = { "XI A": {}, "XI B": {} };
