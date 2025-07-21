@@ -691,7 +691,7 @@
         cancelEditBtn.classList.add("hidden");
       }
 
-           function showDeleteConfirmation(schedule) {
+      function showDeleteConfirmation(schedule) {
         if (!schedule) {
           console.error("Schedule data is null or undefined");
           return;
@@ -716,23 +716,25 @@
         showDeleteConfirmation(schedule);
       }
 
-      // Event listener untuk tombol konfirmasi modal
       confirmDeleteBtn.addEventListener("click", async () => {
         if (!scheduleToDelete) return;
 
+        const deletedSubject = scheduleToDelete.subject; // Simpan dulu sebelum null
+        const deletedClass = scheduleToDelete.class;
+        const deletedDay = scheduleToDelete.day;
+        const id = scheduleToDelete.id;
+
+        hideDeleteConfirmation(); // Ini akan set scheduleToDelete = null
+
         try {
-          const id = scheduleToDelete.id;
-          hideDeleteConfirmation();
-
-          // Tampilkan loading di daftar jadwal
+          // Tampilkan loading
           scheduleList.innerHTML = `
-            <div class="loading">
-              <div class="loading-spinner"></div>
-              Menghapus jadwal...
-            </div>
-          `;
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        Menghapus jadwal...
+      </div>
+    `;
 
-          // Kirim permintaan DELETE ke API
           const response = await fetch(`${JADWAL_API}?id=${id}`, {
             method: "DELETE",
           });
@@ -742,8 +744,8 @@
             throw new Error(errorData.error || "Gagal menghapus jadwal");
           }
 
-          showMessage(`Jadwal "${scheduleToDelete.subject}" berhasil dihapus`, "success");
-          await loadSchedules(); // Muat ulang data setelah penghapusan
+          showMessage(`Jadwal "${deletedSubject}" (${deletedDay}, ${deletedClass}) berhasil dihapus`, "success");
+          await loadSchedules();
         } catch (error) {
           showMessage(error.message || "Terjadi kesalahan pada server", "error");
           console.error("Delete error:", error);
@@ -823,3 +825,4 @@
     </script>
   </body>
 </html>
+s
