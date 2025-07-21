@@ -6,9 +6,60 @@
     <title>Admin Panel - Jadwal Kelas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="jadwal.css" />
     <style>
-      /* Additional styles for admin panel */
+      :root {
+        --deep-blue: #0d47a1;
+        --primary-blue: #1e88e5;
+        --light-blue: #bbdefb;
+        --steel-gray: #546e7a;
+        --light-gray: #e0e0e0;
+        --white: #ffffff;
+        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        width: 100%;
+        padding: 0 15px;
+        margin: 0 auto;
+      }
+
+      header {
+        background: linear-gradient(135deg, var(--deep-blue), var(--primary-blue));
+        color: white;
+        padding: 30px 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-content {
+        text-align: center;
+      }
+
+      .page-title {
+        font-family: "Patrick Hand", cursive;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      .page-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      /* Admin Container Styles */
       .admin-container {
         max-width: 1400px;
         margin: 0 auto;
@@ -120,9 +171,17 @@
         color: white;
       }
 
+      .btn-secondary:hover {
+        background: #455a64;
+      }
+
       .btn-danger {
         background: #e53935;
         color: white;
+      }
+
+      .btn-danger:hover {
+        background: #c62828;
       }
 
       .btn-sm {
@@ -146,6 +205,7 @@
       .schedule-table {
         width: 100%;
         border-collapse: collapse;
+        margin-top: 20px;
       }
 
       .schedule-table th,
@@ -213,6 +273,34 @@
         to {
           transform: rotate(360deg);
         }
+      }
+
+      .footer-nav {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+        padding: 20px 0;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        background: var(--primary-blue);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-family: "Nunito", sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        gap: 8px;
+      }
+
+      .nav-btn:hover {
+        background: var(--deep-blue);
       }
     </style>
   </head>
@@ -323,7 +411,7 @@
     <script>
       // Konfigurasi API
       const API_BASE = "/api";
-      const JADWAL_API = `${API_BASE}/jadwal-admin`;
+      const JADWAL_API = `${API_BASE}/jadwal`;
 
       // DOM Elements
       const scheduleForm = document.getElementById("scheduleForm");
@@ -341,6 +429,7 @@
       const refreshBtn = document.getElementById("refreshBtn");
       const scheduleList = document.getElementById("scheduleList");
       const messageArea = document.getElementById("messageArea");
+      const formTitle = document.getElementById("formTitle");
 
       let schedules = []; // Menyimpan data jadwal
 
@@ -368,13 +457,19 @@
 
           const response = await fetch(JADWAL_API);
           if (!response.ok) {
-            throw new Error("Gagal memuat jadwal");
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Gagal memuat jadwal");
           }
 
           schedules = await response.json();
           renderSchedules();
         } catch (error) {
-          scheduleList.innerHTML = `<div class="message message-error">${error.message}</div>`;
+          scheduleList.innerHTML = `
+            <div class="message message-error">
+              ${error.message || 'Gagal memuat jadwal'}
+            </div>
+          `;
+          console.error("Error loading schedules:", error);
         }
       }
 
@@ -383,13 +478,17 @@
         const selectedClass = filterClass.value;
         const selectedDay = filterDay.value;
 
-        // Filter jadwal
+        // Filter jadwal (case insensitive)
         let filteredSchedules = schedules;
         if (selectedClass) {
-          filteredSchedules = filteredSchedules.filter((s) => s.class === selectedClass);
+          filteredSchedules = filteredSchedules.filter(
+            (s) => s.class.toLowerCase() === selectedClass.toLowerCase()
+          );
         }
         if (selectedDay) {
-          filteredSchedules = filteredSchedules.filter((s) => s.day === selectedDay);
+          filteredSchedules = filteredSchedules.filter(
+            (s) => s.day.toLowerCase() === selectedDay.toLowerCase()
+          );
         }
 
         // Sort by day and start time
@@ -422,13 +521,16 @@
       `;
 
         filteredSchedules.forEach((schedule) => {
+          // Format waktu: ambil hanya HH:mm (5 karakter pertama)
+          const startTime = schedule.startTime.slice(0, 5);
+          const endTime = schedule.endTime.slice(0, 5);
           tableHTML += `
           <tr>
             <td>${schedule.class}</td>
             <td>${schedule.day}</td>
             <td>${schedule.subject}</td>
             <td>${schedule.teacher}</td>
-            <td>${schedule.startTime} - ${schedule.endTime}</td>
+            <td>${startTime} - ${endTime}</td>
             <td class="actions-cell">
               <button class="btn btn-primary btn-sm" onclick="editSchedule('${schedule.id}')">
                 <i class="fas fa-edit"></i> Edit
@@ -465,6 +567,7 @@
 
         // Ubah tombol submit menjadi "Update"
         submitBtn.textContent = "Update Jadwal";
+        formTitle.textContent = "Edit Jadwal";
         cancelEditBtn.classList.remove("hidden");
 
         // Scroll ke form
@@ -476,6 +579,7 @@
         scheduleForm.reset();
         scheduleIdInput.value = "";
         submitBtn.textContent = "Tambah Jadwal";
+        formTitle.textContent = "Tambah Jadwal Baru";
         cancelEditBtn.classList.add("hidden");
       }
 
@@ -497,92 +601,56 @@
           showMessage(`Jadwal "${result.schedule.subject}" berhasil dihapus`, "success");
           loadSchedules();
         } catch (error) {
-          showMessage(error.message, "error");
+          showMessage(error.message || 'Terjadi kesalahan pada server', "error");
+          console.error("Delete error:", error);
         }
       }
 
       // Event listener untuk form submit
-scheduleForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+      scheduleForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-  const scheduleData = {
-    class: classSelect.value,
-    day: daySelect.value,
-    subject: subjectInput.value,
-    teacher: teacherInput.value,
-    startTime: startTimeInput.value,
-    endTime: endTimeInput.value,
-  };
+        const scheduleData = {
+          class: classSelect.value,
+          day: daySelect.value,
+          subject: subjectInput.value,
+          teacher: teacherInput.value,
+          startTime: startTimeInput.value,
+          endTime: endTimeInput.value,
+        };
 
-  const id = scheduleIdInput.value;
-  const method = id ? "PUT" : "POST";
+        const id = scheduleIdInput.value;
+        const method = id ? "PUT" : "POST";
 
-  if (id) {
-    scheduleData.id = id;
-  }
+        if (id) {
+          scheduleData.id = id;
+        }
 
-  try {
-    const response = await fetch(JADWAL_API, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(scheduleData),
-    });
+        try {
+          const response = await fetch(JADWAL_API, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(scheduleData),
+          });
 
-    // Tangani response non-JSON
-    const contentType = response.headers.get("content-type");
-    let result;
-    
-    if (contentType && contentType.includes("application/json")) {
-      result = await response.json();
-    } else {
-      const text = await response.text();
-      throw new Error(text || "Invalid server response");
-    }
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Gagal menyimpan jadwal");
+          }
 
-    if (!response.ok) {
-      throw new Error(result.error || "Gagal menyimpan jadwal");
-    }
+          const result = await response.json();
+          showMessage(result.message, "success");
+          cancelEdit();
+          loadSchedules();
+        } catch (error) {
+          showMessage(error.message || 'Terjadi kesalahan pada server', "error");
+          console.error("Submit error:", error);
+        }
+      });
 
-    showMessage(result.message, "success");
-    cancelEdit();
-    loadSchedules();
-  } catch (error) {
-    showMessage(error.message, "error");
-  }
-});
-
-// Fungsi untuk menghapus jadwal
-async function deleteSchedule(id) {
-  if (!confirm("Apakah Anda yakin ingin menghapus jadwal ini?")) return;
-
-  try {
-    const response = await fetch(`${JADWAL_API}?id=${id}`, {
-      method: "DELETE",
-    });
-
-    // Tangani response non-JSON
-    const contentType = response.headers.get("content-type");
-    let result;
-    
-    if (contentType && contentType.includes("application/json")) {
-      result = await response.json();
-    } else {
-      const text = await response.text();
-      throw new Error(text || "Invalid server response");
-    }
-
-    if (!response.ok) {
-      throw new Error(result.error || "Gagal menghapus jadwal");
-    }
-
-    showMessage(`Jadwal "${result.schedule.subject}" berhasil dihapus`, "success");
-    loadSchedules();
-  } catch (error) {
-    showMessage(error.message, "error");
-  }
-}      // Event listeners lainnya
+      // Event listeners lainnya
       cancelEditBtn.addEventListener("click", cancelEdit);
       filterClass.addEventListener("change", renderSchedules);
       filterDay.addEventListener("change", renderSchedules);
@@ -590,6 +658,10 @@ async function deleteSchedule(id) {
 
       // Muat jadwal saat halaman dimuat
       document.addEventListener("DOMContentLoaded", loadSchedules);
+
+      // Ekspos fungsi ke global scope agar bisa dipanggil dari onclick di button
+      window.editSchedule = editSchedule;
+      window.deleteSchedule = deleteSchedule;
     </script>
   </body>
 </html>
