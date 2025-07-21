@@ -378,6 +378,31 @@
         font-weight: 700;
         color: var(--deep-blue);
       }
+
+      .table-wrapper {
+        overflow-x: auto;
+        width: 100%;
+      }
+
+      /* Ukuran tabel lebih ramping */
+      .schedule-table {
+        width: 100%;
+        max-width: 100%;
+        font-size: 0.85rem;
+        display: block;
+      }
+
+      /* Ukuran sel lebih kecil */
+      .schedule-table th,
+      .schedule-table td {
+        padding: 8px 10px;
+      }
+
+      /* Tombol lebih kecil */
+      .schedule-table .btn-sm {
+        padding: 4px 10px;
+        font-size: 0.75rem;
+      }
     </style>
   </head>
   <body>
@@ -655,7 +680,11 @@
           </table>
         `;
 
-        scheduleList.innerHTML = tableHTML;
+        scheduleList.innerHTML = `
+  <div class="table-wrapper">
+    ${tableHTML}
+  </div>
+`;
       }
 
       // Fungsi untuk mengedit jadwal
