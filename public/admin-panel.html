@@ -691,8 +691,12 @@
         cancelEditBtn.classList.add("hidden");
       }
 
-      // Fungsi untuk menampilkan modal konfirmasi hapus
-      function showDeleteConfirmation(schedule) {
+           function showDeleteConfirmation(schedule) {
+        if (!schedule) {
+          console.error("Schedule data is null or undefined");
+          return;
+        }
+
         scheduleToDelete = schedule;
         scheduleNameSpan.textContent = `${schedule.subject} (${schedule.day}, ${schedule.class})`;
         deleteModal.style.display = "flex";
