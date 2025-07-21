@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="jadwal.css" />
+    <style>
+      /* Tambahkan style untuk pesan kosong */
+      .empty-schedule {
+        text-align: center;
+        padding: 30px;
+        color: #757575;
+        font-style: italic;
+      }
+    </style>
   </head>
   <body>
     <!-- Header -->
@@ -66,6 +75,7 @@
     <script>
       // Daftar hari dalam bahasa Indonesia
       const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const weekDays = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]; // Hari sekolah
 
       // Format waktu default
       let timeFormat = "24";
@@ -102,22 +112,22 @@
 
       // Fungsi untuk merender jadwal
       function renderSchedule(className, container) {
-        const daysOrder = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
         container.innerHTML = "";
 
-        daysOrder.forEach((day) => {
-          if (scheduleData[className][day]) {
-            const dayCard = document.createElement("div");
-            dayCard.className = `day-card ${day.toLowerCase()}`;
+        weekDays.forEach((day) => {
+          const dayCard = document.createElement("div");
+          dayCard.className = `day-card ${day.toLowerCase()}`;
 
-            const dayHeader = document.createElement("div");
-            dayHeader.className = "day-header";
-            dayHeader.textContent = day;
-            dayCard.appendChild(dayHeader);
+          const dayHeader = document.createElement("div");
+          dayHeader.className = "day-header";
+          dayHeader.textContent = day;
+          dayCard.appendChild(dayHeader);
 
-            const classList = document.createElement("div");
-            classList.className = "class-list";
+          const classList = document.createElement("div");
+          classList.className = "class-list";
 
+          // Periksa jika ada jadwal untuk hari ini
+          if (scheduleData[className][day] && scheduleData[className][day].length > 0) {
             // Urutkan berdasarkan waktu mulai
             scheduleData[className][day].sort((a, b) => {
               const startA = convertTo24Hour(a.startTime);
@@ -165,10 +175,16 @@
 
               classList.appendChild(classItem);
             });
-
-            dayCard.appendChild(classList);
-            container.appendChild(dayCard);
+          } else {
+            // Tampilkan pesan jika tidak ada jadwal
+            const emptyMessage = document.createElement("div");
+            emptyMessage.className = "empty-schedule";
+            emptyMessage.innerHTML = `<i class="fas fa-calendar-times"></i> Tidak ada jadwal`;
+            classList.appendChild(emptyMessage);
           }
+
+          dayCard.appendChild(classList);
+          container.appendChild(dayCard);
         });
 
         // Update tampilan waktu sesuai format
