@@ -502,49 +502,87 @@
       }
 
       // Event listener untuk form submit
-      scheduleForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+scheduleForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-        const scheduleData = {
-          class: classSelect.value,
-          day: daySelect.value,
-          subject: subjectInput.value,
-          teacher: teacherInput.value,
-          startTime: startTimeInput.value,
-          endTime: endTimeInput.value,
-        };
+  const scheduleData = {
+    class: classSelect.value,
+    day: daySelect.value,
+    subject: subjectInput.value,
+    teacher: teacherInput.value,
+    startTime: startTimeInput.value,
+    endTime: endTimeInput.value,
+  };
 
-        const id = scheduleIdInput.value;
-        const method = id ? "PUT" : "POST";
+  const id = scheduleIdInput.value;
+  const method = id ? "PUT" : "POST";
 
-        if (id) {
-          scheduleData.id = id;
-        }
+  if (id) {
+    scheduleData.id = id;
+  }
 
-        try {
-          const response = await fetch(JADWAL_API, {
-            method: method,
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(scheduleData),
-          });
+  try {
+    const response = await fetch(JADWAL_API, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(scheduleData),
+    });
 
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || "Gagal menyimpan jadwal");
-          }
+    // Tangani response non-JSON
+    const contentType = response.headers.get("content-type");
+    let result;
+    
+    if (contentType && contentType.includes("application/json")) {
+      result = await response.json();
+    } else {
+      const text = await response.text();
+      throw new Error(text || "Invalid server response");
+    }
 
-          const result = await response.json();
-          showMessage(result.message, "success");
-          cancelEdit();
-          loadSchedules();
-        } catch (error) {
-          showMessage(error.message, "error");
-        }
-      });
+    if (!response.ok) {
+      throw new Error(result.error || "Gagal menyimpan jadwal");
+    }
 
-      // Event listeners lainnya
+    showMessage(result.message, "success");
+    cancelEdit();
+    loadSchedules();
+  } catch (error) {
+    showMessage(error.message, "error");
+  }
+});
+
+// Fungsi untuk menghapus jadwal
+async function deleteSchedule(id) {
+  if (!confirm("Apakah Anda yakin ingin menghapus jadwal ini?")) return;
+
+  try {
+    const response = await fetch(`${JADWAL_API}?id=${id}`, {
+      method: "DELETE",
+    });
+
+    // Tangani response non-JSON
+    const contentType = response.headers.get("content-type");
+    let result;
+    
+    if (contentType && contentType.includes("application/json")) {
+      result = await response.json();
+    } else {
+      const text = await response.text();
+      throw new Error(text || "Invalid server response");
+    }
+
+    if (!response.ok) {
+      throw new Error(result.error || "Gagal menghapus jadwal");
+    }
+
+    showMessage(`Jadwal "${result.schedule.subject}" berhasil dihapus`, "success");
+    loadSchedules();
+  } catch (error) {
+    showMessage(error.message, "error");
+  }
+}      // Event listeners lainnya
       cancelEditBtn.addEventListener("click", cancelEdit);
       filterClass.addEventListener("change", renderSchedules);
       filterDay.addEventListener("change", renderSchedules);
