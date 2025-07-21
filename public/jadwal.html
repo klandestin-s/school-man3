@@ -145,7 +145,10 @@
               classTime.className = "class-time";
               const timeValue = document.createElement("span");
               timeValue.className = "time-value";
-              timeValue.textContent = `${item.startTime} - ${item.endTime}`;
+              // Simpan waktu asli (format 24 jam) di data-original
+              const originalTime = `${item.startTime} - ${item.endTime}`;
+              timeValue.textContent = originalTime;
+              timeValue.dataset.original = originalTime;
               classTime.innerHTML = '<i class="far fa-clock"></i> ';
               classTime.appendChild(timeValue);
 
@@ -167,6 +170,9 @@
             container.appendChild(dayCard);
           }
         });
+
+        // Update tampilan waktu sesuai format
+        updateTimeDisplay();
       }
 
       // Fungsi untuk mengonversi waktu ke format 12 jam
@@ -312,7 +318,8 @@
 
           // Ekstrak waktu mulai dan selesai
           const timeValue = item.querySelector(".time-value");
-          const timeText = timeValue.textContent;
+          // Gunakan data original yang disimpan (format 24 jam)
+          const timeText = timeValue.dataset.original || timeValue.textContent;
           const timeMatch = timeText.match(/(\d{1,2}:\d{2}\s*[ap]?m?)\s*[–-]\s*(\d{1,2}:\d{2}\s*[ap]?m?)/i);
           if (!timeMatch) return;
 
