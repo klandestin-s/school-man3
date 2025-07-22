@@ -649,6 +649,17 @@
         if (selectedType) {
           filteredSchedules = filteredSchedules.filter((s) => s.type.toLowerCase() === selectedType.toLowerCase());
         }
+      // Fungsi untuk mengatur required pada input guru
+      function setTeacherRequired() {
+        const type = typeSelect.value;
+        if (type === "subject") {
+          teacherInput.required = true;
+          teacherInput.parentElement.style.display = "block";
+        } else {
+          teacherInput.required = false;
+          teacherInput.parentElement.style.display = "none";
+        }
+      }
 
         // Sort by day and start time
         const dayOrder = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
