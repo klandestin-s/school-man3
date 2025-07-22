@@ -15,6 +15,44 @@
         color: #757575;
         font-style: italic;
       }
+
+      /* Tambahkan style untuk jadwal istirahat dan sholat */
+      .class-item.break {
+        background-color: #fff3e0 !important;
+        border-left: 4px solid #ff9800;
+      }
+
+      .class-item.break .class-icon {
+        background: rgba(255, 152, 0, 0.1);
+        color: #ff9800;
+      }
+
+      .class-item.break .class-name {
+        color: #ff9800;
+      }
+
+      .class-item.prayer {
+        background-color: #e8f5e9 !important;
+        border-left: 4px solid #4caf50;
+      }
+
+      .class-item.prayer .class-icon {
+        background: rgba(76, 175, 80, 0.1);
+        color: #4caf50;
+      }
+
+      .class-item.prayer .class-name {
+        color: #4caf50;
+      }
+
+      /* Style saat aktif untuk istirahat dan sholat */
+      .class-item.break.active {
+        background-color: #ffe0b2 !important;
+      }
+
+      .class-item.prayer.active {
+        background-color: #c8e6c9 !important;
+      }
     </style>
   </head>
   <body>
@@ -78,13 +116,13 @@
       const weekDays = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]; // Hari sekolah
 
       // Mapping hari Bahasa Indonesia ke class CSS Bahasa Inggris
-const dayClassMap = {
-  "Senin": "monday",
-  "Selasa": "tuesday",
-  "Rabu": "wednesday",
-  "Kamis": "thursday",
-  "Jumat": "friday"
-};
+      const dayClassMap = {
+        "Senin": "monday",
+        "Selasa": "tuesday",
+        "Rabu": "wednesday",
+        "Kamis": "thursday",
+        "Jumat": "friday"
+      };
 
       // Format waktu default
       let timeFormat = "24";
@@ -147,7 +185,8 @@ const dayClassMap = {
             // Tambahkan setiap mata pelajaran
             scheduleData[className][day].forEach((item) => {
               const classItem = document.createElement("div");
-              classItem.className = "class-item";
+              // Tambahkan class sesuai tipe jadwal (subject, break, prayer)
+              classItem.className = `class-item ${item.type || 'subject'}`;
 
               const classIcon = document.createElement("div");
               classIcon.className = "class-icon";
@@ -173,7 +212,7 @@ const dayClassMap = {
 
               const classTeacher = document.createElement("div");
               classTeacher.className = "class-teacher";
-              classTeacher.textContent = item.teacher;
+              classTeacher.textContent = item.teacher || ""; // Handle jika tidak ada guru
 
               classInfo.appendChild(classNameEl);
               classInfo.appendChild(classTime);
