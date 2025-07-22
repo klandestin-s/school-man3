@@ -447,30 +447,38 @@
               </div>
               <div class="form-group">
                 <label for="teacherInput">Nama Guru</label>
-                <input type="text" class="form-control" id="teacherInput" placeholder="Masukkan nama guru" required />
+                <input type="text" class="form-control" id="teacherInput" placeholder="Masukkan nama guru (bisa kosong)" />
+              </div>
+              <div class="form-group">
+                <label for="typeSelect">Tipe Jadwal</label>
+                <select class="form-control" id="typeSelect" required>
+                  <option value="">Pilih Tipe</option>
+                  <option value="subject">Mata Pelajaran</option>
+                  <option value="break">Istirahat</option>
+                  <option value="prayer">Sholat</option>
+                </select>
               </div>
               <div class="form-group">
                 <label for="iconSelect">Ikon Mata Pelajaran</label>
                 <select class="form-control" id="iconSelect" required>
-  <option value="">Pilih Ikon</option>
-  <option value="fa-book">Buku (Umum)</option>
-  <option value="fa-calculator">Matematika</option>
-  <option value="fa-flask">Kimia</option>
-  <option value="fa-atom">Fisika</option>
-  <option value="fa-dna">Biologi</option>
-  <option value="fa-globe-asia">Geografi</option>
-  <option value="fa-landmark">Sejarah</option>
-  <option value="fa-language">Bahasa</option>
-  <option value="fa-running">PJOK</option>
-  <option value="fa-music">Seni Musik</option>
-  <option value="fa-palette">Seni Rupa</option>
-  <option value="fa-laptop-code">Informatika</option>
-  <option value="fa-pray">Agama</option>
-  <option value="fa-chart-line">Ekonomi</option>
-  <option value="fa-mug-hot">Istirahat</option>
-  <option value="fa-mosque">Sholat</option>
-</select>
-
+                  <option value="">Pilih Ikon</option>
+                  <option value="fa-book">Buku (Umum)</option>
+                  <option value="fa-calculator">Matematika</option>
+                  <option value="fa-flask">Kimia</option>
+                  <option value="fa-atom">Fisika</option>
+                  <option value="fa-dna">Biologi</option>
+                  <option value="fa-globe-asia">Geografi</option>
+                  <option value="fa-landmark">Sejarah</option>
+                  <option value="fa-language">Bahasa</option>
+                  <option value="fa-running">PJOK</option>
+                  <option value="fa-music">Seni Musik</option>
+                  <option value="fa-palette">Seni Rupa</option>
+                  <option value="fa-laptop-code">Informatika</option>
+                  <option value="fa-pray">Agama</option>
+                  <option value="fa-chart-line">Ekonomi</option>
+                  <option value="fa-mug-hot">Istirahat</option>
+                  <option value="fa-mosque">Sholat</option>
+                </select>
               </div>
               <div class="form-group">
                 <label for="startTimeInput">Waktu Mulai</label>
@@ -509,6 +517,15 @@
                   <option value="Rabu">Rabu</option>
                   <option value="Kamis">Kamis</option>
                   <option value="Jumat">Jumat</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label for="filterType">Tipe:</label>
+                <select class="form-control" id="filterType">
+                  <option value="">Semua</option>
+                  <option value="subject">Mata Pelajaran</option>
+                  <option value="break">Istirahat</option>
+                  <option value="prayer">Sholat</option>
                 </select>
               </div>
               <button class="btn btn-primary" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
@@ -552,6 +569,7 @@
       const daySelect = document.getElementById("daySelect");
       const subjectInput = document.getElementById("subjectInput");
       const teacherInput = document.getElementById("teacherInput");
+      const typeSelect = document.getElementById("typeSelect");
       const iconSelect = document.getElementById("iconSelect");
       const startTimeInput = document.getElementById("startTimeInput");
       const endTimeInput = document.getElementById("endTimeInput");
@@ -559,6 +577,7 @@
       const cancelEditBtn = document.getElementById("cancelEditBtn");
       const filterClass = document.getElementById("filterClass");
       const filterDay = document.getElementById("filterDay");
+      const filterType = document.getElementById("filterType");
       const refreshBtn = document.getElementById("refreshBtn");
       const scheduleList = document.getElementById("scheduleList");
       const messageArea = document.getElementById("messageArea");
@@ -617,6 +636,7 @@
       function renderSchedules() {
         const selectedClass = filterClass.value;
         const selectedDay = filterDay.value;
+        const selectedType = filterType.value;
 
         // Filter jadwal (case insensitive)
         let filteredSchedules = schedules;
@@ -625,6 +645,9 @@
         }
         if (selectedDay) {
           filteredSchedules = filteredSchedules.filter((s) => s.day.toLowerCase() === selectedDay.toLowerCase());
+        }
+        if (selectedType) {
+          filteredSchedules = filteredSchedules.filter((s) => s.type.toLowerCase() === selectedType.toLowerCase());
         }
 
         // Sort by day and start time
@@ -642,29 +665,37 @@
         }
 
         let tableHTML = `
-          <table class="schedule-table">
-            <thead>
-              <tr>
-                <th>Ikon</th>
-                <th>Kelas</th>
-                <th>Hari</th>
-                <th>Mata Pelajaran</th>
-                <th>Guru</th>
-                <th>Waktu</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
+          <div class="table-wrapper">
+            <table class="schedule-table">
+              <thead>
+                <tr>
+                  <th>Ikon</th>
+                  <th>Kelas</th>
+                  <th>Hari</th>
+                  <th>Mata Pelajaran</th>
+                  <th>Guru</th>
+                  <th>Tipe</th>
+                  <th>Waktu</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
         `;
 
         filteredSchedules.forEach((schedule) => {
+          // Tentukan label untuk tipe jadwal
+          let typeLabel = "Mata Pelajaran";
+          if (schedule.type === "break") typeLabel = "Istirahat";
+          if (schedule.type === "prayer") typeLabel = "Sholat";
+          
           tableHTML += `
             <tr>
               <td class="icon-cell"><i class="fas ${schedule.icon}"></i></td>
               <td>${schedule.class}</td>
               <td>${schedule.day}</td>
               <td>${schedule.subject}</td>
-              <td>${schedule.teacher}</td>
+              <td>${schedule.teacher || "-"}</td>
+              <td>${typeLabel}</td>
               <td>${schedule.startTime} - ${schedule.endTime}</td>
               <td class="actions-cell">
                 <button class="btn btn-primary btn-sm" onclick="editSchedule('${schedule.id}')">
@@ -679,15 +710,12 @@
         });
 
         tableHTML += `
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         `;
 
-        scheduleList.innerHTML = `
-  <div class="table-wrapper">
-    ${tableHTML}
-  </div>
-`;
+        scheduleList.innerHTML = tableHTML;
       }
 
       // Fungsi untuk mengedit jadwal
@@ -700,7 +728,8 @@
         classSelect.value = schedule.class;
         daySelect.value = schedule.day;
         subjectInput.value = schedule.subject;
-        teacherInput.value = schedule.teacher;
+        teacherInput.value = schedule.teacher || "";
+        typeSelect.value = schedule.type;
         iconSelect.value = schedule.icon;
         startTimeInput.value = schedule.startTime;
         endTimeInput.value = schedule.endTime;
@@ -761,11 +790,11 @@
         try {
           // Tampilkan loading
           scheduleList.innerHTML = `
-      <div class="loading">
-        <div class="loading-spinner"></div>
-        Menghapus jadwal...
-      </div>
-    `;
+            <div class="loading">
+              <div class="loading-spinner"></div>
+              Menghapus jadwal...
+            </div>
+          `;
 
           const response = await fetch(`${JADWAL_API}?id=${id}`, {
             method: "DELETE",
@@ -796,7 +825,8 @@
           class: classSelect.value,
           day: daySelect.value,
           subject: subjectInput.value,
-          teacher: teacherInput.value,
+          teacher: teacherInput.value || "", // Izinkan kosong
+          type: typeSelect.value,
           icon: iconSelect.value,
           startTime: startTimeInput.value,
           endTime: endTimeInput.value,
@@ -846,6 +876,7 @@
       cancelEditBtn.addEventListener("click", cancelEdit);
       filterClass.addEventListener("change", renderSchedules);
       filterDay.addEventListener("change", renderSchedules);
+      filterType.addEventListener("change", renderSchedules);
       refreshBtn.addEventListener("click", loadSchedules);
 
       // Muat jadwal saat halaman dimuat
