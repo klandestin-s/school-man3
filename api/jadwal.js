@@ -99,9 +99,11 @@ function validateSchedule(schedule) {
     errors.push("Mata pelajaran wajib diisi");
   }
 
-  // Teacher validation
-  if (!schedule.teacher || schedule.teacher.trim() === "") {
-    errors.push("Nama guru wajib diisi");
+  // Teacher validation - tidak wajib untuk istirahat/sholat
+  if (typeof schedule.teacher === "undefined") {
+    errors.push("Kolom guru wajib ada");
+  } else if (typeof schedule.teacher !== "string") {
+    errors.push("Guru harus berupa string");
   }
 
   // Icon validation
@@ -134,6 +136,12 @@ function validateSchedule(schedule) {
     if (end <= start) {
       errors.push("Waktu selesai harus setelah waktu mulai");
     }
+  }
+
+  // Type validation - baru ditambahkan
+  const validTypes = ["subject", "break", "prayer"];
+  if (!schedule.type || !validTypes.includes(schedule.type)) {
+    errors.push("Tipe jadwal harus diisi (subject, break, atau prayer)");
   }
 
   return errors;
@@ -179,6 +187,9 @@ module.exports = async (req, res) => {
     if (req.method === "POST") {
       const newSchedule = req.body;
 
+      // Set default type jika tidak ada
+      if (!newSchedule.type) newSchedule.type = "subject";
+      
       // Validasi
       const errors = validateSchedule(newSchedule);
       if (errors.length > 0) {
@@ -213,6 +224,9 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: "ID jadwal wajib diisi" });
       }
 
+      // Set default type jika tidak ada
+      if (!updatedSchedule.type) updatedSchedule.type = "subject";
+      
       const errors = validateSchedule(updatedSchedule);
       if (errors.length > 0) {
         return res.status(400).json({
