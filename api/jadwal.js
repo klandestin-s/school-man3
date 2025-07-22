@@ -108,7 +108,7 @@ function validateSchedule(schedule) {
   const validIcons = [
     "fa-book", "fa-calculator", "fa-flask", "fa-atom", "fa-dna",
     "fa-globe-asia", "fa-landmark", "fa-language", "fa-running",
-    "fa-music", "fa-palette", "fa-laptop-code", "fa-pray", "fa-chart-line"
+    "fa-music", "fa-palette", "fa-laptop-code", "fa-pray", "fa-mosque", "fa-mug-hot", "fa-chart-line"
   ];
   
   if (!schedule.icon || !validIcons.includes(schedule.icon)) {
