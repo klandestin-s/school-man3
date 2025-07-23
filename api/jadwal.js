@@ -110,7 +110,7 @@ function validateSchedule(schedule) {
   const validIcons = [
     "fa-book", "fa-calculator", "fa-flask", "fa-atom", "fa-dna",
     "fa-globe-asia", "fa-scroll", "fa-language", "fa-running",
-    "fa-music", "fa-palette", "fa-laptop-code", "fa-scale-balanced", "fa-bowl-food", "fa-mosque", "fa-quran", "fa-flag", "fa-scissors", "fa-landmark", "fa-heart","fa-mug-hot", "fa-chart-line"
+    "fa-music", "fa-palette", "fa-laptop-code", "fa-scale-balanced", "fa-utensils", "fa-bowl-food", "fa-mosque", "fa-quran", "fa-flag", "fa-scissors", "fa-landmark", "fa-heart","fa-mug-hot", "fa-chart-line"
   ];
   
   if (!schedule.icon || !validIcons.includes(schedule.icon)) {
