@@ -109,7 +109,7 @@ function validateSchedule(schedule) {
   // Icon validation
   const validIcons = [
     "fa-book", "fa-calculator", "fa-flask", "fa-atom", "fa-dna",
-    "fa-globe-asia", "fa-landmark", "fa-language", "fa-running",
+    "fa-globe-asia", "fa-scroll", "fa-language", "fa-running",
     "fa-music", "fa-palette", "fa-laptop-code", "fa-scale-balanced", "fa-mosque", "fa-quran", "fa-flag", "fa-scissors", "fa-landmark", "fa-heart","fa-mug-hot", "fa-chart-line"
   ];
   
