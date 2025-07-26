@@ -552,11 +552,22 @@
 
     // ===== [INISIALISASI NAVIGASI MOBILE] ===== //
     // Tambahkan event listener untuk tombol mobile
-    document.getElementById('btnToday').addEventListener('click', scrollToToday);
-    document.getElementById('btnCurrent').addEventListener('click', scrollToCurrentClass);
-    document.getElementById('btnNext').addEventListener('click', scrollToNextClass);
-    document.getElementById('btnAll').addEventListener('click', scrollToTop);
-    
+    document.getElementById('btnToday').addEventListener('click', () => {
+  setTimeout(scrollToToday, 300);
+});
+
+document.getElementById('btnCurrent').addEventListener('click', () => {
+  setTimeout(scrollToCurrentClass, 300);
+});
+
+document.getElementById('btnNext').addEventListener('click', () => {
+  setTimeout(scrollToNextClass, 300);
+});
+
+document.getElementById('btnAll').addEventListener('click', () => {
+  setTimeout(scrollToTop, 300);
+});
+
     // Atur tampilan mobile nav
     toggleMobileNav();
     window.addEventListener('resize', toggleMobileNav);
