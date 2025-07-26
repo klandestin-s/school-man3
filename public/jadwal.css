@@ -120,6 +120,45 @@ header::before {
   background: var(--light-gray);
 }
 
+/* Mobile Navigation */
+.mobile-nav {
+  display: none; /* Sembunyikan secara default */
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 15px 0 20px;
+  padding: 0 10px;
+}
+
+.nav-mobile-btn {
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-mobile-btn i {
+  font-size: 0.9rem;
+}
+
+.nav-mobile-btn:hover {
+  background: var(--deep-blue);
+}
+
+/* Tampilkan pada mobile */
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex;
+  }
+}
+
 /* Schedule Grid */
 .schedule-grid {
   display: grid;
