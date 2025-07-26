@@ -117,441 +117,459 @@
         <div id="debugContent">Memuat informasi debug...</div>
       </div>
     </div>
+<script>
+  // Daftar hari dalam bahasa Indonesia
+  const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const weekDays = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]; // Hari sekolah
 
-    <script>
-      // Daftar hari dalam bahasa Indonesia
-      const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-      const weekDays = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]; // Hari sekolah
+  // Mapping hari Bahasa Indonesia ke class CSS Bahasa Inggris
+  const dayClassMap = {
+    "Senin": "monday",
+    "Selasa": "tuesday",
+    "Rabu": "wednesday",
+    "Kamis": "thursday",
+    "Jumat": "friday"
+  };
 
-      // Mapping hari Bahasa Indonesia ke class CSS Bahasa Inggris
-      const dayClassMap = {
-        "Senin": "monday",
-        "Selasa": "tuesday",
-        "Rabu": "wednesday",
-        "Kamis": "thursday",
-        "Jumat": "friday"
-      };
+  // Format waktu default
+  let timeFormat = "24";
+  let scheduleData = { "XI A": {}, "XI B": {} };
 
-      // Format waktu default
-      let timeFormat = "24";
-      let scheduleData = { "XI A": {}, "XI B": {} };
+  // Fungsi untuk mengambil data jadwal dari API
+  async function fetchSchedules() {
+    try {
+      const response = await fetch("/api/jadwal");
+      if (!response.ok) {
+        throw new Error("Gagal mengambil data jadwal");
+      }
+      const data = await response.json();
 
-      // Fungsi untuk mengambil data jadwal dari API
-      async function fetchSchedules() {
-        try {
-          const response = await fetch("/api/jadwal");
-          if (!response.ok) {
-            throw new Error("Gagal mengambil data jadwal");
-          }
-          const data = await response.json();
-
-          // Kelompokkan data berdasarkan kelas dan hari
-          data.forEach((item) => {
-            if (!scheduleData[item.class][item.day]) {
-              scheduleData[item.class][item.day] = [];
-            }
-            scheduleData[item.class][item.day].push(item);
-          });
-
-          // Render jadwal untuk kedua kelas
-          renderSchedule("XI A", document.getElementById("scheduleGridA"));
-          renderSchedule("XI B", document.getElementById("scheduleGridB"));
-
-          // Setelah data dimuat, update status kelas
-          markCurrentClass();
-        } catch (error) {
-          console.error("Error:", error);
-          document.getElementById("statusText").textContent = "Gagal memuat jadwal. Silakan coba lagi.";
+      // Kelompokkan data berdasarkan kelas dan hari
+      data.forEach((item) => {
+        if (!scheduleData[item.class][item.day]) {
+          scheduleData[item.class][item.day] = [];
         }
-      }
+        scheduleData[item.class][item.day].push(item);
+      });
 
-      // Fungsi untuk merender jadwal
-      function renderSchedule(className, container) {
-        container.innerHTML = "";
+      // Render jadwal untuk kedua kelas
+      renderSchedule("XI A", document.getElementById("scheduleGridA"));
+      renderSchedule("XI B", document.getElementById("scheduleGridB"));
 
-        weekDays.forEach((day) => {
-          const dayCard = document.createElement("div");
-          dayCard.className = `day-card ${dayClassMap[day] || ""}`;
-
-          const dayHeader = document.createElement("div");
-          dayHeader.className = "day-header";
-          dayHeader.textContent = day;
-          dayCard.appendChild(dayHeader);
-
-          const classList = document.createElement("div");
-          classList.className = "class-list";
-
-          // Periksa jika ada jadwal untuk hari ini
-          if (scheduleData[className][day] && scheduleData[className][day].length > 0) {
-            // Urutkan berdasarkan waktu mulai
-            scheduleData[className][day].sort((a, b) => {
-              const startA = convertTo24Hour(a.startTime);
-              const startB = convertTo24Hour(b.startTime);
-              return startA.localeCompare(startB);
-            });
-
-            // Tambahkan setiap mata pelajaran
-            scheduleData[className][day].forEach((item) => {
-              const classItem = document.createElement("div");
-              // Tambahkan class sesuai tipe jadwal (subject, break, prayer)
-              classItem.className = `class-item ${item.type || 'subject'}`;
-
-              const classIcon = document.createElement("div");
-              classIcon.className = "class-icon";
-              classIcon.innerHTML = `<i class="fas ${item.icon}"></i>`;
-
-              const classInfo = document.createElement("div");
-              classInfo.className = "class-info";
-
-              const classNameEl = document.createElement("div");
-              classNameEl.className = "class-name";
-              classNameEl.textContent = item.subject;
-
-              const classTime = document.createElement("div");
-              classTime.className = "class-time";
-              const timeValue = document.createElement("span");
-              timeValue.className = "time-value";
-              // Simpan waktu asli (format 24 jam) di data-original
-              const originalTime = `${item.startTime} - ${item.endTime}`;
-              timeValue.textContent = originalTime;
-              timeValue.dataset.original = originalTime;
-              classTime.innerHTML = '<i class="far fa-clock"></i> ';
-              classTime.appendChild(timeValue);
-
-              const classTeacher = document.createElement("div");
-              classTeacher.className = "class-teacher";
-              classTeacher.textContent = item.teacher || ""; // Handle jika tidak ada guru
-
-              classInfo.appendChild(classNameEl);
-              classInfo.appendChild(classTime);
-              classInfo.appendChild(classTeacher);
-
-              classItem.appendChild(classIcon);
-              classItem.appendChild(classInfo);
-
-              classList.appendChild(classItem);
-            });
-          } else {
-            // Tampilkan pesan jika tidak ada jadwal
-            const emptyMessage = document.createElement("div");
-            emptyMessage.className = "empty-schedule";
-            emptyMessage.innerHTML = `<i class="fas fa-calendar-times"></i> Tidak ada jadwal`;
-            classList.appendChild(emptyMessage);
-          }
-
-          dayCard.appendChild(classList);
-          container.appendChild(dayCard);
-        });
-
-        // Update tampilan waktu sesuai format
-        updateTimeDisplay();
-      }
-
-      // Fungsi untuk mengonversi waktu ke format 12 jam
-      function convertTo12Hour(timeStr) {
-        const [hours, minutes] = timeStr.split(":").map((part) => parseInt(part, 10));
-        const period = hours >= 12 ? "PM" : "AM";
-        const hours12 = hours % 12 || 12;
-        return `${hours12}:${minutes.toString().padStart(2, "0")} ${period}`;
-      }
-
-      // Fungsi untuk mengonversi waktu ke format 24 jam
-      function convertTo24Hour(timeStr) {
-        const match = timeStr.match(/(\d{1,2}):(\d{2})\s*([ap]m)?/i);
-        if (!match) return timeStr;
-
-        let hours = parseInt(match[1]);
-        const minutes = parseInt(match[2]);
-        const period = match[3] ? match[3].toLowerCase() : "";
-
-        if (period === "pm" && hours < 12) hours += 12;
-        if (period === "am" && hours === 12) hours = 0;
-
-        return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
-      }
-
-      // Fungsi untuk mengonversi rentang waktu
-      function convertTimeRange(timeRange, format) {
-        const [startTime, endTime] = timeRange.split(" - ");
-
-        if (format === "12") {
-          return `${convertTo12Hour(startTime)} - ${convertTo12Hour(endTime)}`;
-        }
-
-        return `${convertTo24Hour(startTime)} - ${convertTo24Hour(endTime)}`;
-      }
-
-      // Fungsi untuk memperbarui tampilan waktu
-      function updateTimeDisplay() {
-        document.querySelectorAll(".time-value").forEach((element) => {
-          const originalTime = element.dataset.original || element.textContent;
-          element.dataset.original = originalTime;
-
-          if (timeFormat === "12") {
-            element.textContent = convertTimeRange(originalTime, "12");
-          } else {
-            element.textContent = convertTimeRange(originalTime, "24");
-          }
-        });
-      }
-
-      // Fungsi untuk menandai kelas yang sedang berlangsung
-      function markCurrentClass() {
-        // Reset semua status aktif
-        document.querySelectorAll(".class-item").forEach((item) => {
-          item.classList.remove("active");
-          const timeLeft = item.querySelector(".time-left");
-          if (timeLeft) timeLeft.remove();
-        });
-
-        // Fungsi konversi waktu string ke menit
-        function timeToMinutes(timeStr) {
-          const convertedTime = convertTo24Hour(timeStr);
-          const [hours, minutes] = convertedTime.split(":").map((part) => parseInt(part, 10));
-          return hours * 60 + minutes;
-        }
-
-        // Dapatkan hari dan waktu saat ini
-        const now = new Date();
-        const currentDayIndex = now.getDay();
-        const currentDay = days[currentDayIndex];
-        const currentHours = now.getHours();
-        const currentMinutes = now.getMinutes();
-        const currentTime = `${currentHours.toString().padStart(2, "0")}:${currentMinutes.toString().padStart(2, "0")}`;
-        const currentTimeInMinutes = currentHours * 60 + currentMinutes;
-
-        // Debug info
-        let debugInfo = `Hari: ${currentDay} (${currentDayIndex})<br>`;
-        debugInfo += `Waktu: ${currentTime} (${now.toLocaleTimeString()})<br>`;
-        debugInfo += `Menit: ${currentTimeInMinutes}<br>`;
-        debugInfo += `Format: ${timeFormat} jam<br>`;
-
-        // Reset status text
-        document.getElementById("currentClassStatus").className = "current-status";
-        document.getElementById("statusText").textContent = "Tidak ada kelas yang berlangsung saat ini";
-
-        // Cek jika hari ini adalah hari libur (Sabtu atau Minggu)
-        if (currentDayIndex === 0 || currentDayIndex === 6) {
-          document.getElementById("currentClassStatus").className = "current-status holiday";
-          document.getElementById("statusText").innerHTML = '<i class="fas fa-umbrella-beach"></i> Hari ini libur, tidak ada kelas.';
-          debugInfo += "Status: Hari libur";
-          document.getElementById("debugContent").innerHTML = debugInfo;
-          return;
-        }
-
-        // Cari semua kartu hari
-        const scheduleAVisible = document.getElementById("scheduleA").style.display !== "none";
-        const activeSchedule = scheduleAVisible ? document.getElementById("scheduleA") : document.getElementById("scheduleB");
-        const dayCards = activeSchedule.querySelectorAll(".day-card");
-
-        let todayCard = null;
-
-        // Cari kartu yang sesuai dengan hari ini
-        dayCards.forEach((card) => {
-          const dayHeader = card.querySelector(".day-header");
-          if (dayHeader && dayHeader.textContent.includes(currentDay)) {
-            todayCard = card;
-
-            // Highlight hari ini
-            card.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.15)";
-            card.style.transform = "translateY(-5px)";
-
-            // Tambahkan indikator hari ini
-            let todayBadge = card.querySelector(".today-highlight");
-            if (!todayBadge) {
-              todayBadge = document.createElement("div");
-              todayBadge.className = "today-highlight";
-              todayBadge.innerHTML = '<i class="fas fa-star"></i> HARI INI';
-              card.appendChild(todayBadge);
-            }
-          } else {
-            // Reset style untuk hari lain
-            card.style.boxShadow = "";
-            card.style.transform = "";
-            const todayBadge = card.querySelector(".today-highlight");
-            if (todayBadge) todayBadge.remove();
-          }
-        });
-
-        if (!todayCard) {
-          debugInfo += "Status: Kartu hari ini tidak ditemukan";
-          document.getElementById("debugContent").innerHTML = debugInfo;
-          return;
-        }
-
-        // Cari semua pelajaran pada hari ini
-        const classItems = todayCard.querySelectorAll(".class-item");
-        let activeItemFound = false;
-
-        classItems.forEach((item) => {
-          // Dapatkan elemen waktu
-          const timeElement = item.querySelector(".class-time");
-          if (!timeElement) return;
-
-          // Ekstrak waktu mulai dan selesai
-          const timeValue = item.querySelector(".time-value");
-          // Gunakan data original yang disimpan (format 24 jam)
-          const timeText = timeValue.dataset.original || timeValue.textContent;
-          const timeMatch = timeText.match(/(\d{1,2}:\d{2}\s*[ap]?m?)\s*[–-]\s*(\d{1,2}:\d{2}\s*[ap]?m?)/i);
-          if (!timeMatch) return;
-
-          const startTime = timeMatch[1];
-          const endTime = timeMatch[2];
-
-          // Konversi ke menit
-          const startTimeInMinutes = timeToMinutes(startTime);
-          const endTimeInMinutes = timeToMinutes(endTime);
-          
-// Fungsi untuk menampilkan/menyembunyikan mobile nav
-function toggleMobileNav() {
-  const mobileNav = document.getElementById('mobileNav');
-  if (window.innerWidth <= 768) {
-    mobileNav.style.display = 'flex';
-  } else {
-    mobileNav.style.display = 'none';
-  }
-}
-
-// Fungsi scroll ke hari ini
-function scrollToToday() {
-  const todayBadge = document.querySelector('.today-highlight');
-  if (todayBadge) {
-    const dayCard = todayBadge.closest('.day-card');
-    dayCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-// Fungsi scroll ke kelas yang sedang berlangsung
-function scrollToCurrentClass() {
-  const activeClass = document.querySelector('.class-item.active');
-  if (activeClass) {
-    activeClass.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  } else {
-    scrollToToday();
-  }
-}
-
-// Fungsi scroll ke kelas berikutnya
-function scrollToNextClass() {
-  const activeClass = document.querySelector('.class-item.active');
-  let nextClass = null;
-
-  if (activeClass) {
-    const allClasses = activeClass.closest('.class-list').querySelectorAll('.class-item');
-    const activeIndex = Array.from(allClasses).indexOf(activeClass);
-    
-    if (activeIndex < allClasses.length - 1) {
-      nextClass = allClasses[activeIndex + 1];
+      // Setelah data dimuat, update status kelas
+      markCurrentClass();
+    } catch (error) {
+      console.error("Error:", error);
+      document.getElementById("statusText").textContent = "Gagal memuat jadwal. Silakan coba lagi.";
     }
   }
-  
-  if (nextClass) {
-    nextClass.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  } else {
-    scrollToToday();
-  }
-}
 
-// Fungsi scroll ke atas (semua jadwal)
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+  // Fungsi untuk merender jadwal
+  function renderSchedule(className, container) {
+    container.innerHTML = "";
 
-// Panggil fungsi saat DOM siap
-document.addEventListener("DOMContentLoaded", function() {
-  // ... kode yang sudah ada ...
-  
-  // Tambahkan event listener untuk tombol mobile
-  document.getElementById('btnToday').addEventListener('click', scrollToToday);
-  document.getElementById('btnCurrent').addEventListener('click', scrollToCurrentClass);
-  document.getElementById('btnNext').addEventListener('click', scrollToNextClass);
-  document.getElementById('btnAll').addEventListener('click', scrollToTop);
-  
-  // Atur tampilan mobile nav
-  toggleMobileNav();
-  window.addEventListener('resize', toggleMobileNav);
-  
-  // ... kode yang sudah ada ...
-});
-          
-          // Debug info
-          debugInfo += `<br>Mata Pelajaran: ${item.querySelector(".class-name").textContent}<br>`;
-          debugInfo += `Waktu: ${startTime} - ${endTime}<br>`;
-          debugInfo += `Rentang: ${startTimeInMinutes} - ${endTimeInMinutes}<br>`;
+    weekDays.forEach((day) => {
+      const dayCard = document.createElement("div");
+      dayCard.className = `day-card ${dayClassMap[day] || ""}`;
 
-          // Periksa apakah pelajaran sedang berlangsung
-          if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes <= endTimeInMinutes && !activeItemFound) {
-            debugInfo += "<strong>Status: SEDANG BERLANGSUNG</strong><br>";
+      const dayHeader = document.createElement("div");
+      dayHeader.className = "day-header";
+      dayHeader.textContent = day;
+      dayCard.appendChild(dayHeader);
 
-            // Tandai sebagai sedang berlangsung
-            item.classList.add("active");
+      const classList = document.createElement("div");
+      classList.className = "class-list";
 
-            // Hitung waktu sisa
-            const minutesLeft = endTimeInMinutes - currentTimeInMinutes;
-
-            // Tambahkan indikator waktu sisa
-            const timeLeftElement = document.createElement("span");
-            timeLeftElement.className = "time-left";
-            timeLeftElement.textContent = `Sedang berlangsung, ${minutesLeft} menit lagi selesai`;
-
-            timeElement.appendChild(timeLeftElement);
-            activeItemFound = true;
-
-            // Update status
-            const className = item.querySelector(".class-name").textContent;
-            document.getElementById("currentClassStatus").style.display = "flex";
-            document.getElementById("statusText").textContent = `${className} sedang berlangsung, ${minutesLeft} menit lagi selesai`;
-          } else {
-            debugInfo += "Status: Tidak berlangsung<br>";
-          }
+      // Periksa jika ada jadwal untuk hari ini
+      if (scheduleData[className][day] && scheduleData[className][day].length > 0) {
+        // Urutkan berdasarkan waktu mulai
+        scheduleData[className][day].sort((a, b) => {
+          const startA = convertTo24Hour(a.startTime);
+          const startB = convertTo24Hour(b.startTime);
+          return startA.localeCompare(startB);
         });
 
-        // Update debug info
-        document.getElementById("debugContent").innerHTML = debugInfo;
+        // Tambahkan setiap mata pelajaran
+        scheduleData[className][day].forEach((item) => {
+          const classItem = document.createElement("div");
+          // Tambahkan class sesuai tipe jadwal (subject, break, prayer)
+          classItem.className = `class-item ${item.type || 'subject'}`;
+
+          const classIcon = document.createElement("div");
+          classIcon.className = "class-icon";
+          classIcon.innerHTML = `<i class="fas ${item.icon}"></i>`;
+
+          const classInfo = document.createElement("div");
+          classInfo.className = "class-info";
+
+          const classNameEl = document.createElement("div");
+          classNameEl.className = "class-name";
+          classNameEl.textContent = item.subject;
+
+          const classTime = document.createElement("div");
+          classTime.className = "class-time";
+          const timeValue = document.createElement("span");
+          timeValue.className = "time-value";
+          // Simpan waktu asli (format 24 jam) di data-original
+          const originalTime = `${item.startTime} - ${item.endTime}`;
+          timeValue.textContent = originalTime;
+          timeValue.dataset.original = originalTime;
+          classTime.innerHTML = '<i class="far fa-clock"></i> ';
+          classTime.appendChild(timeValue);
+
+          const classTeacher = document.createElement("div");
+          classTeacher.className = "class-teacher";
+          classTeacher.textContent = item.teacher || ""; // Handle jika tidak ada guru
+
+          classInfo.appendChild(classNameEl);
+          classInfo.appendChild(classTime);
+          classInfo.appendChild(classTeacher);
+
+          classItem.appendChild(classIcon);
+          classItem.appendChild(classInfo);
+
+          classList.appendChild(classItem);
+        });
+      } else {
+        // Tampilkan pesan jika tidak ada jadwal
+        const emptyMessage = document.createElement("div");
+        emptyMessage.className = "empty-schedule";
+        emptyMessage.innerHTML = `<i class="fas fa-calendar-times"></i> Tidak ada jadwal`;
+        classList.appendChild(emptyMessage);
       }
 
-      // Toggle between classes
-      document.getElementById("btnClassA").addEventListener("click", function () {
-        this.classList.add("active");
-        document.getElementById("btnClassB").classList.remove("active");
-        document.getElementById("scheduleA").style.display = "block";
-        document.getElementById("scheduleB").style.display = "none";
-        markCurrentClass();
-      });
+      dayCard.appendChild(classList);
+      container.appendChild(dayCard);
+    });
 
-      document.getElementById("btnClassB").addEventListener("click", function () {
-        this.classList.add("active");
-        document.getElementById("btnClassA").classList.remove("active");
-        document.getElementById("scheduleA").style.display = "none";
-        document.getElementById("scheduleB").style.display = "block";
-        markCurrentClass();
-      });
+    // Update tampilan waktu sesuai format
+    updateTimeDisplay();
+  }
 
-      // Toggle time format
-      document.getElementById("btn12Format").addEventListener("click", function () {
-        this.classList.add("active");
-        document.getElementById("btn24Format").classList.remove("active");
-        timeFormat = "12";
-        updateTimeDisplay();
-        markCurrentClass();
-      });
+  // Fungsi untuk mengonversi waktu ke format 12 jam
+  function convertTo12Hour(timeStr) {
+    const [hours, minutes] = timeStr.split(":").map((part) => parseInt(part, 10));
+    const period = hours >= 12 ? "PM" : "AM";
+    const hours12 = hours % 12 || 12;
+    return `${hours12}:${minutes.toString().padStart(2, "0")} ${period}`;
+  }
 
-      document.getElementById("btn24Format").addEventListener("click", function () {
-        this.classList.add("active");
-        document.getElementById("btn12Format").classList.remove("active");
-        timeFormat = "24";
-        updateTimeDisplay();
-        markCurrentClass();
-      });
+  // Fungsi untuk mengonversi waktu ke format 24 jam
+  function convertTo24Hour(timeStr) {
+    const match = timeStr.match(/(\d{1,2}):(\d{2})\s*([ap]m)?/i);
+    if (!match) return timeStr;
 
-      // Panggil fungsi saat halaman dimuat
-      document.addEventListener("DOMContentLoaded", function () {
-        // Ambil data jadwal dari API
-        fetchSchedules();
+    let hours = parseInt(match[1]);
+    const minutes = parseInt(match[2]);
+    const period = match[3] ? match[3].toLowerCase() : "";
 
-        // Set interval untuk update status setiap menit
-        setInterval(markCurrentClass, 60000);
-      });
-    </script>
-  </body>
-</html>
+    if (period === "pm" && hours < 12) hours += 12;
+    if (period === "am" && hours === 12) hours = 0;
+
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+  }
+
+  // Fungsi untuk mengonversi rentang waktu
+  function convertTimeRange(timeRange, format) {
+    const [startTime, endTime] = timeRange.split(" - ");
+
+    if (format === "12") {
+      return `${convertTo12Hour(startTime)} - ${convertTo12Hour(endTime)}`;
+    }
+
+    return `${convertTo24Hour(startTime)} - ${convertTo24Hour(endTime)}`;
+  }
+
+  // Fungsi untuk memperbarui tampilan waktu
+  function updateTimeDisplay() {
+    document.querySelectorAll(".time-value").forEach((element) => {
+      const originalTime = element.dataset.original || element.textContent;
+      element.dataset.original = originalTime;
+
+      if (timeFormat === "12") {
+        element.textContent = convertTimeRange(originalTime, "12");
+      } else {
+        element.textContent = convertTimeRange(originalTime, "24");
+      }
+    });
+  }
+
+  // Fungsi untuk menandai kelas yang sedang berlangsung
+  function markCurrentClass() {
+    // Reset semua status aktif
+    document.querySelectorAll(".class-item").forEach((item) => {
+      item.classList.remove("active");
+      const timeLeft = item.querySelector(".time-left");
+      if (timeLeft) timeLeft.remove();
+    });
+
+    // Fungsi konversi waktu string ke menit
+    function timeToMinutes(timeStr) {
+      const convertedTime = convertTo24Hour(timeStr);
+      const [hours, minutes] = convertedTime.split(":").map((part) => parseInt(part, 10));
+      return hours * 60 + minutes;
+    }
+
+    // Dapatkan hari dan waktu saat ini
+    const now = new Date();
+    const currentDayIndex = now.getDay();
+    const currentDay = days[currentDayIndex];
+    const currentHours = now.getHours();
+    const currentMinutes = now.getMinutes();
+    const currentTime = `${currentHours.toString().padStart(2, "0")}:${currentMinutes.toString().padStart(2, "0")}`;
+    const currentTimeInMinutes = currentHours * 60 + currentMinutes;
+
+    // Debug info
+    let debugInfo = `Hari: ${currentDay} (${currentDayIndex})<br>`;
+    debugInfo += `Waktu: ${currentTime} (${now.toLocaleTimeString()})<br>`;
+    debugInfo += `Menit: ${currentTimeInMinutes}<br>`;
+    debugInfo += `Format: ${timeFormat} jam<br>`;
+
+    // Reset status text
+    document.getElementById("currentClassStatus").className = "current-status";
+    document.getElementById("statusText").textContent = "Tidak ada kelas yang berlangsung saat ini";
+
+    // Cek jika hari ini adalah hari libur (Sabtu atau Minggu)
+    if (currentDayIndex === 0 || currentDayIndex === 6) {
+      document.getElementById("currentClassStatus").className = "current-status holiday";
+      document.getElementById("statusText").innerHTML = '<i class="fas fa-umbrella-beach"></i> Hari ini libur, tidak ada kelas.';
+      debugInfo += "Status: Hari libur";
+      document.getElementById("debugContent").innerHTML = debugInfo;
+      return;
+    }
+
+    // Cari semua kartu hari
+    const scheduleAVisible = document.getElementById("scheduleA").style.display !== "none";
+    const activeSchedule = scheduleAVisible ? document.getElementById("scheduleA") : document.getElementById("scheduleB");
+    const dayCards = activeSchedule.querySelectorAll(".day-card");
+
+    let todayCard = null;
+
+    // Cari kartu yang sesuai dengan hari ini
+    dayCards.forEach((card) => {
+      const dayHeader = card.querySelector(".day-header");
+      if (dayHeader && dayHeader.textContent.includes(currentDay)) {
+        todayCard = card;
+
+        // Highlight hari ini
+        card.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.15)";
+        card.style.transform = "translateY(-5px)";
+
+        // Tambahkan indikator hari ini
+        let todayBadge = card.querySelector(".today-highlight");
+        if (!todayBadge) {
+          todayBadge = document.createElement("div");
+          todayBadge.className = "today-highlight";
+          todayBadge.innerHTML = '<i class="fas fa-star"></i> HARI INI';
+          card.appendChild(todayBadge);
+        }
+      } else {
+        // Reset style untuk hari lain
+        card.style.boxShadow = "";
+        card.style.transform = "";
+        const todayBadge = card.querySelector(".today-highlight");
+        if (todayBadge) todayBadge.remove();
+      }
+    });
+
+    if (!todayCard) {
+      debugInfo += "Status: Kartu hari ini tidak ditemukan";
+      document.getElementById("debugContent").innerHTML = debugInfo;
+      return;
+    }
+
+    // Cari semua pelajaran pada hari ini
+    const classItems = todayCard.querySelectorAll(".class-item");
+    let activeItemFound = false;
+
+    classItems.forEach((item) => {
+      // Dapatkan elemen waktu
+      const timeElement = item.querySelector(".class-time");
+      if (!timeElement) return;
+
+      // Ekstrak waktu mulai dan selesai
+      const timeValue = item.querySelector(".time-value");
+      // Gunakan data original yang disimpan (format 24 jam)
+      const timeText = timeValue.dataset.original || timeValue.textContent;
+      const timeMatch = timeText.match(/(\d{1,2}:\d{2}\s*[ap]?m?)\s*[–-]\s*(\d{1,2}:\d{2}\s*[ap]?m?)/i);
+      if (!timeMatch) return;
+
+      const startTime = timeMatch[1];
+      const endTime = timeMatch[2];
+
+      // Konversi ke menit
+      const startTimeInMinutes = timeToMinutes(startTime);
+      const endTimeInMinutes = timeToMinutes(endTime);
+      
+      // Debug info
+      debugInfo += `<br>Mata Pelajaran: ${item.querySelector(".class-name").textContent}<br>`;
+      debugInfo += `Waktu: ${startTime} - ${endTime}<br>`;
+      debugInfo += `Rentang: ${startTimeInMinutes} - ${endTimeInMinutes}<br>`;
+
+      // Periksa apakah pelajaran sedang berlangsung
+      if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes <= endTimeInMinutes && !activeItemFound) {
+        debugInfo += "<strong>Status: SEDANG BERLANGSUNG</strong><br>";
+
+        // Tandai sebagai sedang berlangsung
+        item.classList.add("active");
+
+        // Hitung waktu sisa
+        const minutesLeft = endTimeInMinutes - currentTimeInMinutes;
+
+        // Tambahkan indikator waktu sisa
+        const timeLeftElement = document.createElement("span");
+        timeLeftElement.className = "time-left";
+        timeLeftElement.textContent = `Sedang berlangsung, ${minutesLeft} menit lagi selesai`;
+
+        timeElement.appendChild(timeLeftElement);
+        activeItemFound = true;
+
+        // Update status
+        const className = item.querySelector(".class-name").textContent;
+        document.getElementById("currentClassStatus").style.display = "flex";
+        document.getElementById("statusText").textContent = `${className} sedang berlangsung, ${minutesLeft} menit lagi selesai`;
+      } else {
+        debugInfo += "Status: Tidak berlangsung<br>";
+      }
+    });
+
+    // Update debug info
+    document.getElementById("debugContent").innerHTML = debugInfo;
+  }
+
+  // ===== [FUNGSI NAVIGASI MOBILE] ===== //
+  function toggleMobileNav() {
+    const mobileNav = document.getElementById('mobileNav');
+    if (window.innerWidth <= 768) {
+      mobileNav.style.display = 'flex';
+    } else {
+      mobileNav.style.display = 'none';
+    }
+  }
+
+  function scrollToToday() {
+    const todayBadge = document.querySelector('.today-highlight');
+    if (todayBadge) {
+      const dayCard = todayBadge.closest('.day-card');
+      dayCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Animasi highlight
+      dayCard.style.boxShadow = '0 0 0 3px rgba(255, 152, 0, 0.5)';
+      setTimeout(() => {
+        dayCard.style.boxShadow = '';
+      }, 2000);
+    }
+  }
+
+  function scrollToCurrentClass() {
+    const activeClass = document.querySelector('.class-item.active');
+    if (activeClass) {
+      activeClass.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Animasi flash
+      activeClass.style.animation = 'flash 1s ease';
+      setTimeout(() => {
+        activeClass.style.animation = '';
+      }, 1000);
+    } else {
+      scrollToToday();
+    }
+  }
+
+  function scrollToNextClass() {
+    const activeClass = document.querySelector('.class-item.active');
+    let nextClass = null;
+
+    if (activeClass) {
+      const allClasses = activeClass.closest('.class-list').querySelectorAll('.class-item');
+      const activeIndex = Array.from(allClasses).indexOf(activeClass);
+      
+      if (activeIndex < allClasses.length - 1) {
+        nextClass = allClasses[activeIndex + 1];
+      }
+    }
+    
+    if (nextClass) {
+      nextClass.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Animasi highlight
+      nextClass.style.transform = 'scale(1.03)';
+      nextClass.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+      setTimeout(() => {
+        nextClass.style.transform = '';
+        nextClass.style.boxShadow = '';
+      }, 1500);
+    } else {
+      scrollToToday();
+    }
+  }
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Toggle between classes
+  document.getElementById("btnClassA").addEventListener("click", function () {
+    this.classList.add("active");
+    document.getElementById("btnClassB").classList.remove("active");
+    document.getElementById("scheduleA").style.display = "block";
+    document.getElementById("scheduleB").style.display = "none";
+    markCurrentClass();
+  });
+
+  document.getElementById("btnClassB").addEventListener("click", function () {
+    this.classList.add("active");
+    document.getElementById("btnClassA").classList.remove("active");
+    document.getElementById("scheduleA").style.display = "none";
+    document.getElementById("scheduleB").style.display = "block";
+    markCurrentClass();
+  });
+
+  // Toggle time format
+  document.getElementById("btn12Format").addEventListener("click", function () {
+    this.classList.add("active");
+    document.getElementById("btn24Format").classList.remove("active");
+    timeFormat = "12";
+    updateTimeDisplay();
+    markCurrentClass();
+  });
+
+  document.getElementById("btn24Format").addEventListener("click", function () {
+    this.classList.add("active");
+    document.getElementById("btn12Format").classList.remove("active");
+    timeFormat = "24";
+    updateTimeDisplay();
+    markCurrentClass();
+  });
+
+  // Panggil fungsi saat halaman dimuat
+  document.addEventListener("DOMContentLoaded", function () {
+    // Ambil data jadwal dari API
+    fetchSchedules();
+
+    // Set interval untuk update status setiap menit
+    setInterval(markCurrentClass, 60000);
+
+    // ===== [INISIALISASI NAVIGASI MOBILE] ===== //
+    // Tambahkan event listener untuk tombol mobile
+    document.getElementById('btnToday').addEventListener('click', scrollToToday);
+    document.getElementById('btnCurrent').addEventListener('click', scrollToCurrentClass);
+    document.getElementById('btnNext').addEventListener('click', scrollToNextClass);
+    document.getElementById('btnAll').addEventListener('click', scrollToTop);
+    
+    // Atur tampilan mobile nav
+    toggleMobileNav();
+    window.addEventListener('resize', toggleMobileNav);
+    
+    // Tambahkan animasi flash
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes flash {
+        0% { background-color: rgba(30, 136, 229, 0.3); }
+        50% { background-color: rgba(30, 136, 229, 0.7); }
+        100% { background-color: rgba(30, 136, 229, 0.3); }
+      }
+    `;
+    document.head.appendChild(style);
+  });
+</script>
