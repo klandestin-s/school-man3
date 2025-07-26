@@ -83,6 +83,14 @@
         <button class="class-btn" id="btnClassB"><i class="fas fa-user-graduate"></i> Kelas XI B</button>
       </div>
 
+<!-- Tambahkan di bawah class-toggle -->
+<div id="mobileNav" class="mobile-nav">
+  <button class="nav-mobile-btn" id="btnToday"><i class="fas fa-calendar-day"></i> Hari Ini</button>
+  <button class="nav-mobile-btn" id="btnCurrent"><i class="fas fa-running"></i> Berlangsung</button>
+  <button class="nav-mobile-btn" id="btnNext"><i class="fas fa-step-forward"></i> Selanjutnya</button>
+  <button class="nav-mobile-btn" id="btnAll"><i class="fas fa-list"></i> Semua</button>
+</div>
+
       <!-- Schedule for Class A (Visible by default) -->
       <div id="scheduleA" class="schedule-content">
         <div class="schedule-grid" id="scheduleGridA">
@@ -393,7 +401,79 @@
           // Konversi ke menit
           const startTimeInMinutes = timeToMinutes(startTime);
           const endTimeInMinutes = timeToMinutes(endTime);
+          
+// Fungsi untuk menampilkan/menyembunyikan mobile nav
+function toggleMobileNav() {
+  const mobileNav = document.getElementById('mobileNav');
+  if (window.innerWidth <= 768) {
+    mobileNav.style.display = 'flex';
+  } else {
+    mobileNav.style.display = 'none';
+  }
+}
 
+// Fungsi scroll ke hari ini
+function scrollToToday() {
+  const todayBadge = document.querySelector('.today-highlight');
+  if (todayBadge) {
+    const dayCard = todayBadge.closest('.day-card');
+    dayCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+// Fungsi scroll ke kelas yang sedang berlangsung
+function scrollToCurrentClass() {
+  const activeClass = document.querySelector('.class-item.active');
+  if (activeClass) {
+    activeClass.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    scrollToToday();
+  }
+}
+
+// Fungsi scroll ke kelas berikutnya
+function scrollToNextClass() {
+  const activeClass = document.querySelector('.class-item.active');
+  let nextClass = null;
+
+  if (activeClass) {
+    const allClasses = activeClass.closest('.class-list').querySelectorAll('.class-item');
+    const activeIndex = Array.from(allClasses).indexOf(activeClass);
+    
+    if (activeIndex < allClasses.length - 1) {
+      nextClass = allClasses[activeIndex + 1];
+    }
+  }
+  
+  if (nextClass) {
+    nextClass.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    scrollToToday();
+  }
+}
+
+// Fungsi scroll ke atas (semua jadwal)
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Panggil fungsi saat DOM siap
+document.addEventListener("DOMContentLoaded", function() {
+  // ... kode yang sudah ada ...
+  
+  // Tambahkan event listener untuk tombol mobile
+  document.getElementById('btnToday').addEventListener('click', scrollToToday);
+  document.getElementById('btnCurrent').addEventListener('click', scrollToCurrentClass);
+  document.getElementById('btnNext').addEventListener('click', scrollToNextClass);
+  document.getElementById('btnAll').addEventListener('click', scrollToTop);
+  
+  // Atur tampilan mobile nav
+  toggleMobileNav();
+  window.addEventListener('resize', toggleMobileNav);
+  
+  // ... kode yang sudah ada ...
+});
+          
           // Debug info
           debugInfo += `<br>Mata Pelajaran: ${item.querySelector(".class-name").textContent}<br>`;
           debugInfo += `Waktu: ${startTime} - ${endTime}<br>`;
