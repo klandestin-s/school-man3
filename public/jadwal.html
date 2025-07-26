@@ -477,32 +477,37 @@
   }
 
   function scrollToNextClass() {
-    const activeClass = document.querySelector('.class-item.active');
-    let nextClass = null;
+  const activeClass = document.querySelector('.class-item.active');
+  let nextClass = null;
 
-    if (activeClass) {
-      const allClasses = activeClass.closest('.class-list').querySelectorAll('.class-item');
-      const activeIndex = Array.from(allClasses).indexOf(activeClass);
-      
-      if (activeIndex < allClasses.length - 1) {
-        nextClass = allClasses[activeIndex + 1];
-      }
-    }
+  if (activeClass) {
+    const allClasses = activeClass.closest('.class-list').querySelectorAll('.class-item');
+    const activeIndex = Array.from(allClasses).indexOf(activeClass);
     
-    if (nextClass) {
-      nextClass.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      
-      // Animasi highlight
-      nextClass.style.transform = 'scale(1.03)';
-      nextClass.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
-      setTimeout(() => {
-        nextClass.style.transform = '';
-        nextClass.style.boxShadow = '';
-      }, 1500);
-    } else {
-      scrollToToday();
+    if (activeIndex < allClasses.length - 1) {
+      nextClass = allClasses[activeIndex + 1];
+    }
+  } else {
+    // Jika tidak ada pelajaran aktif, cari pelajaran pertama hari ini
+    const todayBadge = document.querySelector('.today-highlight');
+    if (todayBadge) {
+      const todayCard = todayBadge.closest('.day-card');
+      nextClass = todayCard.querySelector('.class-item');
     }
   }
+
+  if (nextClass) {
+    nextClass.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Tambahkan highlight animasi
+    nextClass.classList.add('next-flash');
+    setTimeout(() => {
+      nextClass.classList.remove('next-flash');
+    }, 1600);
+  } else {
+    scrollToToday();
+  }
+}
 
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
