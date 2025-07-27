@@ -40,26 +40,27 @@
 
     /* Animated Background */
     .animated-background {
-  background-position: 0% 50%;
-  mix-blend-mode: overlay;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 1;
+  
+background: linear-gradient(135deg,
+  #b3e5fc 0%,   /* Light Blue */
+  #81d4fa 20%,  /* Sky Blue */
+  #4dd0e1 40%,  /* Cyan */
+  #80cbc4 60%,  /* Teal Green */
+  #a5d6a7 80%,  /* Soft Green */
+  #dcedc8 100%  /* Lime Green */
+);
+background-size: 400% 400%;
+animation: gradientFlow 25s ease infinite;
+background-position: 0% 50%;
 
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: linear-gradient(135deg, 
-        #e0f7fa 0%, 
-        #f5f7fa 20%,
-        #b3e5fc 40%,
-        #e1f5fe 60%,
-        #f0f8ff 80%,
-        #e3f2fd 100%);
-      background-size: 400% 400%;
-      animation: gradientFlow 25s ease infinite;
-      opacity: 1;
-    }
+}
     
     @keyframes gradientFlow {
       0% { background-position: 0% 50%; }
