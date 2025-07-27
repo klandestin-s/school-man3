@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jadwal Kelas - XI A & XI B</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="jadwal.css" />
+    <style>
+      /* Tambahkan style untuk pesan kosong */
+      .empty-schedule {
+        text-align: center;
+        padding: 30px;
+        color: #757575;
+        font-style: italic;
+      }
+
+      /* Tambahkan style untuk jadwal istirahat dan sholat */
+      .class-item.break {
+        background-color: #fff3e0 !important;
+        border-left: 4px solid #ff9800;
+      }
+
+      .class-item.break .class-icon {
+        background: rgba(255, 152, 0, 0.1);
+        color: #ff9800;
+      }
+
+      .class-item.break .class-name {
+        color: #ff9800;
+      }
+
+      .class-item.prayer {
+        background-color: #e8f5e9 !important;
+        border-left: 4px solid #4caf50;
+      }
+
+      .class-item.prayer .class-icon {
+        background: rgba(76, 175, 80, 0.1);
+        color: #4caf50;
+      }
+
+      .class-item.prayer .class-name {
+        color: #4caf50;
+      }
+
+      /* Style saat aktif untuk istirahat dan sholat */
+      .class-item.break.active {
+        background-color: #ffe0b2 !important;
+      }
+
+      .class-item.prayer.active {
+        background-color: #c8e6c9 !important;
+      }
+
+      /* Status informasi */
+      .status-info {
+        text-align: center;
+        padding: 15px;
+        margin: 20px 0;
+        background: #fff8e1;
+        border-radius: 15px;
+        border: 1px solid #ffecb3;
+        color: #ff8f00;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      .status-info i {
+        font-size: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container header-content">
+        <h1 class="page-title">Jadwal Kelas</h1>
+        <p class="page-subtitle">Jadwal Pelajaran Mingguan Kelas XI</p>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- Status pelajaran saat ini -->
+      <div id="currentClassStatus" class="current-status">
+        <i class="fas fa-chalkboard-teacher"></i>
+        <span id="statusText">Memuat status pelajaran...</span>
+      </div>
+
+      <!-- Time format toggle -->
+      <div class="time-format-toggle">
+        <button class="format-btn active" id="btn24Format">Format 24 Jam</button>
+        <button class="format-btn" id="btn12Format">Format 12 Jam</button>
+      </div>
+
+      <!-- Class Toggle -->
+      <div class="class-toggle">
+        <button class="class-btn active" id="btnClassA"><i class="fas fa-user-graduate"></i> Kelas XI A</button>
+        <button class="class-btn" id="btnClassB"><i class="fas fa-user-graduate"></i> Kelas XI B</button>
+      </div>
+
+      <!-- Mobile Navigation -->
+      <div class="mobile-nav">
+        <button class="nav-mobile-btn" id="btnToday"><i class="fas fa-calendar-day"></i> Hari Ini</button>
+        <button class="nav-mobile-btn" id="btnCurrent"><i class="fas fa-chalkboard-teacher"></i> Sedang Berlangsung</button>
+        <button class="nav-mobile-btn" id="btnTomorrow"><i class="fas fa-calendar-plus"></i> Besok</button>
+        <button class="nav-mobile-btn" id="btnAll"><i class="fas fa-calendar-alt"></i> Semua</button>
+      </div>
+
+      <!-- Schedule for Class A (Visible by default) -->
+      <div id="scheduleA" class="schedule-content">
+        <div class="schedule-grid" id="scheduleGridA">
+          <!-- Jadwal akan diisi oleh JavaScript -->
+        </div>
+      </div>
+
+      <!-- Schedule for Class B (Hidden by default) -->
+      <div id="scheduleB" class="schedule-content" style="display: none">
+        <div class="schedule-grid" id="scheduleGridB">
+          <!-- Jadwal akan diisi oleh JavaScript -->
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="footer-nav">
+        <button class="nav-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</button>
+        <button class="nav-btn" onclick="window.print()"><i class="fas fa-print"></i> Cetak Jadwal</button>
+      </div>
+
+      <!-- Debug info -->
+      <div class="debug-info" id="debugInfo">
+        <strong>Debug Info:</strong>
+        <div id="debugContent">Memuat informasi debug...</div>
+      </div>
+    </div>
+
+    <script>
+      // Daftar hari dalam bahasa Indonesia
+      const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const weekDays = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]; // Hari sekolah
+
+      // Mapping hari Bahasa Indonesia ke class CSS Bahasa Inggris
+      const dayClassMap = {
+        "Senin": "monday",
+        "Selasa": "tuesday",
+        "Rabu": "wednesday",
+        "Kamis": "thursday",
+        "Jumat": "friday"
+      };
+
+      // Format waktu default
+      let timeFormat = "24";
+      let scheduleData = { "XI A": {}, "XI B": {} };
+
+      // Fungsi untuk mengambil data jadwal dari API
+      async function fetchSchedules() {
+        try {
+          const response = await fetch("/api/jadwal");
+          if (!response.ok) {
+            throw new Error("Gagal mengambil data jadwal");
+          }
+          const data = await response.json();
+
+          // Kelompokkan data berdasarkan kelas dan hari
+          data.forEach((item) => {
+            if (!scheduleData[item.class][item.day]) {
+              scheduleData[item.class][item.day] = [];
+            }
+            scheduleData[item.class][item.day].push(item);
+          });
+
+          // Render jadwal untuk kedua kelas
+          renderSchedule("XI A", document.getElementById("scheduleGridA"));
+          renderSchedule("XI B", document.getElementById("scheduleGridB"));
+
+          // Setelah data dimuat, update status kelas
+          markCurrentClass();
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById("statusText").textContent = "Gagal memuat jadwal. Silakan coba lagi.";
+        }
+      }
+
+      // Fungsi untuk merender jadwal
+      function renderSchedule(className, container) {
+        container.innerHTML = "";
+
+        weekDays.forEach((day) => {
+          const dayCard = document.createElement("div");
+          dayCard.className = `day-card ${dayClassMap[day] || ""}`;
+
+          const dayHeader = document.createElement("div");
+          dayHeader.className = "day-header";
+          dayHeader.textContent = day;
+          dayCard.appendChild(dayHeader);
+
+          const classList = document.createElement("div");
+          classList.className = "class-list";
+
+          // Periksa jika ada jadwal untuk hari ini
+          if (scheduleData[className][day] && scheduleData[className][day].length > 0) {
+            // Urutkan berdasarkan waktu mulai
+            scheduleData[className][day].sort((a, b) => {
+              const startA = convertTo24Hour(a.startTime);
+              const startB = convertTo24Hour(b.startTime);
+              return startA.localeCompare(startB);
+            });
+
+            // Tambahkan setiap mata pelajaran
+            scheduleData[className][day].forEach((item) => {
+              const classItem = document.createElement("div");
+              // Tambahkan class sesuai tipe jadwal (subject, break, prayer)
+              classItem.className = `class-item ${item.type || 'subject'}`;
+
+              const classIcon = document.createElement("div");
+              classIcon.className = "class-icon";
+              classIcon.innerHTML = `<i class="fas ${item.icon}"></i>`;
+
+              const classInfo = document.createElement("div");
+              classInfo.className = "class-info";
+
+              const classNameEl = document.createElement("div");
+              classNameEl.className = "class-name";
+              classNameEl.textContent = item.subject;
+
+              const classTime = document.createElement("div");
+              classTime.className = "class-time";
+              const timeValue = document.createElement("span");
+              timeValue.className = "time-value";
+              // Simpan waktu asli (format 24 jam) di data-original
+              const originalTime = `${item.startTime} - ${item.endTime}`;
+              timeValue.textContent = originalTime;
+              timeValue.dataset.original = originalTime;
+              classTime.innerHTML = '<i class="far fa-clock"></i> ';
+              classTime.appendChild(timeValue);
+
+              const classTeacher = document.createElement("div");
+              classTeacher.className = "class-teacher";
+              classTeacher.textContent = item.teacher || ""; // Handle jika tidak ada guru
+
+              classInfo.appendChild(classNameEl);
+              classInfo.appendChild(classTime);
+              classInfo.appendChild(classTeacher);
+
+              classItem.appendChild(classIcon);
+              classItem.appendChild(classInfo);
+
+              classList.appendChild(classItem);
+            });
+          } else {
+            // Tampilkan pesan jika tidak ada jadwal
+            const emptyMessage = document.createElement("div");
+            emptyMessage.className = "empty-schedule";
+            emptyMessage.innerHTML = `<i class="fas fa-calendar-times"></i> Tidak ada jadwal`;
+            classList.appendChild(emptyMessage);
+          }
+
+          dayCard.appendChild(classList);
+          container.appendChild(dayCard);
+        });
+
+        // Update tampilan waktu sesuai format
+        updateTimeDisplay();
+      }
+
+      // Fungsi untuk mengonversi waktu ke format 12 jam
+      function convertTo12Hour(timeStr) {
+        const [hours, minutes] = timeStr.split(":").map((part) => parseInt(part, 10));
+        const period = hours >= 12 ? "PM" : "AM";
+        const hours12 = hours % 12 || 12;
+        return `${hours12}:${minutes.toString().padStart(2, "0")} ${period}`;
+      }
+
+      // Fungsi untuk mengonversi waktu ke format 24 jam
+      function convertTo24Hour(timeStr) {
+        const match = timeStr.match(/(\d{1,2}):(\d{2})\s*([ap]m)?/i);
+        if (!match) return timeStr;
+
+        let hours = parseInt(match[1]);
+        const minutes = parseInt(match[2]);
+        const period = match[3] ? match[3].toLowerCase() : "";
+
+        if (period === "pm" && hours < 12) hours += 12;
+        if (period === "am" && hours === 12) hours = 0;
+
+        return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+      }
+
+      // Fungsi untuk mengonversi rentang waktu
+      function convertTimeRange(timeRange, format) {
+        const [startTime, endTime] = timeRange.split(" - ");
+
+        if (format === "12") {
+          return `${convertTo12Hour(startTime)} - ${convertTo12Hour(endTime)}`;
+        }
+
+        return `${convertTo24Hour(startTime)} - ${convertTo24Hour(endTime)}`;
+      }
+
+      // Fungsi untuk memperbarui tampilan waktu
+      function updateTimeDisplay() {
+        document.querySelectorAll(".time-value").forEach((element) => {
+          const originalTime = element.dataset.original || element.textContent;
+          element.dataset.original = originalTime;
+
+          if (timeFormat === "12") {
+            element.textContent = convertTimeRange(originalTime, "12");
+          } else {
+            element.textContent = convertTimeRange(originalTime, "24");
+          }
+        });
+      }
+
+      // Fungsi untuk menandai kelas yang sedang berlangsung
+      function markCurrentClass() {
+        // Reset semua status aktif
+        document.querySelectorAll(".class-item").forEach((item) => {
+          item.classList.remove("active");
+          const timeLeft = item.querySelector(".time-left");
+          if (timeLeft) timeLeft.remove();
+        });
+
+        // Fungsi konversi waktu string ke menit
+        function timeToMinutes(timeStr) {
+          const convertedTime = convertTo24Hour(timeStr);
+          const [hours, minutes] = convertedTime.split(":").map((part) => parseInt(part, 10));
+          return hours * 60 + minutes;
+        }
+
+        // Dapatkan hari dan waktu saat ini
+        const now = new Date();
+        const currentDayIndex = now.getDay();
+        const currentDay = days[currentDayIndex];
+        const currentHours = now.getHours();
+        const currentMinutes = now.getMinutes();
+        const currentTime = `${currentHours.toString().padStart(2, "0")}:${currentMinutes.toString().padStart(2, "0")}`;
+        const currentTimeInMinutes = currentHours * 60 + currentMinutes;
+
+        // Debug info
+        let debugInfo = `Hari: ${currentDay} (${currentDayIndex})<br>`;
+        debugInfo += `Waktu: ${currentTime} (${now.toLocaleTimeString()})<br>`;
+        debugInfo += `Menit: ${currentTimeInMinutes}<br>`;
+        debugInfo += `Format: ${timeFormat} jam<br>`;
+
+        // Reset status text
+        document.getElementById("currentClassStatus").className = "current-status";
+        document.getElementById("statusText").textContent = "Tidak ada kelas yang berlangsung saat ini";
+
+        // Cek jika hari ini adalah hari libur (Sabtu atau Minggu)
+        if (currentDayIndex === 0 || currentDayIndex === 6) {
+          document.getElementById("currentClassStatus").className = "current-status holiday";
+          document.getElementById("statusText").innerHTML = '<i class="fas fa-umbrella-beach"></i> Hari ini libur, tidak ada kelas.';
+          debugInfo += "Status: Hari libur";
+          document.getElementById("debugContent").innerHTML = debugInfo;
+          return;
+        }
+
+        // Cari semua kartu hari
+        const scheduleAVisible = document.getElementById("scheduleA").style.display !== "none";
+        const activeSchedule = scheduleAVisible ? document.getElementById("scheduleA") : document.getElementById("scheduleB");
+        const dayCards = activeSchedule.querySelectorAll(".day-card");
+
+        let todayCard = null;
+
+        // Cari kartu yang sesuai dengan hari ini
+        dayCards.forEach((card) => {
+          const dayHeader = card.querySelector(".day-header");
+          if (dayHeader && dayHeader.textContent.includes(currentDay)) {
+            todayCard = card;
+
+            // Highlight hari ini
+            card.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.15)";
+            card.style.transform = "translateY(-5px)";
+
+            // Tambahkan indikator hari ini
+            let todayBadge = card.querySelector(".today-highlight");
+            if (!todayBadge) {
+              todayBadge = document.createElement("div");
+              todayBadge.className = "today-highlight";
+              todayBadge.innerHTML = '<i class="fas fa-star"></i> HARI INI';
+              card.appendChild(todayBadge);
+            }
+          } else {
+            // Reset style untuk hari lain
+            card.style.boxShadow = "";
+            card.style.transform = "";
+            const todayBadge = card.querySelector(".today-highlight");
+            if (todayBadge) todayBadge.remove();
+          }
+        });
+
+        if (!todayCard) {
+          debugInfo += "Status: Kartu hari ini tidak ditemukan";
+          document.getElementById("debugContent").innerHTML = debugInfo;
+          return;
+        }
+
+        // Cari semua pelajaran pada hari ini
+        const classItems = todayCard.querySelectorAll(".class-item");
+        let activeItemFound = false;
+
+        classItems.forEach((item) => {
+          // Dapatkan elemen waktu
+          const timeElement = item.querySelector(".class-time");
+          if (!timeElement) return;
+
+          // Ekstrak waktu mulai dan selesai
+          const timeValue = item.querySelector(".time-value");
+          // Gunakan data original yang disimpan (format 24 jam)
+          const timeText = timeValue.dataset.original || timeValue.textContent;
+          const timeMatch = timeText.match(/(\d{1,2}:\d{2}\s*[ap]?m?)\s*[–-]\s*(\d{1,2}:\d{2}\s*[ap]?m?)/i);
+          if (!timeMatch) return;
+
+          const startTime = timeMatch[1];
+          const endTime = timeMatch[2];
+
+          // Konversi ke menit
+          const startTimeInMinutes = timeToMinutes(startTime);
+          const endTimeInMinutes = timeToMinutes(endTime);
+
+          // Debug info
+          debugInfo += `<br>Mata Pelajaran: ${item.querySelector(".class-name").textContent}<br>`;
+          debugInfo += `Waktu: ${startTime} - ${endTime}<br>`;
+          debugInfo += `Rentang: ${startTimeInMinutes} - ${endTimeInMinutes}<br>`;
+
+          // Periksa apakah pelajaran sedang berlangsung
+          if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes <= endTimeInMinutes && !activeItemFound) {
+            debugInfo += "<strong>Status: SEDANG BERLANGSUNG</strong><br>";
+
+            // Tandai sebagai sedang berlangsung
+            item.classList.add("active");
+
+            // Hitung waktu sisa
+            const minutesLeft = endTimeInMinutes - currentTimeInMinutes;
+
+            // Tambahkan indikator waktu sisa
+            const timeLeftElement = document.createElement("span");
+            timeLeftElement.className = "time-left";
+            timeLeftElement.textContent = `Sedang berlangsung, ${minutesLeft} menit lagi selesai`;
+
+            timeElement.appendChild(timeLeftElement);
+            activeItemFound = true;
+
+            // Update status
+            const className = item.querySelector(".class-name").textContent;
+            document.getElementById("currentClassStatus").style.display = "flex";
+            document.getElementById("statusText").textContent = `${className} sedang berlangsung, ${minutesLeft} menit lagi selesai`;
+          } else {
+            debugInfo += "Status: Tidak berlangsung<br>";
+          }
+        });
+
+        // Tampilkan status informasi jika tidak ada kelas yang berlangsung
+        if (!activeItemFound) {
+          const now = new Date();
+          const currentHours = now.getHours();
+          let message = 'Tidak ada kelas yang sedang berlangsung';
+          
+          if (currentHours < 7) {
+            message = 'Belum ada kelas yang dimulai hari ini';
+          } else if (currentHours > 15) {
+            message = 'Semua kelas hari ini telah selesai';
+          }
+          
+          showStatusInfo(message);
+        }
+
+        // Update debug info
+        document.getElementById("debugContent").innerHTML = debugInfo;
+      }
+
+      // Fungsi untuk menambahkan status informasi
+      function showStatusInfo(message) {
+        // Hapus status sebelumnya jika ada
+        const existingInfo = document.querySelector('.status-info');
+        if (existingInfo) existingInfo.remove();
+        
+        const infoElement = document.createElement('div');
+        infoElement.className = 'status-info';
+        infoElement.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+        
+        // Sisipkan setelah status saat ini
+        const currentStatus = document.getElementById('currentClassStatus');
+        currentStatus.parentNode.insertBefore(infoElement, currentStatus.nextSibling);
+        
+        return infoElement;
+      }
+
+      // Fungsi scroll ke hari ini
+      function scrollToToday() {
+        const todayCard = document.querySelector('.today-highlight')?.closest('.day-card');
+        if (todayCard) {
+          todayCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          todayCard.classList.add('highlight-flash');
+          setTimeout(() => todayCard.classList.remove('highlight-flash'), 2000);
+        } else {
+          const info = showStatusInfo('Tidak ada jadwal untuk hari ini');
+          info.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+
+      // Fungsi scroll ke kelas aktif
+      function scrollToCurrent() {
+        const activeItem = document.querySelector('.class-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          activeItem.classList.add('highlight-flash');
+          setTimeout(() => activeItem.classList.remove('highlight-flash'), 2000);
+        } else {
+          const info = showStatusInfo('Tidak ada kelas yang sedang berlangsung');
+          info.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+
+      // Fungsi scroll ke besok
+      function scrollToTomorrow() {
+        const now = new Date();
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const tomorrowDay = days[tomorrow.getDay()];
+        
+        const tomorrowCard = Array.from(document.querySelectorAll('.day-card')).find(card => {
+          return card.querySelector('.day-header').textContent === tomorrowDay;
+        });
+        
+        if (tomorrowCard) {
+          tomorrowCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          tomorrowCard.classList.add('highlight-flash');
+          setTimeout(() => tomorrowCard.classList.remove('highlight-flash'), 2000);
+        } else {
+          const info = showStatusInfo('Tidak ada jadwal untuk besok');
+          info.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+
+      // Fungsi scroll ke semua
+      function scrollToAll() {
+        const scheduleGrid = document.querySelector('.schedule-grid');
+        if (scheduleGrid) {
+          scheduleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      // Toggle between classes
+      document.getElementById("btnClassA").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btnClassB").classList.remove("active");
+        document.getElementById("scheduleA").style.display = "block";
+        document.getElementById("scheduleB").style.display = "none";
+        markCurrentClass();
+      });
+
+      document.getElementById("btnClassB").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btnClassA").classList.remove("active");
+        document.getElementById("scheduleA").style.display = "none";
+        document.getElementById("scheduleB").style.display = "block";
+        markCurrentClass();
+      });
+
+      // Toggle time format
+      document.getElementById("btn12Format").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btn24Format").classList.remove("active");
+        timeFormat = "12";
+        updateTimeDisplay();
+        markCurrentClass();
+      });
+
+      document.getElementById("btn24Format").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btn12Format").classList.remove("active");
+        timeFormat = "24";
+        updateTimeDisplay();
+        markCurrentClass();
+      });
+
+      // Tambahkan event listener untuk tombol mobile
+      document.getElementById('btnToday').addEventListener('click', function() {
+        this.classList.add('clicked');
+        setTimeout(() => this.classList.remove('clicked'), 300);
+        scrollToToday();
+      });
+
+      document.getElementById('btnCurrent').addEventListener('click', function() {
+        this.classList.add('clicked');
+        setTimeout(() => this.classList.remove('clicked'), 300);
+        scrollToCurrent();
+      });
+
+      document.getElementById('btnTomorrow').addEventListener('click', function() {
+        this.classList.add('clicked');
+        setTimeout(() => this.classList.remove('clicked'), 300);
+        scrollToTomorrow();
+      });
+
+      document.getElementById('btnAll').addEventListener('click', function() {
+        this.classList.add('clicked');
+        setTimeout(() => this.classList.remove('clicked'), 300);
+        scrollToAll();
+      });
+
+      // Panggil fungsi saat halaman dimuat
+      document.addEventListener("DOMContentLoaded", function () {
+        // Tambahkan style untuk efek flash
+        const style = document.createElement('style');
+        style.innerHTML = `
+          @keyframes flash {
+            0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 152, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+          }
+          
+          .highlight-flash {
+            animation: flash 1.5s ease;
+            position: relative;
+            z-index: 10;
+          }
+
+          .clicked {
+            transform: scale(0.95);
+          }
+        `;
+        document.head.appendChild(style);
+
+        // Ambil data jadwal dari API
+        fetchSchedules();
+
+        // Set interval untuk update status setiap menit
+        setInterval(markCurrentClass, 60000);
+      });
+    </script>
+  </body>
+</html>
