@@ -1,781 +1,1348 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jadwal Kelas - XI A & XI B</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="jadwal.css" />
-    <style>
-      /* Tambahkan style untuk pesan kosong */
-      .empty-schedule {
-        text-align: center;
-        padding: 30px;
-        color: #757575;
-        font-style: italic;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jadwal Kelas - XI A & XI B</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
+  <style>
+    /* jadwal.css */
+    :root {
+      --primary-blue: #1e88e5;
+      --deep-blue: #0d47a1;
+      --accent-teal: #00bcd4;
+      --fresh-green: #4caf50;
+      --steel-gray: #455a64;
+      --light-gray: #cfd8dc;
+      --dark-gray: #263238;
+      --white: #ffffff;
+      --accent-orange: #ff9800;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --card-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
 
-      /* Tambahkan style untuk jadwal istirahat dan sholat */
-      .class-item.break {
-        background-color: #fff3e0 !important;
-        border-left: 4px solid #ff9800;
-      }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      .class-item.break .class-icon {
-        background: rgba(255, 152, 0, 0.1);
-        color: #ff9800;
-      }
+    body {
+      font-family: "Nunito", sans-serif;
+      background-color: #f5f7fa;
+      color: var(--dark-gray);
+      line-height: 1.6;
+      position: relative;
+      overflow-x: hidden;
+      padding-bottom: 40px;
+    }
 
-      .class-item.break .class-name {
-        color: #ff9800;
-      }
+    /* Animated Background */
+    .animated-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: linear-gradient(135deg, 
+        #e0f7fa 0%, 
+        #f5f7fa 20%,
+        #b3e5fc 40%,
+        #e1f5fe 60%,
+        #f0f8ff 80%,
+        #e3f2fd 100%);
+      background-size: 400% 400%;
+      animation: gradientFlow 25s ease infinite;
+      opacity: 0.5;
+    }
+    
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    /* Floating bubbles effect */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.3);
+      animation: floatBubble linear infinite;
+      z-index: -1;
+    }
+    
+    @keyframes floatBubble {
+      to { transform: translateY(-100vh) rotate(360deg); }
+    }
 
-      .class-item.prayer {
-        background-color: #e8f5e9 !important;
-        border-left: 4px solid #4caf50;
-      }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-      .class-item.prayer .class-icon {
-        background: rgba(76, 175, 80, 0.1);
-        color: #4caf50;
-      }
+    /* Header Styles */
+    header {
+      background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue));
+      padding: 30px 0;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border-radius: 0 0 30px 30px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
 
-      .class-item.prayer .class-name {
-        color: #4caf50;
-      }
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 20%), radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 20%);
+    }
 
-      /* Style saat aktif untuk istirahat dan sholat */
-      .class-item.break.active {
-        background-color: #ffe0b2 !important;
-      }
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
 
-      .class-item.prayer.active {
-        background-color: #c8e6c9 !important;
-      }
+    .page-title {
+      font-family: "Patrick Hand", cursive;
+      font-size: 3.5rem;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
 
-      /* Status informasi */
-      .status-info {
-        text-align: center;
-        padding: 15px;
-        margin: 20px 0;
-        background: #fff8e1;
-        border-radius: 15px;
-        border: 1px solid #ffecb3;
-        color: #ff8f00;
-        font-weight: 500;
+    .page-subtitle {
+      font-size: 1.4rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 25px;
+      font-weight: 300;
+    }
+
+    /* Class Toggle */
+    .class-toggle {
+      display: flex;
+      justify-content: center;
+      margin: 20px auto 30px;
+      max-width: 500px;
+      background: var(--white);
+      border-radius: 50px;
+      padding: 5px;
+      box-shadow: var(--shadow);
+      border: 2px solid var(--light-gray);
+    }
+
+    .class-btn {
+      flex: 1;
+      padding: 15px 20px;
+      border: none;
+      background: none;
+      font-family: "Nunito", sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--steel-gray);
+    }
+
+    .class-btn.active {
+      background: var(--primary-blue);
+      color: var(--white);
+      box-shadow: 0 4px 8px rgba(30, 136, 229, 0.3);
+    }
+
+    .class-btn:not(.active):hover {
+      background: var(--light-gray);
+    }
+
+    /* Mobile Navigation */
+    .mobile-nav {
+      display: none;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 15px 0 20px;
+      padding: 0 10px;
+    }
+
+    .nav-mobile-btn {
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-mobile-btn i {
+      font-size: 0.9rem;
+    }
+
+    .nav-mobile-btn:hover {
+      background: var(--deep-blue);
+    }
+
+    /* Tampilkan pada mobile */
+    @media (max-width: 768px) {
+      .mobile-nav {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+    }
+
+    /* Schedule Grid */
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      perspective: 1000px;
+    }
+
+    .day-card {
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid var(--light-gray);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .day-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .day-header {
+      padding: 20px;
+      text-align: center;
+      font-family: "Patrick Hand", cursive;
+      font-size: 1.8rem;
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .day-header::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50% 0 0 50%;
+      transform: translate(30px, -30px);
+    }
+
+    .monday .day-header {
+      background: linear-gradient(135deg, var(--primary-blue), #1565c0);
+    }
+    .tuesday .day-header {
+      background: linear-gradient(135deg, var(--fresh-green), #2e7d32);
+    }
+    .wednesday .day-header {
+      background: linear-gradient(135deg, var(--accent-orange), #ef6c00);
+    }
+    .thursday .day-header {
+      background: linear-gradient(135deg, var(--accent-teal), #00838f);
+    }
+    .friday .day-header {
+      background: linear-gradient(135deg, #5e35b1, #4527a0);
+    }
+
+    .class-list {
+      padding: 20px;
+    }
+
+    .class-item {
+      display: flex;
+      align-items: center;
+      padding: 15px 10px;
+      border-bottom: 1px solid var(--light-gray);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .class-item:last-child {
+      border-bottom: none;
+    }
+
+    .class-item:hover {
+      background: rgba(30, 136, 229, 0.05);
+      border-radius: 10px;
+    }
+
+    /* Style untuk kelas yang sedang berlangsung */
+    .class-item.active {
+      background-color: #e3f2fd !important;
+      border-left: 4px solid var(--primary-blue);
+      box-shadow: inset 4px 0 0 var(--primary-blue);
+    }
+
+    .class-icon {
+      font-size: 1.8rem;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      border-radius: 50%;
+      background: rgba(30, 136, 229, 0.1);
+      color: var(--primary-blue);
+    }
+
+    .class-info {
+      flex: 1;
+    }
+
+    .class-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+      color: var(--dark-gray);
+    }
+
+    .class-time {
+      color: var(--steel-gray);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+    }
+
+    .class-teacher {
+      font-size: 0.85rem;
+      color: var(--primary-blue);
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    .time-left {
+      color: #2e7d32;
+      font-weight: bold;
+      margin-left: 8px;
+      font-size: 0.85rem;
+      background: rgba(76, 175, 80, 0.1);
+      padding: 4px 10px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .page-title {
+        font-size: 2.5rem;
       }
 
-      .status-info i {
+      .page-subtitle {
         font-size: 1.2rem;
       }
-      
-      /* Responsive untuk card hari */
-      @media (max-width: 768px) {
-        .schedule-grid {
-          gap: 12px !important;
-        }
-        
-        .day-card {
-          border-radius: 12px !important;
-          margin-bottom: 8px;
-          transform: scale(0.98);
-          transform-origin: center;
-        }
-        
-        .day-header {
-          padding: 12px 8px !important;
-          font-size: 1.4rem !important;
-        }
-        
-        .class-list {
-          padding: 12px 8px !important;
-        }
-        
-        .class-item {
-          padding: 10px 5px !important;
-        }
-        
-        .class-icon {
-          width: 38px !important;
-          height: 38px !important;
-          font-size: 1.3rem !important;
-          margin-right: 10px !important;
-        }
-        
-        .class-name {
-          font-size: 0.95rem !important;
-          margin-bottom: 3px !important;
-        }
-        
-        .class-time {
-          font-size: 0.8rem !important;
-        }
-        
-        .class-teacher {
-          font-size: 0.75rem !important;
-        }
-        
-        .today-highlight {
-          font-size: 0.7rem !important;
-          padding: 3px 8px !important;
-          top: -6px !important;
-        }
-        
-        .time-left {
-          font-size: 0.75rem !important;
-          padding: 3px 8px !important;
-        }
+
+      .class-btn {
+        font-size: 1rem;
+        padding: 12px 15px;
       }
+
+      .schedule-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .time-left {
+        display: block;
+        margin-left: 0;
+        margin-top: 5px;
+      }
+    }
+
+    /* Footer */
+    .footer-nav {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 25px;
+      font-family: "Nunito", sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-btn:hover {
+      background: var(--deep-blue);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(13, 71, 161, 0.3);
+    }
+
+    /* Status indicator */
+    .current-status {
+      text-align: center;
+      padding: 15px;
+      margin: 20px 0;
+      background: #e3f2fd;
+      border-radius: 15px;
+      font-weight: bold;
+      color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid #bbdefb;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .current-status i {
+      font-size: 1.2rem;
+    }
+
+    .current-status.holiday {
+      background: #fff8e1;
+      color: #ff8f00;
+      border-color: #ffecb3;
+    }
+
+    .debug-info {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      display: none; /* Sembunyikan debug di production */
+    }
+
+    /* Time format toggle */
+    .time-format-toggle {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 20px;
+      gap: 10px;
+    }
+
+    .format-btn {
+      background: var(--white);
+      border: 1px solid var(--light-gray);
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-family: "Nunito", sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--steel-gray);
+      font-weight: 500;
+    }
+
+    .format-btn.active {
+      background: var(--primary-blue);
+      color: var(--white);
+      border-color: var(--primary-blue);
+    }
+
+    /* Day highlight */
+    .today-highlight {
+      position: absolute;
+      top: -8px;
+      right: 20px;
+      background: var(--accent-orange);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 0 0 10px 10px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      z-index: 10;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Progress bar */
+    .progress-container {
+      height: 6px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--primary-blue);
+      border-radius: 3px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    /* Tambahkan style untuk pesan kosong */
+    .empty-schedule {
+      text-align: center;
+      padding: 30px;
+      color: #757575;
+      font-style: italic;
+    }
+
+    /* Tambahkan style untuk jadwal istirahat dan sholat */
+    .class-item.break {
+      background-color: #fff3e0 !important;
+      border-left: 4px solid #ff9800;
+    }
+
+    .class-item.break .class-icon {
+      background: rgba(255, 152, 0, 0.1);
+      color: #ff9800;
+    }
+
+    .class-item.break .class-name {
+      color: #ff9800;
+    }
+
+    .class-item.prayer {
+      background-color: #e8f5e9 !important;
+      border-left: 4px solid #4caf50;
+    }
+
+    .class-item.prayer .class-icon {
+      background: rgba(76, 175, 80, 0.1);
+      color: #4caf50;
+    }
+
+    .class-item.prayer .class-name {
+      color: #4caf50;
+    }
+
+    /* Style saat aktif untuk istirahat dan sholat */
+    .class-item.break.active {
+      background-color: #ffe0b2 !important;
+    }
+
+    .class-item.prayer.active {
+      background-color: #c8e6c9 !important;
+    }
+
+    /* Status informasi */
+    .status-info {
+      text-align: center;
+      padding: 15px;
+      margin: 20px 0;
+      background: #fff8e1;
+      border-radius: 15px;
+      border: 1px solid #ffecb3;
+      color: #ff8f00;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .status-info i {
+      font-size: 1.2rem;
+    }
     
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .page-title {
-    font-size: 2.5rem;
-  }
-
-  .page-subtitle {
-    font-size: 1.2rem;
-  }
-
-  .class-btn {
-    font-size: 1rem;
-    padding: 12px 15px;
-  }
-
-  .schedule-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 0 8px; /* Padding samping diperkecil */
-  }
-
-  /* Penyesuaian untuk card yang lebih kecil */
-  .day-card {
-    width: 94%; /* Lebar diperkecil */
-    max-width: 380px; /* Lebar maksimum */
-    margin: 0 auto 10px; /* Posisi di tengah */
-    border-radius: 14px;
-    transform: scale(0.98);
-    transform-origin: center;
-  }
+    /* Responsive untuk card hari */
+    @media (max-width: 768px) {
+      .schedule-grid {
+        gap: 12px !important;
+      }
+      
+      .day-card {
+        border-radius: 12px !important;
+        margin-bottom: 8px;
+        transform: scale(0.98);
+        transform-origin: center;
+      }
+      
+      .day-header {
+        padding: 12px 8px !important;
+        font-size: 1.4rem !important;
+      }
+      
+      .class-list {
+        padding: 12px 8px !important;
+      }
+      
+      .class-item {
+        padding: 10px 5px !important;
+      }
+      
+      .class-icon {
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 1.3rem !important;
+        margin-right: 10px !important;
+      }
+      
+      .class-name {
+        font-size: 0.95rem !important;
+        margin-bottom: 3px !important;
+      }
+      
+      .class-time {
+        font-size: 0.8rem !important;
+      }
+      
+      .class-teacher {
+        font-size: 0.75rem !important;
+      }
+      
+      .today-highlight {
+        font-size: 0.7rem !important;
+        padding: 3px 8px !important;
+        top: -6px !important;
+      }
+      
+      .time-left {
+        font-size: 0.75rem !important;
+        padding: 3px 8px !important;
+      }
+    }
   
-  .day-header {
-    padding: 14px 10px !important;
-    font-size: 1.38rem !important;
-  }
-  
-  .class-list {
-    padding: 14px 10px !important;
-  }
-  
-  .class-item {
-    padding: 12px 7px !important;
-  }
-  
-  .class-icon {
-    width: 38px !important;
-    height: 38px !important;
-    font-size: 1.28rem !important;
-    margin-right: 12px !important;
-  }
-  
-  .class-name {
-    font-size: 0.96rem !important;
-    margin-bottom: 4px !important;
-  }
-  
-  .class-time {
-    font-size: 0.82rem !important;
-  }
-  
-  .class-teacher {
-    font-size: 0.76rem !important;
-  }
-  
-  .today-highlight {
-    font-size: 0.72rem !important;
-    padding: 4px 10px !important;
-    top: -7px !important;
-  }
-  
-  .time-left {
-    font-size: 0.76rem !important;
-    padding: 4px 10px !important;
-  }
-}p
-    </style>
-  </head>
-  <body>
-    <!-- Header -->
-    <header>
-      <div class="container header-content">
-        <h1 class="page-title">Jadwal Kelas</h1>
-        <p class="page-subtitle">Jadwal Pelajaran Mingguan Kelas XI</p>
-      </div>
-    </header>
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .page-title {
+        font-size: 2.5rem;
+      }
 
-    <div class="container">
-      <!-- Status pelajaran saat ini -->
-      <div id="currentClassStatus" class="current-status">
-        <i class="fas fa-chalkboard-teacher"></i>
-        <span id="statusText">Memuat status pelajaran...</span>
-      </div>
+      .page-subtitle {
+        font-size: 1.2rem;
+      }
 
-      <!-- Time format toggle -->
-      <div class="time-format-toggle">
-        <button class="format-btn active" id="btn24Format">Format 24 Jam</button>
-        <button class="format-btn" id="btn12Format">Format 12 Jam</button>
-      </div>
+      .class-btn {
+        font-size: 1rem;
+        padding: 12px 15px;
+      }
 
-      <!-- Class Toggle -->
-      <div class="class-toggle">
-        <button class="class-btn active" id="btnClassA"><i class="fas fa-user-graduate"></i> Kelas XI A</button>
-        <button class="class-btn" id="btnClassB"><i class="fas fa-user-graduate"></i> Kelas XI B</button>
-      </div>
+      .schedule-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 0 8px; /* Padding samping diperkecil */
+      }
 
-      <!-- Mobile Navigation -->
-      <div class="mobile-nav">
-        <button class="nav-mobile-btn" id="btnToday"><i class="fas fa-calendar-day"></i> Hari Ini</button>
-        <button class="nav-mobile-btn" id="btnCurrent"><i class="fas fa-chalkboard-teacher"></i> Sedang Berlangsung</button>
-        <button class="nav-mobile-btn" id="btnTomorrow"><i class="fas fa-calendar-plus"></i> Besok</button>
-        <button class="nav-mobile-btn" id="btnAll"><i class="fas fa-calendar-alt"></i> Semua</button>
-      </div>
+      /* Penyesuaian untuk card yang lebih kecil */
+      .day-card {
+        width: 94%; /* Lebar diperkecil */
+        max-width: 380px; /* Lebar maksimum */
+        margin: 0 auto 10px; /* Posisi di tengah */
+        border-radius: 14px;
+        transform: scale(0.98);
+        transform-origin: center;
+      }
+      
+      .day-header {
+        padding: 14px 10px !important;
+        font-size: 1.38rem !important;
+      }
+      
+      .class-list {
+        padding: 14px 10px !important;
+      }
+      
+      .class-item {
+        padding: 12px 7px !important;
+      }
+      
+      .class-icon {
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 1.28rem !important;
+        margin-right: 12px !important;
+      }
+      
+      .class-name {
+        font-size: 0.96rem !important;
+        margin-bottom: 4px !important;
+      }
+      
+      .class-time {
+        font-size: 0.82rem !important;
+      }
+      
+      .class-teacher {
+        font-size: 0.76rem !important;
+      }
+      
+      .today-highlight {
+        font-size: 0.72rem !important;
+        padding: 4px 10px !important;
+        top: -7px !important;
+      }
+      
+      .time-left {
+        font-size: 0.76rem !important;
+        padding: 4px 10px !important;
+      }
+    }
 
-      <!-- Schedule for Class A (Visible by default) -->
-      <div id="scheduleA" class="schedule-content">
-        <div class="schedule-grid" id="scheduleGridA">
-          <!-- Jadwal akan diisi oleh JavaScript -->
-        </div>
-      </div>
+    /* Efek flash untuk highlight */
+    @keyframes flash {
+      0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 152, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+    }
+    
+    .highlight-flash {
+      animation: flash 1.5s ease;
+      position: relative;
+      z-index: 10;
+    }
 
-      <!-- Schedule for Class B (Hidden by default) -->
-      <div id="scheduleB" class="schedule-content" style="display: none">
-        <div class="schedule-grid" id="scheduleGridB">
-          <!-- Jadwal akan diisi oleh JavaScript -->
-        </div>
-      </div>
+    .clicked {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+  <!-- Background animation -->
+  <div class="animated-background" id="dynamicBackground"></div>
+  
+  <!-- Header -->
+  <header>
+    <div class="container header-content">
+      <h1 class="page-title">Jadwal Kelas</h1>
+      <p class="page-subtitle">Jadwal Pelajaran Mingguan Kelas XI</p>
+    </div>
+  </header>
 
-      <!-- Navigation -->
-      <div class="footer-nav">
-        <button class="nav-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</button>
-        <button class="nav-btn" onclick="window.print()"><i class="fas fa-print"></i> Cetak Jadwal</button>
-      </div>
+  <div class="container">
+    <!-- Status pelajaran saat ini -->
+    <div id="currentClassStatus" class="current-status">
+      <i class="fas fa-chalkboard-teacher"></i>
+      <span id="statusText">Memuat status pelajaran...</span>
+    </div>
 
-      <!-- Debug info -->
-      <div class="debug-info" id="debugInfo">
-        <strong>Debug Info:</strong>
-        <div id="debugContent">Memuat informasi debug...</div>
+    <!-- Time format toggle -->
+    <div class="time-format-toggle">
+      <button class="format-btn active" id="btn24Format">Format 24 Jam</button>
+      <button class="format-btn" id="btn12Format">Format 12 Jam</button>
+    </div>
+
+    <!-- Class Toggle -->
+    <div class="class-toggle">
+      <button class="class-btn active" id="btnClassA"><i class="fas fa-user-graduate"></i> Kelas XI A</button>
+      <button class="class-btn" id="btnClassB"><i class="fas fa-user-graduate"></i> Kelas XI B</button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+      <button class="nav-mobile-btn" id="btnToday"><i class="fas fa-calendar-day"></i> Hari Ini</button>
+      <button class="nav-mobile-btn" id="btnCurrent"><i class="fas fa-chalkboard-teacher"></i> Sedang Berlangsung</button>
+      <button class="nav-mobile-btn" id="btnTomorrow"><i class="fas fa-calendar-plus"></i> Besok</button>
+      <button class="nav-mobile-btn" id="btnAll"><i class="fas fa-calendar-alt"></i> Semua</button>
+    </div>
+
+    <!-- Schedule for Class A (Visible by default) -->
+    <div id="scheduleA" class="schedule-content">
+      <div class="schedule-grid" id="scheduleGridA">
+        <!-- Jadwal akan diisi oleh JavaScript -->
       </div>
     </div>
 
-    <script>
-      // Daftar hari dalam bahasa Indonesia
-      const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-      const weekDays = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]; // Hari sekolah
+    <!-- Schedule for Class B (Hidden by default) -->
+    <div id="scheduleB" class="schedule-content" style="display: none">
+      <div class="schedule-grid" id="scheduleGridB">
+        <!-- Jadwal akan diisi oleh JavaScript -->
+      </div>
+    </div>
 
-      // Mapping hari Bahasa Indonesia ke class CSS Bahasa Inggris
-      const dayClassMap = {
-        "Senin": "monday",
-        "Selasa": "tuesday",
-        "Rabu": "wednesday",
-        "Kamis": "thursday",
-        "Jumat": "friday"
-      };
+    <!-- Navigation -->
+    <div class="footer-nav">
+      <button class="nav-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Kembali ke Halaman Utama</button>
+      <button class="nav-btn" onclick="window.print()"><i class="fas fa-print"></i> Cetak Jadwal</button>
+    </div>
 
-      // Format waktu default
-      let timeFormat = "24";
-      let scheduleData = { "XI A": {}, "XI B": {} };
+    <!-- Debug info -->
+    <div class="debug-info" id="debugInfo">
+      <strong>Debug Info:</strong>
+      <div id="debugContent">Memuat informasi debug...</div>
+    </div>
+  </div>
 
-      // Fungsi untuk mengambil data jadwal dari API
-      async function fetchSchedules() {
-        try {
-          const response = await fetch("/api/jadwal");
-          if (!response.ok) {
-            throw new Error("Gagal mengambil data jadwal");
+  <script>
+    // Daftar hari dalam bahasa Indonesia
+    const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const weekDays = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]; // Hari sekolah
+
+    // Mapping hari Bahasa Indonesia ke class CSS Bahasa Inggris
+    const dayClassMap = {
+      "Senin": "monday",
+      "Selasa": "tuesday",
+      "Rabu": "wednesday",
+      "Kamis": "thursday",
+      "Jumat": "friday"
+    };
+
+    // Format waktu default
+    let timeFormat = "24";
+    let scheduleData = { "XI A": {}, "XI B": {} };
+
+    // Fungsi untuk mengambil data jadwal dari API
+    async function fetchSchedules() {
+      try {
+        const response = await fetch("/api/jadwal");
+        if (!response.ok) {
+          throw new Error("Gagal mengambil data jadwal");
+        }
+        const data = await response.json();
+
+        // Kelompokkan data berdasarkan kelas dan hari
+        data.forEach((item) => {
+          if (!scheduleData[item.class][item.day]) {
+            scheduleData[item.class][item.day] = [];
           }
-          const data = await response.json();
+          scheduleData[item.class][item.day].push(item);
+        });
 
-          // Kelompokkan data berdasarkan kelas dan hari
-          data.forEach((item) => {
-            if (!scheduleData[item.class][item.day]) {
-              scheduleData[item.class][item.day] = [];
-            }
-            scheduleData[item.class][item.day].push(item);
+        // Render jadwal untuk kedua kelas
+        renderSchedule("XI A", document.getElementById("scheduleGridA"));
+        renderSchedule("XI B", document.getElementById("scheduleGridB"));
+
+        // Setelah data dimuat, update status kelas
+        markCurrentClass();
+      } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("statusText").textContent = "Gagal memuat jadwal. Silakan coba lagi.";
+      }
+    }
+
+    // Fungsi untuk merender jadwal
+    function renderSchedule(className, container) {
+      container.innerHTML = "";
+
+      weekDays.forEach((day) => {
+        const dayCard = document.createElement("div");
+        dayCard.className = `day-card ${dayClassMap[day] || ""}`;
+
+        const dayHeader = document.createElement("div");
+        dayHeader.className = "day-header";
+        dayHeader.textContent = day;
+        dayCard.appendChild(dayHeader);
+
+        const classList = document.createElement("div");
+        classList.className = "class-list";
+
+        // Periksa jika ada jadwal untuk hari ini
+        if (scheduleData[className][day] && scheduleData[className][day].length > 0) {
+          // Urutkan berdasarkan waktu mulai
+          scheduleData[className][day].sort((a, b) => {
+            const startA = convertTo24Hour(a.startTime);
+            const startB = convertTo24Hour(b.startTime);
+            return startA.localeCompare(startB);
           });
 
-          // Render jadwal untuk kedua kelas
-          renderSchedule("XI A", document.getElementById("scheduleGridA"));
-          renderSchedule("XI B", document.getElementById("scheduleGridB"));
+          // Tambahkan setiap mata pelajaran
+          scheduleData[className][day].forEach((item) => {
+            const classItem = document.createElement("div");
+            // Tambahkan class sesuai tipe jadwal (subject, break, prayer)
+            classItem.className = `class-item ${item.type || 'subject'}`;
 
-          // Setelah data dimuat, update status kelas
-          markCurrentClass();
-        } catch (error) {
-          console.error("Error:", error);
-          document.getElementById("statusText").textContent = "Gagal memuat jadwal. Silakan coba lagi.";
+            const classIcon = document.createElement("div");
+            classIcon.className = "class-icon";
+            classIcon.innerHTML = `<i class="fas ${item.icon}"></i>`;
+
+            const classInfo = document.createElement("div");
+            classInfo.className = "class-info";
+
+            const classNameEl = document.createElement("div");
+            classNameEl.className = "class-name";
+            classNameEl.textContent = item.subject;
+
+            const classTime = document.createElement("div");
+            classTime.className = "class-time";
+            const timeValue = document.createElement("span");
+            timeValue.className = "time-value";
+            // Simpan waktu asli (format 24 jam) di data-original
+            const originalTime = `${item.startTime} - ${item.endTime}`;
+            timeValue.textContent = originalTime;
+            timeValue.dataset.original = originalTime;
+            classTime.innerHTML = '<i class="far fa-clock"></i> ';
+            classTime.appendChild(timeValue);
+
+            const classTeacher = document.createElement("div");
+            classTeacher.className = "class-teacher";
+            classTeacher.textContent = item.teacher || ""; // Handle jika tidak ada guru
+
+            classInfo.appendChild(classNameEl);
+            classInfo.appendChild(classTime);
+            classInfo.appendChild(classTeacher);
+
+            classItem.appendChild(classIcon);
+            classItem.appendChild(classInfo);
+
+            classList.appendChild(classItem);
+          });
+        } else {
+          // Tampilkan pesan jika tidak ada jadwal
+          const emptyMessage = document.createElement("div");
+          emptyMessage.className = "empty-schedule";
+          emptyMessage.innerHTML = `<i class="fas fa-calendar-times"></i> Tidak ada jadwal`;
+          classList.appendChild(emptyMessage);
         }
+
+        dayCard.appendChild(classList);
+        container.appendChild(dayCard);
+      });
+
+      // Update tampilan waktu sesuai format
+      updateTimeDisplay();
+    }
+
+    // Fungsi untuk mengonversi waktu ke format 12 jam
+    function convertTo12Hour(timeStr) {
+      const [hours, minutes] = timeStr.split(":").map((part) => parseInt(part, 10));
+      const period = hours >= 12 ? "PM" : "AM";
+      const hours12 = hours % 12 || 12;
+      return `${hours12}:${minutes.toString().padStart(2, "0")} ${period}`;
+    }
+
+    // Fungsi untuk mengonversi waktu ke format 24 jam
+    function convertTo24Hour(timeStr) {
+      const match = timeStr.match(/(\d{1,2}):(\d{2})\s*([ap]m)?/i);
+      if (!match) return timeStr;
+
+      let hours = parseInt(match[1]);
+      const minutes = parseInt(match[2]);
+      const period = match[3] ? match[3].toLowerCase() : "";
+
+      if (period === "pm" && hours < 12) hours += 12;
+      if (period === "am" && hours === 12) hours = 0;
+
+      return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+    }
+
+    // Fungsi untuk mengonversi rentang waktu
+    function convertTimeRange(timeRange, format) {
+      const [startTime, endTime] = timeRange.split(" - ");
+
+      if (format === "12") {
+        return `${convertTo12Hour(startTime)} - ${convertTo12Hour(endTime)}`;
       }
 
-      // Fungsi untuk merender jadwal
-      function renderSchedule(className, container) {
-        container.innerHTML = "";
+      return `${convertTo24Hour(startTime)} - ${convertTo24Hour(endTime)}`;
+    }
 
-        weekDays.forEach((day) => {
-          const dayCard = document.createElement("div");
-          dayCard.className = `day-card ${dayClassMap[day] || ""}`;
+    // Fungsi untuk memperbarui tampilan waktu
+    function updateTimeDisplay() {
+      document.querySelectorAll(".time-value").forEach((element) => {
+        const originalTime = element.dataset.original || element.textContent;
+        element.dataset.original = originalTime;
 
-          const dayHeader = document.createElement("div");
-          dayHeader.className = "day-header";
-          dayHeader.textContent = day;
-          dayCard.appendChild(dayHeader);
+        if (timeFormat === "12") {
+          element.textContent = convertTimeRange(originalTime, "12");
+        } else {
+          element.textContent = convertTimeRange(originalTime, "24");
+        }
+      });
+    }
 
-          const classList = document.createElement("div");
-          classList.className = "class-list";
+    // Fungsi untuk menandai kelas yang sedang berlangsung
+    function markCurrentClass() {
+      // Reset semua status aktif
+      document.querySelectorAll(".class-item").forEach((item) => {
+        item.classList.remove("active");
+        const timeLeft = item.querySelector(".time-left");
+        if (timeLeft) timeLeft.remove();
+      });
 
-          // Periksa jika ada jadwal untuk hari ini
-          if (scheduleData[className][day] && scheduleData[className][day].length > 0) {
-            // Urutkan berdasarkan waktu mulai
-            scheduleData[className][day].sort((a, b) => {
-              const startA = convertTo24Hour(a.startTime);
-              const startB = convertTo24Hour(b.startTime);
-              return startA.localeCompare(startB);
-            });
+      // Fungsi konversi waktu string ke menit
+      function timeToMinutes(timeStr) {
+        const convertedTime = convertTo24Hour(timeStr);
+        const [hours, minutes] = convertedTime.split(":").map((part) => parseInt(part, 10));
+        return hours * 60 + minutes;
+      }
 
-            // Tambahkan setiap mata pelajaran
-            scheduleData[className][day].forEach((item) => {
-              const classItem = document.createElement("div");
-              // Tambahkan class sesuai tipe jadwal (subject, break, prayer)
-              classItem.className = `class-item ${item.type || 'subject'}`;
+      // Dapatkan hari dan waktu saat ini
+      const now = new Date();
+      const currentDayIndex = now.getDay();
+      const currentDay = days[currentDayIndex];
+      const currentHours = now.getHours();
+      const currentMinutes = now.getMinutes();
+      const currentTime = `${currentHours.toString().padStart(2, "0")}:${currentMinutes.toString().padStart(2, "0")}`;
+      const currentTimeInMinutes = currentHours * 60 + currentMinutes;
 
-              const classIcon = document.createElement("div");
-              classIcon.className = "class-icon";
-              classIcon.innerHTML = `<i class="fas ${item.icon}"></i>`;
+      // Debug info
+      let debugInfo = `Hari: ${currentDay} (${currentDayIndex})<br>`;
+      debugInfo += `Waktu: ${currentTime} (${now.toLocaleTimeString()})<br>`;
+      debugInfo += `Menit: ${currentTimeInMinutes}<br>`;
+      debugInfo += `Format: ${timeFormat} jam<br>`;
 
-              const classInfo = document.createElement("div");
-              classInfo.className = "class-info";
+      // Reset status text
+      document.getElementById("currentClassStatus").className = "current-status";
+      document.getElementById("statusText").textContent = "Tidak ada kelas yang berlangsung saat ini";
 
-              const classNameEl = document.createElement("div");
-              classNameEl.className = "class-name";
-              classNameEl.textContent = item.subject;
+      // Cek jika hari ini adalah hari libur (Sabtu atau Minggu)
+      if (currentDayIndex === 0 || currentDayIndex === 6) {
+        document.getElementById("currentClassStatus").className = "current-status holiday";
+        document.getElementById("statusText").innerHTML = '<i class="fas fa-umbrella-beach"></i> Hari ini libur, tidak ada kelas.';
+        debugInfo += "Status: Hari libur";
+        document.getElementById("debugContent").innerHTML = debugInfo;
+        return;
+      }
 
-              const classTime = document.createElement("div");
-              classTime.className = "class-time";
-              const timeValue = document.createElement("span");
-              timeValue.className = "time-value";
-              // Simpan waktu asli (format 24 jam) di data-original
-              const originalTime = `${item.startTime} - ${item.endTime}`;
-              timeValue.textContent = originalTime;
-              timeValue.dataset.original = originalTime;
-              classTime.innerHTML = '<i class="far fa-clock"></i> ';
-              classTime.appendChild(timeValue);
+      // Cari semua kartu hari
+      const scheduleAVisible = document.getElementById("scheduleA").style.display !== "none";
+      const activeSchedule = scheduleAVisible ? document.getElementById("scheduleA") : document.getElementById("scheduleB");
+      const dayCards = activeSchedule.querySelectorAll(".day-card");
 
-              const classTeacher = document.createElement("div");
-              classTeacher.className = "class-teacher";
-              classTeacher.textContent = item.teacher || ""; // Handle jika tidak ada guru
+      let todayCard = null;
 
-              classInfo.appendChild(classNameEl);
-              classInfo.appendChild(classTime);
-              classInfo.appendChild(classTeacher);
+      // Cari kartu yang sesuai dengan hari ini
+      dayCards.forEach((card) => {
+        const dayHeader = card.querySelector(".day-header");
+        if (dayHeader && dayHeader.textContent.includes(currentDay)) {
+          todayCard = card;
 
-              classItem.appendChild(classIcon);
-              classItem.appendChild(classInfo);
+          // Highlight hari ini
+          card.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.15)";
+          card.style.transform = "translateY(-5px)";
 
-              classList.appendChild(classItem);
-            });
-          } else {
-            // Tampilkan pesan jika tidak ada jadwal
-            const emptyMessage = document.createElement("div");
-            emptyMessage.className = "empty-schedule";
-            emptyMessage.innerHTML = `<i class="fas fa-calendar-times"></i> Tidak ada jadwal`;
-            classList.appendChild(emptyMessage);
+          // Tambahkan indikator hari ini
+          let todayBadge = card.querySelector(".today-highlight");
+          if (!todayBadge) {
+            todayBadge = document.createElement("div");
+            todayBadge.className = "today-highlight";
+            todayBadge.innerHTML = '<i class="fas fa-star"></i> HARI INI';
+            card.appendChild(todayBadge);
           }
-
-          dayCard.appendChild(classList);
-          container.appendChild(dayCard);
-        });
-
-        // Update tampilan waktu sesuai format
-        updateTimeDisplay();
-      }
-
-      // Fungsi untuk mengonversi waktu ke format 12 jam
-      function convertTo12Hour(timeStr) {
-        const [hours, minutes] = timeStr.split(":").map((part) => parseInt(part, 10));
-        const period = hours >= 12 ? "PM" : "AM";
-        const hours12 = hours % 12 || 12;
-        return `${hours12}:${minutes.toString().padStart(2, "0")} ${period}`;
-      }
-
-      // Fungsi untuk mengonversi waktu ke format 24 jam
-      function convertTo24Hour(timeStr) {
-        const match = timeStr.match(/(\d{1,2}):(\d{2})\s*([ap]m)?/i);
-        if (!match) return timeStr;
-
-        let hours = parseInt(match[1]);
-        const minutes = parseInt(match[2]);
-        const period = match[3] ? match[3].toLowerCase() : "";
-
-        if (period === "pm" && hours < 12) hours += 12;
-        if (period === "am" && hours === 12) hours = 0;
-
-        return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
-      }
-
-      // Fungsi untuk mengonversi rentang waktu
-      function convertTimeRange(timeRange, format) {
-        const [startTime, endTime] = timeRange.split(" - ");
-
-        if (format === "12") {
-          return `${convertTo12Hour(startTime)} - ${convertTo12Hour(endTime)}`;
+        } else {
+          // Reset style untuk hari lain
+          card.style.boxShadow = "";
+          card.style.transform = "";
+          const todayBadge = card.querySelector(".today-highlight");
+          if (todayBadge) todayBadge.remove();
         }
+      });
 
-        return `${convertTo24Hour(startTime)} - ${convertTo24Hour(endTime)}`;
+      if (!todayCard) {
+        debugInfo += "Status: Kartu hari ini tidak ditemukan";
+        document.getElementById("debugContent").innerHTML = debugInfo;
+        return;
       }
 
-      // Fungsi untuk memperbarui tampilan waktu
-      function updateTimeDisplay() {
-        document.querySelectorAll(".time-value").forEach((element) => {
-          const originalTime = element.dataset.original || element.textContent;
-          element.dataset.original = originalTime;
+      // Cari semua pelajaran pada hari ini
+      const classItems = todayCard.querySelectorAll(".class-item");
+      let activeItemFound = false;
 
-          if (timeFormat === "12") {
-            element.textContent = convertTimeRange(originalTime, "12");
-          } else {
-            element.textContent = convertTimeRange(originalTime, "24");
-          }
-        });
-      }
+      classItems.forEach((item) => {
+        // Dapatkan elemen waktu
+        const timeElement = item.querySelector(".class-time");
+        if (!timeElement) return;
 
-      // Fungsi untuk menandai kelas yang sedang berlangsung
-      function markCurrentClass() {
-        // Reset semua status aktif
-        document.querySelectorAll(".class-item").forEach((item) => {
-          item.classList.remove("active");
-          const timeLeft = item.querySelector(".time-left");
-          if (timeLeft) timeLeft.remove();
-        });
+        // Ekstrak waktu mulai dan selesai
+        const timeValue = item.querySelector(".time-value");
+        // Gunakan data original yang disimpan (format 24 jam)
+        const timeText = timeValue.dataset.original || timeValue.textContent;
+        const timeMatch = timeText.match(/(\d{1,2}:\d{2}\s*[ap]?m?)\s*[–-]\s*(\d{1,2}:\d{2}\s*[ap]?m?)/i);
+        if (!timeMatch) return;
 
-        // Fungsi konversi waktu string ke menit
-        function timeToMinutes(timeStr) {
-          const convertedTime = convertTo24Hour(timeStr);
-          const [hours, minutes] = convertedTime.split(":").map((part) => parseInt(part, 10));
-          return hours * 60 + minutes;
-        }
+        const startTime = timeMatch[1];
+        const endTime = timeMatch[2];
 
-        // Dapatkan hari dan waktu saat ini
-        const now = new Date();
-        const currentDayIndex = now.getDay();
-        const currentDay = days[currentDayIndex];
-        const currentHours = now.getHours();
-        const currentMinutes = now.getMinutes();
-        const currentTime = `${currentHours.toString().padStart(2, "0")}:${currentMinutes.toString().padStart(2, "0")}`;
-        const currentTimeInMinutes = currentHours * 60 + currentMinutes;
+        // Konversi ke menit
+        const startTimeInMinutes = timeToMinutes(startTime);
+        const endTimeInMinutes = timeToMinutes(endTime);
 
         // Debug info
-        let debugInfo = `Hari: ${currentDay} (${currentDayIndex})<br>`;
-        debugInfo += `Waktu: ${currentTime} (${now.toLocaleTimeString()})<br>`;
-        debugInfo += `Menit: ${currentTimeInMinutes}<br>`;
-        debugInfo += `Format: ${timeFormat} jam<br>`;
+        debugInfo += `<br>Mata Pelajaran: ${item.querySelector(".class-name").textContent}<br>`;
+        debugInfo += `Waktu: ${startTime} - ${endTime}<br>`;
+        debugInfo += `Rentang: ${startTimeInMinutes} - ${endTimeInMinutes}<br>`;
 
-        // Reset status text
-        document.getElementById("currentClassStatus").className = "current-status";
-        document.getElementById("statusText").textContent = "Tidak ada kelas yang berlangsung saat ini";
+        // Periksa apakah pelajaran sedang berlangsung
+        if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes <= endTimeInMinutes && !activeItemFound) {
+          debugInfo += "<strong>Status: SEDANG BERLANGSUNG</strong><br>";
 
-        // Cek jika hari ini adalah hari libur (Sabtu atau Minggu)
-        if (currentDayIndex === 0 || currentDayIndex === 6) {
-          document.getElementById("currentClassStatus").className = "current-status holiday";
-          document.getElementById("statusText").innerHTML = '<i class="fas fa-umbrella-beach"></i> Hari ini libur, tidak ada kelas.';
-          debugInfo += "Status: Hari libur";
-          document.getElementById("debugContent").innerHTML = debugInfo;
-          return;
-        }
+          // Tandai sebagai sedang berlangsung
+          item.classList.add("active");
 
-        // Cari semua kartu hari
-        const scheduleAVisible = document.getElementById("scheduleA").style.display !== "none";
-        const activeSchedule = scheduleAVisible ? document.getElementById("scheduleA") : document.getElementById("scheduleB");
-        const dayCards = activeSchedule.querySelectorAll(".day-card");
+          // Hitung waktu sisa
+          const minutesLeft = endTimeInMinutes - currentTimeInMinutes;
 
-        let todayCard = null;
+          // Tambahkan indikator waktu sisa
+          const timeLeftElement = document.createElement("span");
+          timeLeftElement.className = "time-left";
+          timeLeftElement.textContent = `Sedang berlangsung, ${minutesLeft} menit lagi selesai`;
 
-        // Cari kartu yang sesuai dengan hari ini
-        dayCards.forEach((card) => {
-          const dayHeader = card.querySelector(".day-header");
-          if (dayHeader && dayHeader.textContent.includes(currentDay)) {
-            todayCard = card;
+          timeElement.appendChild(timeLeftElement);
+          activeItemFound = true;
 
-            // Highlight hari ini
-            card.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.15)";
-            card.style.transform = "translateY(-5px)";
-
-            // Tambahkan indikator hari ini
-            let todayBadge = card.querySelector(".today-highlight");
-            if (!todayBadge) {
-              todayBadge = document.createElement("div");
-              todayBadge.className = "today-highlight";
-              todayBadge.innerHTML = '<i class="fas fa-star"></i> HARI INI';
-              card.appendChild(todayBadge);
-            }
-          } else {
-            // Reset style untuk hari lain
-            card.style.boxShadow = "";
-            card.style.transform = "";
-            const todayBadge = card.querySelector(".today-highlight");
-            if (todayBadge) todayBadge.remove();
-          }
-        });
-
-        if (!todayCard) {
-          debugInfo += "Status: Kartu hari ini tidak ditemukan";
-          document.getElementById("debugContent").innerHTML = debugInfo;
-          return;
-        }
-
-        // Cari semua pelajaran pada hari ini
-        const classItems = todayCard.querySelectorAll(".class-item");
-        let activeItemFound = false;
-
-        classItems.forEach((item) => {
-          // Dapatkan elemen waktu
-          const timeElement = item.querySelector(".class-time");
-          if (!timeElement) return;
-
-          // Ekstrak waktu mulai dan selesai
-          const timeValue = item.querySelector(".time-value");
-          // Gunakan data original yang disimpan (format 24 jam)
-          const timeText = timeValue.dataset.original || timeValue.textContent;
-          const timeMatch = timeText.match(/(\d{1,2}:\d{2}\s*[ap]?m?)\s*[–-]\s*(\d{1,2}:\d{2}\s*[ap]?m?)/i);
-          if (!timeMatch) return;
-
-          const startTime = timeMatch[1];
-          const endTime = timeMatch[2];
-
-          // Konversi ke menit
-          const startTimeInMinutes = timeToMinutes(startTime);
-          const endTimeInMinutes = timeToMinutes(endTime);
-
-          // Debug info
-          debugInfo += `<br>Mata Pelajaran: ${item.querySelector(".class-name").textContent}<br>`;
-          debugInfo += `Waktu: ${startTime} - ${endTime}<br>`;
-          debugInfo += `Rentang: ${startTimeInMinutes} - ${endTimeInMinutes}<br>`;
-
-          // Periksa apakah pelajaran sedang berlangsung
-          if (currentTimeInMinutes >= startTimeInMinutes && currentTimeInMinutes <= endTimeInMinutes && !activeItemFound) {
-            debugInfo += "<strong>Status: SEDANG BERLANGSUNG</strong><br>";
-
-            // Tandai sebagai sedang berlangsung
-            item.classList.add("active");
-
-            // Hitung waktu sisa
-            const minutesLeft = endTimeInMinutes - currentTimeInMinutes;
-
-            // Tambahkan indikator waktu sisa
-            const timeLeftElement = document.createElement("span");
-            timeLeftElement.className = "time-left";
-            timeLeftElement.textContent = `Sedang berlangsung, ${minutesLeft} menit lagi selesai`;
-
-            timeElement.appendChild(timeLeftElement);
-            activeItemFound = true;
-
-            // Update status
-            const className = item.querySelector(".class-name").textContent;
-            document.getElementById("currentClassStatus").style.display = "flex";
-            document.getElementById("statusText").textContent = `${className} sedang berlangsung, ${minutesLeft} menit lagi selesai`;
-          } else {
-            debugInfo += "Status: Tidak berlangsung<br>";
-          }
-        });
-
-        // Tampilkan status informasi jika tidak ada kelas yang berlangsung
-        if (!activeItemFound) {
-          const now = new Date();
-          const currentHours = now.getHours();
-          let message = 'Tidak ada kelas yang sedang berlangsung';
-          
-          if (currentHours < 7) {
-            message = 'Belum ada kelas yang dimulai hari ini';
-          } else if (currentHours > 15) {
-            message = 'Semua kelas hari ini telah selesai';
-          }
-          
-          showStatusInfo(message);
-        }
-
-        // Update debug info
-        document.getElementById("debugContent").innerHTML = debugInfo;
-      }
-
-      // Fungsi untuk menambahkan status informasi
-      function showStatusInfo(message) {
-        // Hapus status sebelumnya jika ada
-        const existingInfo = document.querySelector('.status-info');
-        if (existingInfo) existingInfo.remove();
-        
-        const infoElement = document.createElement('div');
-        infoElement.className = 'status-info';
-        infoElement.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
-        
-        // Sisipkan setelah status saat ini
-        const currentStatus = document.getElementById('currentClassStatus');
-        currentStatus.parentNode.insertBefore(infoElement, currentStatus.nextSibling);
-        
-        return infoElement;
-      }
-
-      // Fungsi scroll ke hari ini
-      function scrollToToday() {
-        const todayCard = document.querySelector('.today-highlight')?.closest('.day-card');
-        if (todayCard) {
-          todayCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          todayCard.classList.add('highlight-flash');
-          setTimeout(() => todayCard.classList.remove('highlight-flash'), 2000);
+          // Update status
+          const className = item.querySelector(".class-name").textContent;
+          document.getElementById("currentClassStatus").style.display = "flex";
+          document.getElementById("statusText").textContent = `${className} sedang berlangsung, ${minutesLeft} menit lagi selesai`;
         } else {
-          const info = showStatusInfo('Tidak ada jadwal untuk hari ini');
-          info.scrollIntoView({ behavior: 'smooth' });
+          debugInfo += "Status: Tidak berlangsung<br>";
         }
-      }
+      });
 
-      // Fungsi scroll ke kelas aktif
-      function scrollToCurrent() {
-        const activeItem = document.querySelector('.class-item.active');
-        if (activeItem) {
-          activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          activeItem.classList.add('highlight-flash');
-          setTimeout(() => activeItem.classList.remove('highlight-flash'), 2000);
-        } else {
-          const info = showStatusInfo('Tidak ada kelas yang sedang berlangsung');
-          info.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-
-      // Fungsi scroll ke besok
-      function scrollToTomorrow() {
+      // Tampilkan status informasi jika tidak ada kelas yang berlangsung
+      if (!activeItemFound) {
         const now = new Date();
-        const tomorrow = new Date(now);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowDay = days[tomorrow.getDay()];
+        const currentHours = now.getHours();
+        let message = 'Tidak ada kelas yang sedang berlangsung';
         
-        const tomorrowCard = Array.from(document.querySelectorAll('.day-card')).find(card => {
-          return card.querySelector('.day-header').textContent === tomorrowDay;
+        if (currentHours < 7) {
+          message = 'Belum ada kelas yang dimulai hari ini';
+        } else if (currentHours > 15) {
+          message = 'Semua kelas hari ini telah selesai';
+        }
+        
+        showStatusInfo(message);
+      }
+
+      // Update debug info
+      document.getElementById("debugContent").innerHTML = debugInfo;
+    }
+
+    // Fungsi untuk menambahkan status informasi
+    function showStatusInfo(message) {
+      // Hapus status sebelumnya jika ada
+      const existingInfo = document.querySelector('.status-info');
+      if (existingInfo) existingInfo.remove();
+      
+      const infoElement = document.createElement('div');
+      infoElement.className = 'status-info';
+      infoElement.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+      
+      // Sisipkan setelah status saat ini
+      const currentStatus = document.getElementById('currentClassStatus');
+      currentStatus.parentNode.insertBefore(infoElement, currentStatus.nextSibling);
+      
+      return infoElement;
+    }
+
+    // Fungsi scroll ke hari ini
+    function scrollToToday() {
+      const todayCard = document.querySelector('.today-highlight')?.closest('.day-card');
+      if (todayCard) {
+        todayCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        todayCard.classList.add('highlight-flash');
+        setTimeout(() => todayCard.classList.remove('highlight-flash'), 2000);
+      } else {
+        const info = showStatusInfo('Tidak ada jadwal untuk hari ini');
+        info.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Fungsi scroll ke kelas aktif
+    function scrollToCurrent() {
+      const activeItem = document.querySelector('.class-item.active');
+      if (activeItem) {
+        activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        activeItem.classList.add('highlight-flash');
+        setTimeout(() => activeItem.classList.remove('highlight-flash'), 2000);
+      } else {
+        const info = showStatusInfo('Tidak ada kelas yang sedang berlangsung');
+        info.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Fungsi scroll ke besok
+    function scrollToTomorrow() {
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowDay = days[tomorrow.getDay()];
+      
+      const tomorrowCard = Array.from(document.querySelectorAll('.day-card')).find(card => {
+        return card.querySelector('.day-header').textContent === tomorrowDay;
+      });
+      
+      if (tomorrowCard) {
+        tomorrowCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        tomorrowCard.classList.add('highlight-flash');
+        setTimeout(() => tomorrowCard.classList.remove('highlight-flash'), 2000);
+      } else {
+        const info = showStatusInfo('Tidak ada jadwal untuk besok');
+        info.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Fungsi scroll ke semua
+    function scrollToAll() {
+      const scheduleGrid = document.querySelector('.schedule-grid');
+      if (scheduleGrid) {
+        scheduleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // Toggle between classes
+    document.getElementById("btnClassA").addEventListener("click", function () {
+      this.classList.add("active");
+      document.getElementById("btnClassB").classList.remove("active");
+      document.getElementById("scheduleA").style.display = "block";
+      document.getElementById("scheduleB").style.display = "none";
+      markCurrentClass();
+    });
+
+    document.getElementById("btnClassB").addEventListener("click", function () {
+      this.classList.add("active");
+      document.getElementById("btnClassA").classList.remove("active");
+      document.getElementById("scheduleA").style.display = "none";
+      document.getElementById("scheduleB").style.display = "block";
+      markCurrentClass();
+    });
+
+    // Toggle time format
+    document.getElementById("btn12Format").addEventListener("click", function () {
+      this.classList.add("active");
+      document.getElementById("btn24Format").classList.remove("active");
+      timeFormat = "12";
+      updateTimeDisplay();
+      markCurrentClass();
+    });
+
+    document.getElementById("btn24Format").addEventListener("click", function () {
+      this.classList.add("active");
+      document.getElementById("btn12Format").classList.remove("active");
+      timeFormat = "24";
+      updateTimeDisplay();
+      markCurrentClass();
+    });
+
+    // Tambahkan event listener untuk tombol mobile
+    document.getElementById('btnToday').addEventListener('click', function() {
+      this.classList.add('clicked');
+      setTimeout(() => this.classList.remove('clicked'), 300);
+      scrollToToday();
+    });
+
+    document.getElementById('btnCurrent').addEventListener('click', function() {
+      this.classList.add('clicked');
+      setTimeout(() => this.classList.remove('clicked'), 300);
+      scrollToCurrent();
+    });
+
+    document.getElementById('btnTomorrow').addEventListener('click', function() {
+      this.classList.add('clicked');
+      setTimeout(() => this.classList.remove('clicked'), 300);
+      scrollToTomorrow();
+    });
+
+    document.getElementById('btnAll').addEventListener('click', function() {
+      this.classList.add('clicked');
+      setTimeout(() => this.classList.remove('clicked'), 300);
+      scrollToAll();
+    });
+
+    // Fungsi untuk membuat efek bubble
+    function createBubbles() {
+      const background = document.getElementById('dynamicBackground');
+      const bubblesCount = 15;
+      
+      for (let i = 0; i < bubblesCount; i++) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
+        
+        // Random properties
+        const size = Math.random() * 120 + 30;
+        const left = Math.random() * 100;
+        const duration = Math.random() * 30 + 20;
+        const delay = Math.random() * 5;
+        const blur = Math.random() * 5;
+        
+        bubble.style.width = `${size}px`;
+        bubble.style.height = `${size}px`;
+        bubble.style.left = `${left}%`;
+        bubble.style.bottom = `-${size}px`;
+        bubble.style.filter = `blur(${blur}px)`;
+        bubble.style.animationDuration = `${duration}s`;
+        bubble.style.animationDelay = `${delay}s`;
+        
+        background.appendChild(bubble);
+      }
+    }
+    
+    // Fungsi untuk efek paralaks pada card
+    function setupParallax() {
+      const cards = document.querySelectorAll('.day-card');
+      
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          if (window.innerWidth > 768) { // Hanya di desktop
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const rotateY = (x / rect.width - 0.5) * 10;
+            const rotateX = -(y / rect.height - 0.5) * 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+            card.style.boxShadow = `0 20px 30px rgba(0, 0, 0, 0.2)`;
+          }
         });
         
-        if (tomorrowCard) {
-          tomorrowCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          tomorrowCard.classList.add('highlight-flash');
-          setTimeout(() => tomorrowCard.classList.remove('highlight-flash'), 2000);
-        } else {
-          const info = showStatusInfo('Tidak ada jadwal untuk besok');
-          info.scrollIntoView({ behavior: 'smooth' });
-        }
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(-8px)';
+          card.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.15)';
+        });
+      });
+    }
+    
+    // Fungsi untuk efek scroll pada background
+    function setupScrollEffects() {
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        const background = document.getElementById('dynamicBackground');
+        
+        // Efek paralax ringan pada background
+        background.style.backgroundPosition = `0% ${scrollY * 0.2}%`;
+      });
+    }
+
+    // Panggil fungsi saat halaman dimuat
+    document.addEventListener("DOMContentLoaded", function () {
+      // Tambahkan efek baru
+      createBubbles();
+      setupParallax();
+      setupScrollEffects();
+      
+      // Nonaktifkan efek hover pada perangkat mobile
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelectorAll('.day-card').forEach(card => {
+          card.style.transform = 'scale(1)';
+          card.style.boxShadow = 'var(--card-shadow)';
+        });
       }
 
-      // Fungsi scroll ke semua
-      function scrollToAll() {
-        const scheduleGrid = document.querySelector('.schedule-grid');
-        if (scheduleGrid) {
-          scheduleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
+      // Ambil data jadwal dari API
+      fetchSchedules();
 
-      // Toggle between classes
-      document.getElementById("btnClassA").addEventListener("click", function () {
-        this.classList.add("active");
-        document.getElementById("btnClassB").classList.remove("active");
-        document.getElementById("scheduleA").style.display = "block";
-        document.getElementById("scheduleB").style.display = "none";
-        markCurrentClass();
-      });
-
-      document.getElementById("btnClassB").addEventListener("click", function () {
-        this.classList.add("active");
-        document.getElementById("btnClassA").classList.remove("active");
-        document.getElementById("scheduleA").style.display = "none";
-        document.getElementById("scheduleB").style.display = "block";
-        markCurrentClass();
-      });
-
-      // Toggle time format
-      document.getElementById("btn12Format").addEventListener("click", function () {
-        this.classList.add("active");
-        document.getElementById("btn24Format").classList.remove("active");
-        timeFormat = "12";
-        updateTimeDisplay();
-        markCurrentClass();
-      });
-
-      document.getElementById("btn24Format").addEventListener("click", function () {
-        this.classList.add("active");
-        document.getElementById("btn12Format").classList.remove("active");
-        timeFormat = "24";
-        updateTimeDisplay();
-        markCurrentClass();
-      });
-
-      // Tambahkan event listener untuk tombol mobile
-      document.getElementById('btnToday').addEventListener('click', function() {
-        this.classList.add('clicked');
-        setTimeout(() => this.classList.remove('clicked'), 300);
-        scrollToToday();
-      });
-
-      document.getElementById('btnCurrent').addEventListener('click', function() {
-        this.classList.add('clicked');
-        setTimeout(() => this.classList.remove('clicked'), 300);
-        scrollToCurrent();
-      });
-
-      document.getElementById('btnTomorrow').addEventListener('click', function() {
-        this.classList.add('clicked');
-        setTimeout(() => this.classList.remove('clicked'), 300);
-        scrollToTomorrow();
-      });
-
-      document.getElementById('btnAll').addEventListener('click', function() {
-        this.classList.add('clicked');
-        setTimeout(() => this.classList.remove('clicked'), 300);
-        scrollToAll();
-      });
-
-      // Panggil fungsi saat halaman dimuat
-      document.addEventListener("DOMContentLoaded", function () {
-        // Tambahkan style untuk efek flash
-        const style = document.createElement('style');
-        style.innerHTML = `
-          @keyframes flash {
-            0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 152, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
-          }
-          
-          .highlight-flash {
-            animation: flash 1.5s ease;
-            position: relative;
-            z-index: 10;
-          }
-
-          .clicked {
-            transform: scale(0.95);
-          }
-        `;
-        document.head.appendChild(style);
-
-        // Nonaktifkan efek hover pada perangkat mobile
-        if (window.matchMedia("(max-width: 768px)").matches) {
-          document.querySelectorAll('.day-card').forEach(card => {
-            card.style.transform = 'scale(1)';
-            card.style.boxShadow = 'var(--card-shadow)';
-          });
-        }
-
-        // Ambil data jadwal dari API
-        fetchSchedules();
-
-        // Set interval untuk update status setiap menit
-        setInterval(markCurrentClass, 60000);
-      });
-    </script>
-  </body>
+      // Set interval untuk update status setiap menit
+      setInterval(markCurrentClass, 60000);
+    });
+  </script>
+</body>
 </html>
