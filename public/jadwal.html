@@ -30,7 +30,7 @@
 
     body {
       font-family: "Nunito", sans-serif;
-      background-color: #f5f7fa;
+      background-color: transparent;
       color: var(--dark-gray);
       line-height: 1.6;
       position: relative;
@@ -40,6 +40,9 @@
 
     /* Animated Background */
     .animated-background {
+  background-position: 0% 50%;
+  mix-blend-mode: overlay;
+
       position: fixed;
       top: 0;
       left: 0;
@@ -55,7 +58,7 @@
         #e3f2fd 100%);
       background-size: 400% 400%;
       animation: gradientFlow 25s ease infinite;
-      opacity: 0.5;
+      opacity: 1;
     }
     
     @keyframes gradientFlow {
