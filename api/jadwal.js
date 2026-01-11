@@ -99,33 +99,40 @@ function validateSchedule(schedule) {
     errors.push("Mata pelajaran wajib diisi");
   }
 
-  // Teacher validation - tidak wajib untuk istirahat/sholat
+  // Teacher validation
   if (typeof schedule.teacher === "undefined") {
     errors.push("Kolom guru wajib ada");
   } else if (typeof schedule.teacher !== "string") {
     errors.push("Guru harus berupa string");
   }
 
-  // Icon validation
+  // Icon validation - PROFESSIONAL ICONS ONLY
   const validIcons = [
     "fa-book", "fa-calculator", "fa-flask", "fa-atom", "fa-dna",
     "fa-globe-asia", "fa-scroll", "fa-language", "fa-running",
-    "fa-music", "fa-palette", "fa-laptop-code", "fa-scale-balanced", "fa-utensils", "fa-bowl-food", "fa-mosque", "fa-quran", "fa-flag", "fa-scissors", "fa-landmark", "fa-heart","fa-mug-hot", "fa-chart-line"
+    "fa-music", "fa-palette", "fa-laptop-code", "fa-scale-balanced",
+    "fa-landmark", "fa-chart-line", "fa-microscope", "fa-pencil-alt",
+    "fa-graduation-cap", "fa-clock", "fa-calendar", "fa-user-tie",
+    "fa-chalkboard-teacher", "fa-brain", "fa-book-open", "fa-flask",
+    "fa-code", "fa-history", "fa-music", "fa-paint-brush", "fa-dumbbell",
+    "fa-heartbeat", "fa-pray", "fa-comments", "fa-globe", "fa-map",
+    "fa-balance-scale", "fa-economy", "fa-chart-bar", "fa-file-alt",
+    "fa-sitemap", "fa-network-wired", "fa-cogs"
   ];
   
   if (!schedule.icon || !validIcons.includes(schedule.icon)) {
-    errors.push("Ikon mata pelajaran tidak valid");
+    errors.push("Ikon mata pelajaran tidak valid. Gunakan ikon profesional.");
   }
 
   // Time validation
   const timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
   
   if (!schedule.startTime || !timeRegex.test(schedule.startTime)) {
-    errors.push("Waktu mulai harus diisi dengan format HH:mm");
+    errors.push("Waktu mulai harus diisi dengan format HH:mm (24 jam)");
   }
 
   if (!schedule.endTime || !timeRegex.test(schedule.endTime)) {
-    errors.push("Waktu selesai harus diisi dengan format HH:mm");
+    errors.push("Waktu selesai harus diisi dengan format HH:mm (24 jam)");
   }
 
   // Time comparison
@@ -138,7 +145,7 @@ function validateSchedule(schedule) {
     }
   }
 
-  // Type validation - baru ditambahkan
+  // Type validation
   const validTypes = ["subject", "break", "prayer"];
   if (!schedule.type || !validTypes.includes(schedule.type)) {
     errors.push("Tipe jadwal harus diisi (subject, break, atau prayer)");
@@ -167,6 +174,26 @@ module.exports = async (req, res) => {
     // GET: Return schedule list
     if (req.method === "GET") {
       const { schedules } = await getCurrentSchedules();
+      
+      // Sort schedules by day and time
+      if (schedules && schedules.length > 0) {
+        const dayOrder = { "Senin": 1, "Selasa": 2, "Rabu": 3, "Kamis": 4, "Jumat": 5 };
+        
+        schedules.sort((a, b) => {
+          if (dayOrder[a.day] !== dayOrder[b.day]) {
+            return dayOrder[a.day] - dayOrder[b.day];
+          }
+          
+          // Convert time to minutes for comparison
+          const timeToMinutes = (timeStr) => {
+            const [hours, minutes] = timeStr.split(":").map(Number);
+            return hours * 60 + minutes;
+          };
+          
+          return timeToMinutes(a.startTime) - timeToMinutes(b.startTime);
+        });
+      }
+      
       return res.status(200).json(schedules || []);
     }
 
