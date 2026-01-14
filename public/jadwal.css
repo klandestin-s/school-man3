@@ -28,15 +28,6 @@ body {
     radial-gradient(circle at 85% 30%, rgba(0, 0, 0, 0.02) 0%, transparent 20%);
 }
 
-/* Remove animated background and bubbles */
-.animated-background {
-  display: none;
-}
-
-.bubble {
-  display: none;
-}
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -144,14 +135,7 @@ header {
   color: var(--white);
 }
 
-/* Tampilkan pada mobile */
-@media (max-width: 768px) {
-  .mobile-nav {
-    display: flex;
-  }
-}
-
-/* Schedule Grid */
+/* Schedule Grid - Desktop Default */
 .schedule-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -273,7 +257,7 @@ header {
   display: inline-block;
 }
 
-/* Responsive Styles */
+/* Responsive Styles - Desktop First */
 @media (max-width: 768px) {
   .page-title {
     font-size: 2.2rem;
@@ -288,14 +272,15 @@ header {
     padding: 10px 12px;
   }
 
-  .schedule-grid {
-    grid-template-columns: 1fr;
-  }
-
   .time-left {
     display: block;
     margin-left: 0;
     margin-top: 5px;
+  }
+  
+  /* Tampilkan navigasi mobile */
+  .mobile-nav {
+    display: flex;
   }
 }
 
@@ -402,23 +387,6 @@ header {
   letter-spacing: 0.5px;
 }
 
-/* Progress bar */
-.progress-container {
-  height: 3px;
-  background: #e0e0e0;
-  border-radius: 1.5px;
-  margin: 10px 0;
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 1.5px;
-  width: 0%;
-  transition: width 0.5s ease;
-}
-
 /* Empty schedule message */
 .empty-schedule {
   text-align: center;
@@ -487,10 +455,6 @@ header {
 
 /* Responsive untuk card hari */
 @media (max-width: 768px) {
-  .schedule-grid {
-    gap: 12px;
-  }
-
   .day-card {
     border-radius: 6px;
     margin-bottom: 8px;
@@ -559,11 +523,117 @@ header {
   transition: transform 0.2s ease;
 }
 
-/* Remove parallax effects */
-.day-card {
-  transform-style: flat;
-}
-
-.day-card:hover {
-  transform: translateY(-4px);
+/* === Mobile Swipe Horizontal + Snap === */
+@media (max-width: 768px) {
+  /* Layout horizontal untuk mobile */
+  .schedule-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding: 12px 10px 24px;
+    margin: 0 -10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  
+  /* Sembunyikan scrollbar */
+  .schedule-grid::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Kartu hari - satu per viewport */
+  .day-card {
+    min-width: calc(85vw - 20px);
+    width: calc(85vw - 20px);
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    margin: 0;
+    transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    will-change: transform;
+    transform-origin: center center;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Indikator hari (dot navigation) */
+  .day-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0 25px;
+    padding: 0 10px;
+  }
+  
+  .day-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--light-gray);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .day-indicator.active {
+    background: var(--accent);
+    transform: scale(1.2);
+  }
+  
+  /* Navigasi swipe */
+  .swipe-hint {
+    text-align: center;
+    color: #888;
+    font-size: 0.8rem;
+    margin: 10px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0.8;
+  }
+  
+  /* Efek blur pada kartu tidak aktif */
+  .day-card:not(.active-day) {
+    filter: brightness(0.98);
+  }
+  
+  /* Hari aktif (di tengah) */
+  .day-card.active-day {
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+  }
+  
+  /* Header card untuk mobile */
+  .day-header {
+    padding: 18px 15px;
+    font-size: 1.4rem;
+  }
+  
+  /* Hide mobile nav buttons on horizontal layout */
+  .mobile-nav {
+    display: none;
+  }
+  
+  /* Perbaikan untuk card yang sedang berlangsung */
+  .class-item.active {
+    border-left-width: 4px;
+  }
+  
+  /* Status info */
+  .status-info {
+    margin: 15px 10px;
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+  
+  /* Cursor grab untuk mobile */
+  .schedule-grid.grabbing {
+    cursor: grabbing;
+  }
+  
+  .schedule-grid.grabbing .day-card {
+    cursor: grabbing;
+    transition: none;
+  }
 }
