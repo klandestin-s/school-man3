@@ -523,37 +523,52 @@ header {
   transition: transform 0.2s ease;
 }
 
-/* === Mobile Swipe Horizontal + Snap === */
+/* === PERBAIKAN: Mobile Swipe Horizontal + Snap === */
 @media (max-width: 768px) {
-  /* Layout horizontal untuk mobile */
+  /* Reset untuk mobile layout */
+  .schedule-content {
+    overflow: visible;
+    width: 100%;
+  }
+  
+  /* Layout horizontal untuk mobile - FIXED */
   .schedule-grid {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    scroll-snap-type: x mandatory !important;
     gap: 16px;
-    padding: 12px 10px 24px;
-    margin: 0 -10px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    padding: 12px calc(50vw - 42.5vw) 24px !important;
+    margin: 0 !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    width: 100% !important;
+    height: auto !important;
+    position: relative;
+    left: 0;
+    transform: none !important;
   }
   
   /* Sembunyikan scrollbar */
   .schedule-grid::-webkit-scrollbar {
-    display: none;
+    display: none !important;
   }
   
-  /* Kartu hari - satu per viewport */
+  /* Kartu hari - satu per viewport - FIXED POSITION */
   .day-card {
-    min-width: calc(85vw - 20px);
-    width: calc(85vw - 20px);
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-    margin: 0;
-    transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    min-width: 85vw !important;
+    width: 85vw !important;
+    flex: 0 0 auto !important;
+    scroll-snap-align: center !important;
+    margin: 0 !important;
+    transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) !important;
     will-change: transform;
-    transform-origin: center center;
+    transform-origin: center center !important;
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    left: 0 !important;
+    transform: scale(0.95) rotateY(0deg) !important;
   }
   
   /* Indikator hari (dot navigation) */
@@ -592,15 +607,10 @@ header {
     opacity: 0.8;
   }
   
-  /* Efek blur pada kartu tidak aktif */
-  .day-card:not(.active-day) {
-    filter: brightness(0.98);
-  }
-  
   /* Hari aktif (di tengah) */
   .day-card.active-day {
-    transform: scale(1.02);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    transform: scale(1) rotateY(0deg) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
     z-index: 2;
   }
   
@@ -612,7 +622,13 @@ header {
   
   /* Hide mobile nav buttons on horizontal layout */
   .mobile-nav {
-    display: none;
+    display: flex !important; /* Tetap tampilkan tapi lebih kecil */
+    margin: 10px 0;
+  }
+  
+  .nav-mobile-btn {
+    padding: 5px 8px;
+    font-size: 0.7rem;
   }
   
   /* Perbaikan untuk card yang sedang berlangsung */
@@ -627,13 +643,49 @@ header {
     font-size: 0.9rem;
   }
   
-  /* Cursor grab untuk mobile */
+  /* Cursor grab untuk mobile - FIXED */
   .schedule-grid.grabbing {
-    cursor: grabbing;
+    cursor: grabbing !important;
+    user-select: none;
   }
   
   .schedule-grid.grabbing .day-card {
-    cursor: grabbing;
-    transition: none;
+    cursor: grabbing !important;
+    transition: none !important;
   }
+  
+  /* Pastikan tidak ada overflow yang menghalangi */
+  body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    position: relative;
+  }
+  
+  .container {
+    overflow: visible !important;
+    width: 100%;
+    max-width: 100% !important;
+    padding: 0 10px !important;
+  }
+  
+  /* Pastikan scroll vertikal bekerja */
+  .class-list {
+    max-height: none !important;
+    overflow-y: visible !important;
+  }
+  
+  /* Day card hover effect di mobile */
+  .day-card:hover {
+    transform: none !important;
+  }
+}
+
+/* Animasi smooth untuk snap */
+@keyframes smoothSnap {
+  0% { transform: scale(0.95) rotateY(0deg); }
+  100% { transform: scale(1) rotateY(0deg); }
+}
+
+.smooth-snap {
+  animation: smoothSnap 0.3s ease-out forwards;
 }
