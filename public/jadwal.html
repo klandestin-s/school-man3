@@ -90,21 +90,252 @@
     let timeFormat = "24";
     let scheduleData = { "XI A": {}, "XI B": {} };
 
-    // === Mobile Swipe & Scroll Variables ===
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchEndX = 0;
-    let touchEndY = 0;
-    let isDragging = false;
-    let isSwiping = false;
-    let startScrollLeft = 0;
-    let velocity = 0;
-    let lastTimestamp = 0;
-    let lastScrollLeft = 0;
-    let currentCardIndex = 0;
-    let dayCards = [];
-    let swipeThreshold = 30; // Minimal jarak untuk swipe horizontal
-    let isTouchDevice = false;
+    // === HELPER FUNCTIONS (WAJIB) ===
+
+    // Fungsi untuk mendapatkan schedule grid yang aktif
+    function getActiveScheduleGrid() {
+      const scheduleA = document.getElementById('scheduleA');
+      const scheduleB = document.getElementById('scheduleB');
+      
+      if (scheduleA.style.display !== 'none') {
+        return document.getElementById('scheduleGridA');
+      } else {
+        return document.getElementById('scheduleGridB');
+      }
+    }
+
+    // Fungsi untuk mendapatkan semua day cards dari grid aktif
+    function getActiveDayCards() {
+      const grid = getActiveScheduleGrid();
+      if (!grid) return [];
+      
+      return Array.from(grid.querySelectorAll('.day-card'));
+    }
+
+    // Fungsi untuk mendapatkan kartu berdasarkan nama hari
+    function getDayCardByName(dayName) {
+      const cards = getActiveDayCards();
+      return cards.find(card => {
+        const header = card.querySelector('.day-header');
+        return header && header.textContent.trim() === dayName;
+      });
+    }
+
+    // Fungsi untuk scroll ke kartu tertentu
+    function scrollToDayCard(card) {
+      if (!card) return false;
+      
+      if (window.innerWidth <= 768) {
+        // Mobile: scroll horizontal dengan snap native
+        const grid = getActiveScheduleGrid();
+        if (!grid) return false;
+        
+        // Hitung posisi scroll
+        const cardLeft = card.offsetLeft;
+        const cardWidth = card.offsetWidth;
+        const gridWidth = grid.clientWidth;
+        const targetScroll = cardLeft - (gridWidth - cardWidth) / 2;
+        
+        grid.scrollTo({
+          left: targetScroll,
+          behavior: 'smooth'
+        });
+        
+        // Update kartu aktif
+        updateActiveCard();
+        return true;
+      } else {
+        // Desktop: scroll biasa
+        card.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start',
+          inline: 'center'
+        });
+        return true;
+      }
+    }
+
+    // Update kartu aktif berdasarkan posisi scroll
+    function updateActiveCard() {
+      if (window.innerWidth > 768) return;
+      
+      const grid = getActiveScheduleGrid();
+      if (!grid) return;
+      
+      const cards = getActiveDayCards();
+      if (cards.length === 0) return;
+      
+      const gridRect = grid.getBoundingClientRect();
+      const gridCenter = gridRect.left + gridRect.width / 2;
+      
+      cards.forEach(card => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distanceFromCenter = Math.abs(cardCenter - gridCenter);
+        
+        // Kartu dianggap aktif jika paling dekat dengan tengah
+        if (distanceFromCenter < gridRect.width * 0.4) {
+          card.classList.add('active-day');
+          card.style.transform = 'scale(1)';
+        } else {
+          card.classList.remove('active-day');
+          card.style.transform = 'scale(0.95)';
+        }
+      });
+      
+      // Update indikator
+      updateDayIndicators();
+    }
+
+    // Setup indikator hari (dots)
+    function setupDayIndicators() {
+      // Hapus indikator lama jika ada
+      const oldIndicators = document.querySelector('.day-indicators');
+      if (oldIndicators) oldIndicators.remove();
+      
+      const cards = getActiveDayCards();
+      if (cards.length <= 1) return;
+      
+      const indicators = document.createElement('div');
+      indicators.className = 'day-indicators';
+      
+      cards.forEach((card, index) => {
+        const dot = document.createElement('div');
+        dot.className = 'day-indicator';
+        dot.dataset.index = index;
+        dot.addEventListener('click', () => {
+          const targetCard = cards[index];
+          scrollToDayCard(targetCard);
+        });
+        indicators.appendChild(dot);
+      });
+      
+      const grid = getActiveScheduleGrid();
+      if (grid && grid.parentNode) {
+        grid.parentNode.insertBefore(indicators, grid.nextSibling);
+      }
+      
+      updateDayIndicators();
+    }
+
+    // Update indikator hari
+    function updateDayIndicators() {
+      const cards = getActiveDayCards();
+      const dots = document.querySelectorAll('.day-indicator');
+      
+      dots.forEach((dot, index) => {
+        if (index < cards.length && cards[index].classList.contains('active-day')) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    // === NAVIGASI FUNCTIONS ===
+
+    // Navigasi ke hari ini
+    function navigateToToday() {
+      const today = new Date();
+      const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const todayName = dayNames[today.getDay()];
+      
+      const todayCard = getDayCardByName(todayName);
+      if (todayCard) {
+        scrollToDayCard(todayCard);
+        todayCard.classList.add('highlight-flash');
+        setTimeout(() => todayCard.classList.remove('highlight-flash'), 1000);
+        return true;
+      } else {
+        showStatusInfo(`Tidak ada jadwal untuk ${todayName}`);
+        return false;
+      }
+    }
+
+    // Navigasi ke besok
+    function navigateToTomorrow() {
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      
+      const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const tomorrowName = dayNames[tomorrow.getDay()];
+      
+      const tomorrowCard = getDayCardByName(tomorrowName);
+      if (tomorrowCard) {
+        scrollToDayCard(tomorrowCard);
+        tomorrowCard.classList.add('highlight-flash');
+        setTimeout(() => tomorrowCard.classList.remove('highlight-flash'), 1000);
+        return true;
+      } else {
+        showStatusInfo(`Tidak ada jadwal untuk ${tomorrowName}`);
+        return false;
+      }
+    }
+
+    // Navigasi ke kelas yang sedang berlangsung
+    function navigateToCurrent() {
+      const activeClass = document.querySelector('.class-item.active');
+      if (activeClass) {
+        const dayCard = activeClass.closest('.day-card');
+        if (dayCard) {
+          scrollToDayCard(dayCard);
+          activeClass.classList.add('highlight-flash');
+          setTimeout(() => activeClass.classList.remove('highlight-flash'), 1000);
+          return true;
+        }
+      }
+      
+      // Fallback ke hari ini
+      showStatusInfo('Tidak ada kelas yang sedang berlangsung');
+      return navigateToToday();
+    }
+
+    // Navigasi ke semua (kartu pertama)
+    function navigateToAll() {
+      const cards = getActiveDayCards();
+      if (cards.length > 0) {
+        scrollToDayCard(cards[0]);
+        return true;
+      }
+      return false;
+    }
+
+    // === SETUP MOBILE SWIPE ===
+
+    function setupMobileSwipe() {
+      if (window.innerWidth > 768) return;
+      
+      const grid = getActiveScheduleGrid();
+      if (!grid) return;
+      
+      // Setup scroll listener untuk update kartu aktif
+      grid.addEventListener('scroll', updateActiveCard, { passive: true });
+      
+      // Setup indikator
+      setupDayIndicators();
+      
+      // Auto scroll ke hari ini
+      setTimeout(() => {
+        navigateToToday();
+      }, 500);
+    }
+
+    // Tambahkan petunjuk swipe
+    function addSwipeHint() {
+      if (document.querySelector('.swipe-hint') || window.innerWidth > 768) return;
+      
+      const hint = document.createElement('div');
+      hint.className = 'swipe-hint';
+      hint.innerHTML = '<i class="fas fa-arrow-left"></i> Geser untuk melihat hari lain <i class="fas fa-arrow-right"></i>';
+      
+      const grid = getActiveScheduleGrid();
+      if (grid && grid.parentNode) {
+        grid.parentNode.insertBefore(hint, grid);
+      }
+    }
+
+    // === FUNGSI UTAMA ===
 
     // Fungsi untuk mengambil data jadwal dari API
     async function fetchSchedules() {
@@ -130,373 +361,17 @@
         // Setelah data dimuat, update status kelas
         markCurrentClass();
         
-        // Setup efek mobile setelah render
-        setTimeout(() => {
-          if (window.innerWidth <= 768) {
-            setupMobileSwipeEffect();
+        // Setup mobile swipe setelah render
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            setupMobileSwipe();
             addSwipeHint();
-          }
-        }, 300);
+          }, 300);
+        }
         
       } catch (error) {
         console.error("Error:", error);
         document.getElementById("statusText").textContent = "Gagal memuat jadwal. Silakan coba lagi.";
-      }
-    }
-
-    // === Mobile Swipe & 3D Functions ===
-    function setupMobileSwipeEffect() {
-      if (window.innerWidth > 768) return;
-      
-      const grid = document.querySelector('.schedule-grid');
-      if (!grid) return;
-      
-      // Reset transform
-      dayCards = Array.from(grid.querySelectorAll('.day-card'));
-      if (dayCards.length === 0) return;
-      
-      // Set kartu aktif pertama
-      currentCardIndex = 0;
-      updateActiveCard();
-      
-      // Setup event listeners
-      setupTouchEvents(grid);
-      setupMouseEvents(grid);
-      
-      // Setup scroll event untuk snap
-      grid.addEventListener('scroll', handleScroll, { passive: true });
-      
-      // Setup indikator
-      setupDayIndicators();
-      
-      // Auto snap ke hari ini
-      setTimeout(() => snapToToday(), 500);
-    }
-
-    // Setup touch events untuk mobile
-    function setupTouchEvents(grid) {
-      grid.addEventListener('touchstart', handleTouchStart, { passive: true });
-      grid.addEventListener('touchmove', handleTouchMove, { passive: false });
-      grid.addEventListener('touchend', handleTouchEnd, { passive: true });
-      grid.addEventListener('touchcancel', handleTouchEnd, { passive: true });
-      
-      isTouchDevice = true;
-    }
-
-    // Setup mouse events untuk desktop testing
-    function setupMouseEvents(grid) {
-      grid.addEventListener('mousedown', handleMouseDown);
-      grid.addEventListener('mousemove', handleMouseMove);
-      grid.addEventListener('mouseup', handleMouseUp);
-      grid.addEventListener('mouseleave', handleMouseUp);
-    }
-
-    // Event handlers
-    function handleTouchStart(e) {
-      if (window.innerWidth > 768) return;
-      
-      const touch = e.touches[0];
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
-      touchEndX = touchStartX;
-      touchEndY = touchStartY;
-      isSwiping = false;
-      
-      const grid = document.querySelector('.schedule-grid');
-      startScrollLeft = grid.scrollLeft;
-      lastScrollLeft = startScrollLeft;
-      lastTimestamp = Date.now();
-      velocity = 0;
-    }
-
-    function handleTouchMove(e) {
-      if (window.innerWidth > 768) return;
-      
-      const touch = e.touches[0];
-      const deltaX = touch.clientX - touchStartX;
-      const deltaY = touch.clientY - touchStartY;
-      
-      // Jika belum menentukan arah, cek apakah horizontal atau vertikal
-      if (!isSwiping) {
-        const absDeltaX = Math.abs(deltaX);
-        const absDeltaY = Math.abs(deltaY);
-        
-        // Jika gerakan lebih dominan horizontal, mulai swipe
-        if (absDeltaX > absDeltaY && absDeltaX > 5) {
-          isSwiping = true;
-          e.preventDefault(); // Hanya prevent default jika horizontal swipe
-        }
-      }
-      
-      // Jika sedang swipe horizontal, gerakkan scroll
-      if (isSwiping) {
-        const grid = document.querySelector('.schedule-grid');
-        const newScrollLeft = startScrollLeft - deltaX;
-        
-        // Batasi scroll agar tidak keluar dari bounds
-        const maxScroll = grid.scrollWidth - grid.clientWidth;
-        grid.scrollLeft = Math.max(0, Math.min(maxScroll, newScrollLeft));
-        
-        // Update velocity untuk inertia
-        const now = Date.now();
-        const dt = now - lastTimestamp;
-        if (dt > 0) {
-          velocity = (grid.scrollLeft - lastScrollLeft) / dt;
-          lastScrollLeft = grid.scrollLeft;
-          lastTimestamp = now;
-        }
-        
-        e.preventDefault();
-      }
-    }
-
-    function handleTouchEnd(e) {
-      if (window.innerWidth > 768) return;
-      
-      if (isSwiping) {
-        // Terapkan inertia
-        applyInertia();
-        isSwiping = false;
-      }
-    }
-
-    function handleMouseDown(e) {
-      if (window.innerWidth > 768) return;
-      
-      touchStartX = e.clientX;
-      touchStartY = e.clientY;
-      touchEndX = touchStartX;
-      touchEndY = touchStartY;
-      isDragging = false;
-      isSwiping = false;
-      
-      const grid = document.querySelector('.schedule-grid');
-      startScrollLeft = grid.scrollLeft;
-      lastScrollLeft = startScrollLeft;
-      lastTimestamp = Date.now();
-      velocity = 0;
-      
-      grid.classList.add('grabbing');
-    }
-
-    function handleMouseMove(e) {
-      if (window.innerWidth > 768 || !isDragging) return;
-      
-      const deltaX = e.clientX - touchStartX;
-      const grid = document.querySelector('.schedule-grid');
-      const newScrollLeft = startScrollLeft - deltaX;
-      
-      // Batasi scroll
-      const maxScroll = grid.scrollWidth - grid.clientWidth;
-      grid.scrollLeft = Math.max(0, Math.min(maxScroll, newScrollLeft));
-      
-      // Update velocity
-      const now = Date.now();
-      const dt = now - lastTimestamp;
-      if (dt > 0) {
-        velocity = (grid.scrollLeft - lastScrollLeft) / dt;
-        lastScrollLeft = grid.scrollLeft;
-        lastTimestamp = now;
-      }
-    }
-
-    function handleMouseUp(e) {
-      if (window.innerWidth > 768) return;
-      
-      const grid = document.querySelector('.schedule-grid');
-      grid.classList.remove('grabbing');
-      
-      if (isDragging) {
-        applyInertia();
-        isDragging = false;
-      }
-    }
-
-    function handleScroll() {
-      if (window.innerWidth > 768) return;
-      
-      updateActiveCard();
-      updateDayIndicators();
-    }
-
-    // Inertia effect
-    function applyInertia() {
-      if (window.innerWidth > 768 || Math.abs(velocity) < 0.1) {
-        snapToNearestCard();
-        return;
-      }
-      
-      const grid = document.querySelector('.schedule-grid');
-      const friction = 0.95;
-      const minVelocity = 0.1;
-      
-      function animateInertia() {
-        if (Math.abs(velocity) < minVelocity) {
-          snapToNearestCard();
-          return;
-        }
-        
-        // Terapkan velocity dengan friction
-        const newScrollLeft = grid.scrollLeft + velocity * 16;
-        const maxScroll = grid.scrollWidth - grid.clientWidth;
-        
-        // Batasi scroll
-        if (newScrollLeft <= 0 || newScrollLeft >= maxScroll) {
-          snapToNearestCard();
-          return;
-        }
-        
-        grid.scrollLeft = newScrollLeft;
-        
-        // Kurangi velocity
-        velocity *= friction;
-        
-        // Lanjutkan animasi
-        requestAnimationFrame(animateInertia);
-      }
-      
-      requestAnimationFrame(animateInertia);
-    }
-
-    // Update kartu aktif berdasarkan scroll position
-    function updateActiveCard() {
-      const grid = document.querySelector('.schedule-grid');
-      if (!grid || dayCards.length === 0) return;
-      
-      const scrollPos = grid.scrollLeft;
-      const cardWidth = dayCards[0]?.offsetWidth || 300;
-      const gap = 16;
-      const center = scrollPos + (grid.clientWidth / 2);
-      
-      dayCards.forEach((card, index) => {
-        card.classList.remove('active-day');
-        card.style.transform = 'scale(0.95)';
-        
-        const cardStart = index * (cardWidth + gap);
-        const cardEnd = cardStart + cardWidth;
-        
-        if (center >= cardStart && center <= cardEnd) {
-          card.classList.add('active-day');
-          card.style.transform = 'scale(1)';
-          currentCardIndex = index;
-        }
-      });
-    }
-
-    // Setup indikator hari (dots)
-    function setupDayIndicators() {
-      // Hapus indikator lama jika ada
-      const oldIndicators = document.querySelector('.day-indicators');
-      if (oldIndicators) oldIndicators.remove();
-      
-      if (dayCards.length <= 1) return;
-      
-      const indicators = document.createElement('div');
-      indicators.className = 'day-indicators';
-      
-      dayCards.forEach((_, index) => {
-        const dot = document.createElement('div');
-        dot.className = `day-indicator ${index === currentCardIndex ? 'active' : ''}`;
-        dot.dataset.index = index;
-        dot.addEventListener('click', () => snapToCard(index));
-        indicators.appendChild(dot);
-      });
-      
-      const grid = document.querySelector('.schedule-grid');
-      if (grid && grid.parentNode) {
-        grid.parentNode.insertBefore(indicators, grid.nextSibling);
-      }
-    }
-
-    // Update indikator hari
-    function updateDayIndicators() {
-      const dots = document.querySelectorAll('.day-indicator');
-      dots.forEach((dot, index) => {
-        if (index === currentCardIndex) {
-          dot.classList.add('active');
-        } else {
-          dot.classList.remove('active');
-        }
-      });
-    }
-
-    // Snap ke kartu terdekat
-    function snapToNearestCard() {
-      if (window.innerWidth > 768) return;
-      
-      const grid = document.querySelector('.schedule-grid');
-      const scrollPos = grid.scrollLeft;
-      const cardWidth = dayCards[0]?.offsetWidth || 300;
-      const gap = 16;
-      
-      const index = Math.round(scrollPos / (cardWidth + gap));
-      snapToCard(index);
-    }
-
-    // Snap ke kartu spesifik
-    function snapToCard(index) {
-      if (window.innerWidth > 768) return;
-      
-      const grid = document.querySelector('.schedule-grid');
-      const cardWidth = dayCards[0]?.offsetWidth || 300;
-      const gap = 16;
-      
-      const targetScroll = Math.max(0, Math.min(
-        index * (cardWidth + gap),
-        grid.scrollWidth - grid.clientWidth
-      ));
-      
-      grid.scrollTo({
-        left: targetScroll,
-        behavior: 'smooth'
-      });
-      
-      currentCardIndex = Math.max(0, Math.min(index, dayCards.length - 1));
-      
-      // Update UI setelah animasi selesai
-      setTimeout(() => {
-        updateActiveCard();
-        updateDayIndicators();
-      }, 300);
-    }
-
-    // Auto snap ke hari ini saat load
-    function snapToToday() {
-      if (window.innerWidth > 768) return;
-      
-      const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-      const todayName = dayNames[new Date().getDay()];
-      
-      // Cari indeks kartu hari ini
-      const todayIndex = dayCards.findIndex(card => {
-        const header = card.querySelector('.day-header');
-        return header && header.textContent === todayName;
-      });
-      
-      // Jika ditemukan, snap ke kartu hari ini
-      if (todayIndex !== -1) {
-        setTimeout(() => {
-          snapToCard(todayIndex);
-          // Highlight kartu hari ini dengan efek
-          dayCards[todayIndex].classList.add('highlight-flash');
-          setTimeout(() => {
-            dayCards[todayIndex].classList.remove('highlight-flash');
-          }, 1000);
-        }, 500);
-      }
-    }
-
-    // Tambahkan petunjuk swipe
-    function addSwipeHint() {
-      if (document.querySelector('.swipe-hint') || window.innerWidth > 768) return;
-      
-      const hint = document.createElement('div');
-      hint.className = 'swipe-hint';
-      hint.innerHTML = '<i class="fas fa-arrow-left"></i> Geser untuk melihat hari lain <i class="fas fa-arrow-right"></i>';
-      
-      const grid = document.querySelector('.schedule-grid');
-      if (grid && grid.parentNode) {
-        grid.parentNode.insertBefore(hint, grid);
       }
     }
 
@@ -809,201 +684,109 @@
       return infoElement;
     }
 
-    // Toggle between classes
-    document.getElementById("btnClassA").addEventListener("click", function () {
-      this.classList.add("active");
-      document.getElementById("btnClassB").classList.remove("active");
-      document.getElementById("scheduleA").style.display = "block";
-      document.getElementById("scheduleB").style.display = "none";
-      markCurrentClass();
-      
-      // Setup ulang efek mobile jika di mobile
-      if (window.innerWidth <= 768) {
-        setTimeout(() => {
-          setupMobileSwipeEffect();
-          addSwipeHint();
-        }, 100);
-      }
-    });
+    // === SETUP EVENT LISTENERS ===
 
-    document.getElementById("btnClassB").addEventListener("click", function () {
-      this.classList.add("active");
-      document.getElementById("btnClassA").classList.remove("active");
-      document.getElementById("scheduleA").style.display = "none";
-      document.getElementById("scheduleB").style.display = "block";
-      markCurrentClass();
-      
-      // Setup ulang efek mobile jika di mobile
-      if (window.innerWidth <= 768) {
-        setTimeout(() => {
-          setupMobileSwipeEffect();
-          addSwipeHint();
-        }, 100);
-      }
-    });
-
-    // Toggle time format
-    document.getElementById("btn12Format").addEventListener("click", function () {
-      this.classList.add("active");
-      document.getElementById("btn24Format").classList.remove("active");
-      timeFormat = "12";
-      updateTimeDisplay();
-      markCurrentClass();
-    });
-
-    document.getElementById("btn24Format").addEventListener("click", function () {
-      this.classList.add("active");
-      document.getElementById("btn12Format").classList.remove("active");
-      timeFormat = "24";
-      updateTimeDisplay();
-      markCurrentClass();
-    });
-
-    // Mobile navigation buttons dengan logika mobile/desktop
-    document.getElementById('btnToday').addEventListener('click', function() {
-      this.classList.add('clicked');
-      setTimeout(() => this.classList.remove('clicked'), 300);
-      
-      if (window.innerWidth <= 768) {
-        snapToToday();
-      } else {
-        scrollToToday();
-      }
-    });
-
-    document.getElementById('btnCurrent').addEventListener('click', function() {
-      this.classList.add('clicked');
-      setTimeout(() => this.classList.remove('clicked'), 300);
-      
-      if (window.innerWidth <= 768) {
-        const activeItem = document.querySelector('.class-item.active');
-        if (activeItem) {
-          const dayCard = activeItem.closest('.day-card');
-          const cardIndex = Array.from(dayCards).indexOf(dayCard);
-          if (cardIndex !== -1) {
-            snapToCard(cardIndex);
-          }
-        } else {
-          const info = showStatusInfo('Tidak ada kelas yang sedang berlangsung');
-          info.scrollIntoView({ behavior: 'smooth' });
-        }
-      } else {
-        scrollToCurrent();
-      }
-    });
-
-    document.getElementById('btnTomorrow').addEventListener('click', function() {
-      this.classList.add('clicked');
-      setTimeout(() => this.classList.remove('clicked'), 300);
-      
-      if (window.innerWidth <= 768) {
-        const now = new Date();
-        const tomorrow = new Date(now);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowDay = days[tomorrow.getDay()];
+    function setupNavigationEvents() {
+      // Toggle between classes
+      document.getElementById("btnClassA").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btnClassB").classList.remove("active");
+        document.getElementById("scheduleA").style.display = "block";
+        document.getElementById("scheduleB").style.display = "none";
+        markCurrentClass();
         
-        const tomorrowIndex = dayCards.findIndex(card => {
-          return card.querySelector('.day-header').textContent === tomorrowDay;
-        });
-        
-        if (tomorrowIndex !== -1) {
-          snapToCard(tomorrowIndex);
-        } else {
-          const info = showStatusInfo('Tidak ada jadwal untuk besok');
-          info.scrollIntoView({ behavior: 'smooth' });
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            setupMobileSwipe();
+            addSwipeHint();
+          }, 100);
         }
-      } else {
-        scrollToTomorrow();
-      }
-    });
-
-    document.getElementById('btnAll').addEventListener('click', function() {
-      this.classList.add('clicked');
-      setTimeout(() => this.classList.remove('clicked'), 300);
-      
-      if (window.innerWidth <= 768) {
-        snapToCard(0); // Snap ke kartu pertama
-      } else {
-        scrollToAll();
-      }
-    });
-
-    // Fungsi scroll untuk desktop
-    function scrollToToday() {
-      const todayCard = document.querySelector('.today-highlight')?.closest('.day-card');
-      if (todayCard) {
-        todayCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        todayCard.classList.add('highlight-flash');
-        setTimeout(() => todayCard.classList.remove('highlight-flash'), 2000);
-      } else {
-        const info = showStatusInfo('Tidak ada jadwal untuk hari ini');
-        info.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    function scrollToCurrent() {
-      const activeItem = document.querySelector('.class-item.active');
-      if (activeItem) {
-        activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        activeItem.classList.add('highlight-flash');
-        setTimeout(() => activeItem.classList.remove('highlight-flash'), 2000);
-      } else {
-        const info = showStatusInfo('Tidak ada kelas yang sedang berlangsung');
-        info.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    function scrollToTomorrow() {
-      const now = new Date();
-      const tomorrow = new Date(now);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      const tomorrowDay = days[tomorrow.getDay()];
-      
-      const tomorrowCard = Array.from(document.querySelectorAll('.day-card')).find(card => {
-        return card.querySelector('.day-header').textContent === tomorrowDay;
       });
-      
-      if (tomorrowCard) {
-        tomorrowCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        tomorrowCard.classList.add('highlight-flash');
-        setTimeout(() => tomorrowCard.classList.remove('highlight-flash'), 2000);
-      } else {
-        const info = showStatusInfo('Tidak ada jadwal untuk besok');
-        info.scrollIntoView({ behavior: 'smooth' });
-      }
+
+      document.getElementById("btnClassB").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btnClassA").classList.remove("active");
+        document.getElementById("scheduleA").style.display = "none";
+        document.getElementById("scheduleB").style.display = "block";
+        markCurrentClass();
+        
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            setupMobileSwipe();
+            addSwipeHint();
+          }, 100);
+        }
+      });
+
+      // Toggle time format
+      document.getElementById("btn12Format").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btn24Format").classList.remove("active");
+        timeFormat = "12";
+        updateTimeDisplay();
+        markCurrentClass();
+      });
+
+      document.getElementById("btn24Format").addEventListener("click", function () {
+        this.classList.add("active");
+        document.getElementById("btn12Format").classList.remove("active");
+        timeFormat = "24";
+        updateTimeDisplay();
+        markCurrentClass();
+      });
+
+      // Mobile navigation buttons
+      document.getElementById('btnToday').addEventListener('click', function() {
+        this.classList.add('clicked');
+        setTimeout(() => this.classList.remove('clicked'), 300);
+        navigateToToday();
+      });
+
+      document.getElementById('btnCurrent').addEventListener('click', function() {
+        this.classList.add('clicked');
+        setTimeout(() => this.classList.remove('clicked'), 300);
+        navigateToCurrent();
+      });
+
+      document.getElementById('btnTomorrow').addEventListener('click', function() {
+        this.classList.add('clicked');
+        setTimeout(() => this.classList.remove('clicked'), 300);
+        navigateToTomorrow();
+      });
+
+      document.getElementById('btnAll').addEventListener('click', function() {
+        this.classList.add('clicked');
+        setTimeout(() => this.classList.remove('clicked'), 300);
+        navigateToAll();
+      });
     }
 
-    function scrollToAll() {
-      const scheduleGrid = document.querySelector('.schedule-grid');
-      if (scheduleGrid) {
-        scheduleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
+    // === INITIALIZATION ===
 
-    // Window resize handler
-    window.addEventListener('resize', function() {
-      if (window.innerWidth <= 768) {
-        setTimeout(() => {
-          setupMobileSwipeEffect();
-        }, 300);
-      }
-    });
-
-    // Panggil fungsi saat halaman dimuat
     document.addEventListener("DOMContentLoaded", function () {
       // Ambil data jadwal dari API
       fetchSchedules();
       
+      // Setup event listeners navigasi
+      setupNavigationEvents();
+      
       // Set interval untuk update status setiap menit
       setInterval(markCurrentClass, 60000);
       
-      // Nonaktifkan efek hover pada perangkat mobile
-      if (window.matchMedia("(max-width: 768px)").matches) {
-        document.querySelectorAll('.day-card').forEach(card => {
-          card.style.transform = 'scale(1)';
-          card.style.boxShadow = 'var(--card-shadow)';
-        });
-      }
+      // Setup resize handler
+      window.addEventListener('resize', function() {
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            setupMobileSwipe();
+          }, 300);
+        } else {
+          // Reset transform di desktop
+          document.querySelectorAll('.day-card').forEach(card => {
+            card.style.transform = '';
+            card.classList.remove('active-day');
+          });
+        }
+      });
     });
   </script>
 </body>
