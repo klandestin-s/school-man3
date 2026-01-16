@@ -70,24 +70,22 @@
     </section>
 
     <!-- Jadwal Hari Ini -->
-    <section class="schedule-section">
+    <section class="schedule-section compact">
       <div class="section-header">
         <h2 class="section-title">Jadwal Hari Ini</h2>
         <div class="date-info">
           <span id="currentDate" class="date-text">Memuat...</span>
-          <span id="currentDay" class="day-text"></span>
         </div>
       </div>
       
-      <div class="schedule-container">
+      <div class="schedule-container compact">
         <div class="loading-spinner" id="loadingSpinner">
           <i class="fas fa-spinner fa-spin"></i>
-          <p>Memuat jadwal...</p>
         </div>
         <div class="schedule-list" id="todaySchedule">
           <!-- Diisi oleh JavaScript dari API -->
         </div>
-        <a href="jadwal.html" class="view-full-btn">
+        <a href="jadwal.html" class="view-full-btn compact">
           Lihat jadwal lengkap <i class="fas fa-arrow-right"></i>
         </a>
       </div>
@@ -245,9 +243,108 @@
       const year = now.getFullYear();
       
       document.getElementById('currentDate').textContent = `${date} ${month} ${year}`;
-      document.getElementById('currentDay').textContent = dayName;
       
       return dayName;
+    }
+
+    // Fungsi untuk mendapatkan status jadwal
+    function getScheduleStatus(todaySchedule) {
+        const now = new Date();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
+        
+        if (!todaySchedule || todaySchedule.length === 0) {
+            return { status: 'no-schedule', message: 'Tidak ada jadwal untuk hari ini' };
+        }
+        
+        // Urutkan jadwal berdasarkan waktu
+        todaySchedule.sort((a, b) => {
+            const timeA = convertTo24Hour(a.startTime);
+            const timeB = convertTo24Hour(b.startTime);
+            return timeA.localeCompare(timeB);
+        });
+        
+        // Cari jadwal yang sedang berlangsung
+        const currentClass = todaySchedule.find(item => {
+            const start = convertTo24Hour(item.startTime);
+            const end = convertTo24Hour(item.endTime);
+            const [startHours, startMinutes] = start.split(':').map(Number);
+            const [endHours, endMinutes] = end.split(':').map(Number);
+            const startTotal = startHours * 60 + startMinutes;
+            const endTotal = endHours * 60 + endMinutes;
+            
+            return currentTime >= startTotal && currentTime <= endTotal;
+        });
+        
+        if (currentClass) {
+            return { 
+                status: 'ongoing', 
+                message: 'Kelas sedang berlangsung',
+                currentClass: currentClass
+            };
+        }
+        
+        // Cari jadwal berikutnya
+        const nextClass = todaySchedule.find(item => {
+            const start = convertTo24Hour(item.startTime);
+            const [startHours, startMinutes] = start.split(':').map(Number);
+            const startTotal = startHours * 60 + startMinutes;
+            return currentTime < startTotal;
+        });
+        
+        if (nextClass) {
+            // Hitung waktu tunggu
+            const start = convertTo24Hour(nextClass.startTime);
+            const [startHours, startMinutes] = start.split(':').map(Number);
+            const startTotal = startHours * 60 + startMinutes;
+            const waitMinutes = startTotal - currentTime;
+            
+            if (waitMinutes <= 5) {
+                return { 
+                    status: 'starting-soon', 
+                    message: 'Kelas akan segera dimulai',
+                    nextClass: nextClass
+                };
+            } else if (waitMinutes <= 30) {
+                return { 
+                    status: 'next-soon', 
+                    message: 'Kelas berikutnya tidak lama lagi',
+                    nextClass: nextClass,
+                    waitTime: waitMinutes
+                };
+            }
+        }
+        
+        // Cek apakah semua jadwal sudah selesai
+        const lastClass = todaySchedule[todaySchedule.length - 1];
+        const end = convertTo24Hour(lastClass.endTime);
+        const [endHours, endMinutes] = end.split(':').map(Number);
+        const endTotal = endHours * 60 + endMinutes;
+        
+        if (currentTime > endTotal) {
+            return { 
+                status: 'finished', 
+                message: 'Semua kelas hari ini telah selesai'
+            };
+        }
+        
+        // Cek apakah belum ada jadwal yang dimulai
+        const firstClass = todaySchedule[0];
+        const firstStart = convertTo24Hour(firstClass.startTime);
+        const [firstStartHours, firstStartMinutes] = firstStart.split(':').map(Number);
+        const firstStartTotal = firstStartHours * 60 + firstStartMinutes;
+        
+        if (currentTime < firstStartTotal) {
+            const waitMinutes = firstStartTotal - currentTime;
+            return { 
+                status: 'not-started', 
+                message: 'Belum ada kelas yang dimulai',
+                firstClass: firstClass,
+                waitTime: waitMinutes
+            };
+        }
+        
+        // Default: ada jadwal
+        return { status: 'has-schedule', message: 'Jadwal hari ini' };
     }
 
     // Fungsi untuk mengambil data jadwal dari API
@@ -287,9 +384,10 @@
         scheduleList.innerHTML = `
           <div class="empty-schedule">
             <i class="fas fa-exclamation-triangle"></i>
-            <p>Gagal memuat jadwal dari server</p>
-            <p class="error-detail">${error.message}</p>
-            <p class="error-detail">Pastikan koneksi internet stabil atau coba lagi nanti</p>
+            <h4>Gagal Memuat Jadwal</h4>
+            <p>${error.message}</p>
+            <p class="schedule-detail">Pastikan koneksi internet stabil</p>
+            <p class="schedule-tip">Silakan coba refresh atau coba lagi nanti</p>
           </div>
         `;
       } finally {
@@ -307,7 +405,10 @@
         scheduleList.innerHTML = `
           <div class="empty-schedule">
             <i class="fas fa-umbrella-beach"></i>
-            <p>Hari ini libur, tidak ada jadwal pelajaran.</p>
+            <h4>Hari Ini Libur</h4>
+            <p>${todayName} adalah hari libur</p>
+            <p class="schedule-detail">Tidak ada jadwal pelajaran</p>
+            <p class="schedule-tip">Gunakan waktu untuk istirahat atau belajar mandiri</p>
           </div>
         `;
         return;
@@ -315,43 +416,115 @@
       
       // Ambil jadwal untuk kelas XI A (default)
       const todaySchedule = scheduleData["XI A"][todayName];
+      const status = getScheduleStatus(todaySchedule);
       
-      if (!todaySchedule || todaySchedule.length === 0) {
+      // Tampilkan berdasarkan status
+      if (status.status === 'no-schedule') {
         scheduleList.innerHTML = `
           <div class="empty-schedule">
             <i class="fas fa-calendar-times"></i>
-            <p>Tidak ada jadwal untuk hari ini.</p>
-            <p class="error-detail">Data jadwal belum tersedia untuk ${todayName}</p>
+            <h4>Tidak Ada Jadwal</h4>
+            <p>${status.message}</p>
+            <p class="schedule-detail">Hari ${todayName} belum memiliki jadwal</p>
+            <p class="schedule-tip">Hubungi wali kelas untuk informasi lebih lanjut</p>
           </div>
         `;
         return;
       }
       
-      // Urutkan berdasarkan waktu
-      todaySchedule.sort((a, b) => {
-        const timeA = convertTo24Hour(a.startTime);
-        const timeB = convertTo24Hour(b.startTime);
-        return timeA.localeCompare(timeB);
-      });
+      if (!todaySchedule || todaySchedule.length === 0) {
+        scheduleList.innerHTML = `
+          <div class="empty-schedule">
+            <i class="fas fa-calendar-times"></i>
+            <h4>Belum Ada Jadwal</h4>
+            <p>Data jadwal untuk ${todayName} sedang dipersiapkan</p>
+            <p class="schedule-detail">Silakan coba lagi nanti</p>
+          </div>
+        `;
+        return;
+      }
       
-      // Tampilkan maksimal 4 pelajaran untuk preview
-      const previewCount = Math.min(todaySchedule.length, 4);
-      let html = '';
+      // Tampilkan status info
+      let statusHTML = '';
+      switch(status.status) {
+        case 'ongoing':
+          statusHTML = `
+            <div class="schedule-status ongoing">
+              <i class="fas fa-chalkboard-teacher"></i>
+              <div>
+                <strong>Kelas Sedang Berlangsung</strong>
+                <span>${status.currentClass.subject} dengan ${status.currentClass.teacher || 'Guru'}</span>
+              </div>
+            </div>
+          `;
+          break;
+        case 'starting-soon':
+          statusHTML = `
+            <div class="schedule-status starting-soon">
+              <i class="fas fa-hourglass-start"></i>
+              <div>
+                <strong>${status.message}</strong>
+                <span>${status.nextClass.subject} pukul ${status.nextClass.startTime}</span>
+              </div>
+            </div>
+          `;
+          break;
+        case 'next-soon':
+          statusHTML = `
+            <div class="schedule-status next-soon">
+              <i class="fas fa-clock"></i>
+              <div>
+                <strong>${status.message}</strong>
+                <span>${status.nextClass.subject} dalam ${status.waitTime} menit</span>
+              </div>
+            </div>
+          `;
+          break;
+        case 'finished':
+          statusHTML = `
+            <div class="schedule-status finished">
+              <i class="fas fa-check-circle"></i>
+              <div>
+                <strong>${status.message}</strong>
+                <span>Selamat! Semua kelas hari ini telah selesai</span>
+              </div>
+            </div>
+          `;
+          break;
+        case 'not-started':
+          statusHTML = `
+            <div class="schedule-status not-started">
+              <i class="fas fa-coffee"></i>
+              <div>
+                <strong>${status.message}</strong>
+                <span>Kelas pertama: ${status.firstClass.subject} pukul ${status.firstClass.startTime}</span>
+              </div>
+            </div>
+          `;
+          break;
+        default:
+          statusHTML = '';
+      }
+      
+      // Tampilkan maksimal 2 jadwal untuk preview
+      const previewCount = Math.min(todaySchedule.length, 2);
+      let scheduleHTML = '';
       
       for (let i = 0; i < previewCount; i++) {
         const item = todaySchedule[i];
         const isCurrent = checkIfCurrentClass(item.startTime, item.endTime);
         
-        html += `
+        scheduleHTML += `
           <div class="schedule-item ${isCurrent ? 'active' : ''}">
             <div class="schedule-time">
               <i class="far fa-clock"></i>
               <span>${item.startTime} - ${item.endTime}</span>
-              ${isCurrent ? '<span class="current-badge">Sedang Berlangsung</span>' : ''}
+              ${isCurrent ? '<span class="current-badge">Sekarang</span>' : ''}
             </div>
             <div class="schedule-details">
               <h4 class="subject-name">${item.subject}</h4>
               <p class="teacher-name">${item.teacher || 'Guru'}</p>
+              ${item.room ? `<p class="room-info"><i class="fas fa-door-open"></i> ${item.room}</p>` : ''}
             </div>
             <div class="schedule-icon">
               <i class="fas ${item.icon || 'fa-book'}"></i>
@@ -360,17 +533,17 @@
         `;
       }
       
-      // Jika ada lebih dari 4 pelajaran, tambahkan indikator
-      if (todaySchedule.length > 4) {
-        html += `
+      // Jika ada lebih dari 2 pelajaran, tambahkan indikator
+      if (todaySchedule.length > 2) {
+        scheduleHTML += `
           <div class="schedule-more">
             <i class="fas fa-ellipsis-h"></i>
-            <span>+${todaySchedule.length - 4} pelajaran lainnya</span>
+            <span>+${todaySchedule.length - 2} pelajaran lainnya</span>
           </div>
         `;
       }
       
-      scheduleList.innerHTML = html;
+      scheduleList.innerHTML = statusHTML + scheduleHTML;
     }
 
     // Helper functions
@@ -449,8 +622,9 @@
       scheduleList.innerHTML = `
         <div class="empty-schedule">
           <i class="fas fa-wifi-slash"></i>
-          <p>Koneksi internet terputus. Tidak dapat memuat jadwal terbaru.</p>
-          <p class="error-detail">Silakan refresh saat koneksi tersedia</p>
+          <h4>Koneksi Terputus</h4>
+          <p>Tidak dapat memuat jadwal terbaru</p>
+          <p class="schedule-detail">Silakan refresh saat koneksi tersedia</p>
         </div>
       `;
     });
