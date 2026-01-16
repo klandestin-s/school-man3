@@ -1,347 +1,473 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Our Class School - Class XI</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
-    <link rel="icon" href="https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/tmp/a3dfa2f5.jpg" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="container">
-        <div class="navbar-logo">Class XI</div>
-        <ul class="navbar-menu">
-          <li><a href="#schedule">Jadwal</a></li>
-          <li><a href="#about">Tentang</a></li>
-          <li><a href="#stats">Statistik</a></li>
-          <li><a href="#structure">Struktur</a></li>
-          <li><a href="#photos">Galeri</a></li>
-          <li><a href="#events">Momen</a></li>
-          <li><a href="#stories">Cerita</a></li>
-        </ul>
-      </div>
-    </nav>
-    <!-- Header -->
-    <header>
-      <div class="header-icons">
-        <!-- Randomly placed icons -->
-        <div class="header-icon" style="top: 10%; left: 15%"><i class="fas fa-graduation-cap"></i></div>
-        <div class="header-icon" style="top: 25%; left: 80%"><i class="fas fa-book"></i></div>
-        <div class="header-icon" style="top: 65%; left: 10%"><i class="fas fa-atom"></i></div>
-        <div class="header-icon" style="top: 45%; left: 70%"><i class="fas fa-flask"></i></div>
-        <div class="header-icon" style="top: 75%; left: 85%"><i class="fas fa-calculator"></i></div>
-        <div class="header-icon" style="top: 30%; left: 45%"><i class="fas fa-globe"></i></div>
-      </div>
-
-      <div class="container header-content">
-        <h1 class="class-name">Class XI</h1>
-        <p class="tagline">Website Portfolio Sederhana Kami :)</p>
-        <div class="graduation-year">Angkatan 2024-2027</div>
-      </div>
-    </header>
-
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Kelas - MAN 3 BATANGHARI</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/tmp/a3dfa2f5.jpg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Hero Section -->
+  <header class="hero-section">
     <div class="container">
-      <!-- Jadwal Section -->
-      <section id="schedule">
-        <div class="section-header">
-          <h2><i class="fas fa-calendar-alt"></i> Jadwal Kelas</h2>
-        </div>
-
-        <div class="schedule-link">
-          <a href="jadwal.html" class="schedule-btn"> <i class="fas fa-calendar-check"></i> Lihat Jadwal Pelajaran </a>
-        </div>
-      </section>
-      <!-- Tentang Kelas Kami Section -->
-      <section id="about">
-        <div class="section-header">
-          <h2><i class="fas fa-users"></i> Tentang Kelas Kami</h2>
-        </div>
-
-        <div class="about-content">
-          <p>Class XI adalah keluarga kecil yang penuh canda, semangat belajar, dan solidaritas tinggi. Di balik setiap tawa dan konflik kecil, ada ikatan yang kuat yang terbentuk selama satu tahun perjalanan bersama.</p>
-        </div>
-      </section>
-
-      <!-- Statistik Kelas Section -->
-      <section id="stats">
-        <div class="section-header">
-          <h2><i class="fas fa-chart-pie"></i> Statistik Kelas</h2>
-        </div>
-
-        <div class="stats-container">
-          <div class="stat-box">
-            <div class="stat-value">21</div>
-            <div class="stat-label">Total Siswa</div>
-          </div>
-
-          <div class="stat-box">
-            <div class="stat-value">11</div>
-            <div class="stat-label">Siswi</div>
-          </div>
-
-          <div class="stat-box">
-            <div class="stat-value">10</div>
-            <div class="stat-label">Siswa</div>
-          </div>
-
-          <div class="stat-box">
-            <div class="stat-value">-</div>
-            <div class="stat-label">Prestasi</div>
-          </div>
-
-          <div class="stat-box">
-            <div class="stat-value">-</div>
-            <div class="stat-label">Jumlah Piala</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Struktur Kelas Section -->
-      <section id="structure">
-        <div class="section-header">
-          <h2><i class="fas fa-sitemap"></i> Struktur Kelas</h2>
-        </div>
-
-        <div class="structure-grid">
-          <div class="role-card">
-            <div class="role-icon"><i class="fas fa-user-tie"></i></div>
-            <div class="role-title">Wali Kelas</div>
-            <div class="role-name">Siska Felani. S.Pd</div>
-          </div>
-
-          <div class="role-card">
-            <div class="role-icon"><i class="fas fa-user-graduate"></i></div>
-            <div class="role-title">Ketua Kelas</div>
-            <div class="role-name">Ragil Vanca</div>
-          </div>
-
-          <div class="role-card">
-            <div class="role-icon"><i class="fas fa-user-friends"></i></div>
-            <div class="role-title">Wakil Ketua</div>
-            <div class="role-name">M.R Al-Qodri</div>
-          </div>
-
-          <div class="role-card">
-            <div class="role-icon"><i class="fas fa-clipboard-list"></i></div>
-            <div class="role-title">Sekretaris</div>
-            <div class="role-name">Meiza</div>
-            <div class="role-name">Syarifa</div>
-          </div>
-
-          <div class="role-card">
-            <div class="role-icon"><i class="fas fa-coins"></i></div>
-            <div class="role-title">Bendahara</div>
-             <div class="role-name">Lidya</div>
-            <div class="role-name">Ririn</div>
-          </div>
-
-          <div class="role-card">
-            <div class="role-icon"><i class="fas fa-pray"></i></div>
-            <div class="role-title">Keagamaan</div>
-            <div class="role-name">Riskia Ananda</div>
-            <div class="role-name">Farez</div>
-          </div>
-
-          <div class="role-card">
-            <div class="role-icon"><i class="fas fa-shield-alt"></i></div>
-            <div class="role-title">Keamanan</div>
-            <div class="role-name">Putri Amana</div>
-            <div class="role-name">Ayu Puji</div>
-          </div>
-
-          <div class="role-card">
-            <div class="role-icon"><i class="fas fa-broom"></i></div>
-            <div class="role-title">Kebersihan</div>
-            <div class="role-name">Lara</div>
-          </div>
-        </div>
-      </section>
-      <!-- Class Photos Section -->
-      <section id="photos">
-        <div class="section-header">
-          <h2><i class="fas fa-camera"></i> Gallery Class</h2>
-        </div>
-
-        <div class="gallery">
-          <div class="gallery-item">
-            <div class="gallery-placeholder" style="background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal))">-1 Kenangan</div>
-            <div class="gallery-caption">kenangan -1</div>
-          </div>
-
-        <!-- Di bagian galeri, ubah item pertama -->
-<div class="gallery-item">
-  <a href="gallery1.html">
-    <div class="gallery-placeholder" style="background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal))">
-      Foto Bersama terakhir X-A
-    </div>
-    <div class="gallery-caption">Foto Bersama terakhir di X-A</div>
-  </a>
-</div>
-
-          <div class="gallery-item">
-            <div class="gallery-placeholder" style="background: linear-gradient(135deg, var(--accent-orange), #ef6c00)">kenangan -2</div>
-            <div class="gallery-caption">kenangan -2</div>
-          </div>
-
-          <div class="gallery-item">
-            <div class="gallery-placeholder" style="background: linear-gradient(135deg, #5e35b1, #4527a0)">kenangan -3</div>
-            <div class="gallery-caption">kenangan -3</div>
-          </div>
-
-          <div class="gallery-item">
-            <div class="gallery-placeholder" style="background: linear-gradient(135deg, var(--primary-blue), #1565c0)">kenangan -4</div>
-            <div class="gallery-caption">Kenangan -4</div>
-          </div>
-
-          <div class="gallery-item">
-            <div class="gallery-placeholder" style="background: linear-gradient(135deg, var(--accent-teal), #00838f)">kenangan -5</div>
-            <div class="gallery-caption">Kenangan -5</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Memorable Events Section -->
-      <section id="events">
-        <div class="section-header">
-          <h2><i class="fas fa-calendar-day"></i> Momen Berkesan</h2>
-        </div>
-
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="timeline-content">
-              <div class="timeline-date"><i class="fas fa-calendar-day"></i> 14 Juli 2025</div>
-              <h3>Hari Pertama Kelas XI- A</h3>
-              <p>Semua siswa masuk dengan peralatan baru dan semangat baru. Bapak/ Ibu Guru memberikan motivasi untuk semangat belajar pada tahun ini.</p>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-content">
-              <div class="timeline-date"><i class="fas fa-calendar-day"></i> 17 Agustus 2025</div>
-              <h3>Lomba 17-an</h3>
-              --<!-- <p>Kelas kami memenangkan lomba tarik tambang dan makan kerupuk. Andi jatuh saat lomba balap karung dan menjadi bahan candaan seharian.</p> -->
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-content">
-              <div class="timeline-date"><i class="fas fa-calendar-day"></i> -</div>
-              <h3>Peringatan Hari Guru</h3>
-              --<!-- <p>Kami menyiapkan kejutan untuk para guru dengan lagu dan puisi. Bu Siti menangis terharu mendengar puisi yang kami bacakan.</p> -->
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-content">
-              <div class="timeline-date"><i class="fas fa-calendar-day"></i>Jalan-jalan study tour</div>
-              <h3>Studi ---</h3>
-              <p>Perjalanan seru dengan bus sekolah dan -- .</p>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-content">
-              <div class="timeline-date"><i class="fas fa-calendar-day"></i> ada yang mau nambah ?.</div>
-              <h3>--</h3>
-              <p>--</p>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-content">
-              <div class="timeline-date"><i class="fas fa-calendar-day"></i> --</div>
-              <h3>Perpisahan Kelas</h3>
-              <p>--</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Stories Section -->
-      <section id="stories">
-        <div class="section-header">
-          <h2><i class="fas fa-book-open"></i> Cerita & Kenangan</h2>
-        </div>
-        <div class="story">
-          <div class="story-header">
-            <div class="story-avatar">
-              <i class="fas fa-user-tie"></i>
-            </div>
-            <div>
-              <div class="story-author">Siska Felani S.Pd</div>
-              <div class="story-role">Wali Kelas</div>
-            </div>
-          </div>
-          <div class="quote-icon">
-            <i class="fas fa-quote-left"></i>
-          </div>
-          <div class="story-content">
-            --<!-- Selama 3 tahun membimbing XII IPA 3, saya melihat perkembangan yang luar biasa. Dari kelas yang awalnya sulit diatur, menjadi kelas paling kompak dan berprestasi. Saya bangga melihat kalian tumbuh menjadi pribadi yang
-            bertanggung jawab. Jangan pernah berhenti belajar dan teruslah menjadi pembelajar seumur hidup. Kalian adalah generasi emas bangsa ini. -->
-          </div>
-        </div>
-        <div class="story">
-          <div class="story-header">
-            <div class="story-avatar">
-              <i class="fas fa-user-graduate"></i>
-            </div>
-            <div>
-              <div class="story-author">Ragil Vanca</div>
-              <div class="story-role">Ketua Kelas</div>
-            </div>
-          </div>
-          <div class="quote-icon">
-            <i class="fas fa-quote-left"></i>
-          </div>
-          <div class="story-content">
-            --<!-- Aku tidak akan pernah lupa bagaimana kita semua bekerja sama untuk acara pentas seni. Meskipun awalnya banyak konflik dan perbedaan pendapat, tapi akhirnya kita bisa menampilkan pertunjukan terbaik. Malam puncak saat kita semua
-            berdiri di panggung, berpelukan sambil menangis, itu adalah momen paling berharga di SMA. -->
-          </div>
-        </div>
-
-        <div class="story">
-          <div class="story-header">
-            <div class="story-avatar">
-              <i class="fas fa-user"></i>
-            </div>
-            <div>
-              <div class="story-author">M.R Qodri</div>
-              <div class="story-role">Siswa</div>
-            </div>
-          </div>
-          <div class="quote-icon">
-            <i class="fas fa-quote-left"></i>
-          </div>
-          <div class="story-content">
-            Kenangan paling konyol tapi berkesan adalah saat aku jatuh dari panggung saat latihan drama. Alih-alih menolong, kalian semua malah tertawa terpingkal-pingkal! Tapi justru setelah kejadian itu, kita menjadi lebih akrab. Terima
-            kasih sudah menerima kekonyolanku dan membuat masa SMA/MAN menjadi sangat menyenangkan.
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-      <div class="pattern"></div>
-      <div class="container footer-content">
-        <div class="footer-logo">Class XI</div>
-        <p>Kenangan Abadi Kelas 2025-2026</p>
-
-        <div class="footer-quote">"Masa SMA/MAN adalah bab tak terlupakan dalam buku kehidupan kita, di mana tawa dan air mata menari bersama dalam irama persahabatan."</div>
-
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
-        </div>
-
-        <div class="copyright">&copy; 2024 Kenangan Kelas XI. Seluruh kenangan terabadikan dalam hati.</div>
+      <div class="hero-content">
+        <h1 class="class-title">Kelas XI</h1>
+        <p class="class-subtitle">MAN 3 BATANGHARI</p>
+        <p class="class-year">Tahun Ajaran 2025/2026</p>
       </div>
-    </footer>
-  </body>
-</html>
+    </div>
+  </header>
 
+  <main class="container">
+    <!-- Info Ringkas Kelas -->
+    <section class="info-section">
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-school"></i>
+          </div>
+          <h3>Sekolah</h3>
+          <p>MAN 3 BATANGHARI</p>
+          <p class="info-detail">Madrasah Aliyah Negeri</p>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-chalkboard-teacher"></i>
+          </div>
+          <h3>Wali Kelas</h3>
+          <p>SISKA FELANI S.PD.I</p>
+          <p class="info-detail">Guru Pengampu</p>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fas fa-code"></i>
+          </div>
+          <h3>Pembuat Web</h3>
+          <p>DDI M.A</p>
+          <p class="info-detail">Developer Kelas</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Action Buttons -->
+    <section class="action-section">
+      <h2 class="section-title">Akses Cepat</h2>
+      <div class="action-buttons">
+        <a href="jadwal.html" class="action-btn btn-primary">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Lihat Jadwal Lengkap</span>
+        </a>
+        <button id="refreshSchedule" class="action-btn btn-secondary">
+          <i class="fas fa-sync-alt"></i>
+          <span>Refresh Jadwal</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Jadwal Hari Ini -->
+    <section class="schedule-section">
+      <div class="section-header">
+        <h2 class="section-title">Jadwal Hari Ini</h2>
+        <div class="date-info">
+          <span id="currentDate" class="date-text">Memuat...</span>
+          <span id="currentDay" class="day-text"></span>
+        </div>
+      </div>
+      
+      <div class="schedule-container">
+        <div class="loading-spinner" id="loadingSpinner">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Memuat jadwal...</p>
+        </div>
+        <div class="schedule-list" id="todaySchedule">
+          <!-- Diisi oleh JavaScript dari API -->
+        </div>
+        <a href="jadwal.html" class="view-full-btn">
+          Lihat jadwal lengkap <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- Momen Kelas -->
+    <section class="moments-section">
+      <h2 class="section-title">Momen Kelas</h2>
+      <div class="moments-grid" id="momentsGrid">
+        <!-- Momen 1 -->
+        <div class="moment-card">
+          <div class="moment-image">
+            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                 alt="Belajar di kelas" 
+                 loading="lazy">
+          </div>
+          <div class="moment-content">
+            <h3>Belajar Bersama di Kelas</h3>
+            <p>Sesi belajar intensif menjelang ujian semester. Semua siswa fokus dan serius mengerjakan latihan soal.</p>
+            <div class="moment-date">
+              <i class="far fa-calendar"></i> 15 Januari 2025
+            </div>
+          </div>
+        </div>
+
+        <!-- Momen 2 -->
+        <div class="moment-card">
+          <div class="moment-image">
+            <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                 alt="Diskusi kelompok" 
+                 loading="lazy">
+          </div>
+          <div class="moment-content">
+            <h3>Diskusi Kelompok</h3>
+            <p>Diskusi materi pelajaran dalam kelompok kecil. Berbagi pengetahuan dan saling membantu memahami konsep.</p>
+            <div class="moment-date">
+              <i class="far fa-calendar"></i> 10 Januari 2025
+            </div>
+          </div>
+        </div>
+
+        <!-- Momen 3 -->
+        <div class="moment-card">
+          <div class="moment-image">
+            <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                 alt="Kegiatan outdoor" 
+                 loading="lazy">
+          </div>
+          <div class="moment-content">
+            <h3>Kegiatan Outdoor</h3>
+            <p>Kegiatan belajar di luar kelas untuk refreshing dan mendapatkan suasana baru dalam belajar.</p>
+            <div class="moment-date">
+              <i class="far fa-calendar"></i> 5 Januari 2025
+            </div>
+          </div>
+        </div>
+
+        <!-- Momen 4 -->
+        <div class="moment-card">
+          <div class="moment-image">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                 alt="Presentasi project" 
+                 loading="lazy">
+          </div>
+          <div class="moment-content">
+            <h3>Presentasi Project</h3>
+            <p>Sesi presentasi hasil project kelompok di depan kelas. Melatih kemampuan public speaking dan komunikasi.</p>
+            <div class="moment-date">
+              <i class="far fa-calendar"></i> 20 Desember 2024
+            </div>
+          </div>
+        </div>
+
+        <!-- Momen 5 -->
+        <div class="moment-card">
+          <div class="moment-image">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                 alt="Kegiatan ekskul" 
+                 loading="lazy">
+          </div>
+          <div class="moment-content">
+            <h3>Kegiatan Ekstrakurikuler</h3>
+            <p>Partisipasi aktif dalam berbagai kegiatan ekstrakurikuler sekolah untuk pengembangan diri.</p>
+            <div class="moment-date">
+              <i class="far fa-calendar"></i> 15 Desember 2024
+            </div>
+          </div>
+        </div>
+
+        <!-- Momen 6 -->
+        <div class="moment-card">
+          <div class="moment-image">
+            <img src="https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                 alt="Class meeting" 
+                 loading="lazy">
+          </div>
+          <div class="moment-content">
+            <h3>Class Meeting</h3>
+            <p>Kegiatan class meeting dengan berbagai perlombaan untuk meningkatkan kekompakan antar siswa.</p>
+            <div class="moment-date">
+              <i class="far fa-calendar"></i> 10 Desember 2024
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Kelas XI</h3>
+          <p>MAN 3 BATANGHARI</p>
+        </div>
+        <div class="footer-info">
+          <p><i class="fas fa-user-graduate"></i> Angkatan 2024/2025</p>
+          <p><i class="fas fa-calendar-alt"></i> Tahun Ajaran 2025/2026</p>
+          <p><i class="fas fa-chalkboard-teacher"></i> Wali Kelas: SISKA FELANI S.PD.I</p>
+          <p><i class="fas fa-code"></i> Developed by: DDI M.A</p>
+        </div>
+        <div class="footer-links">
+          <a href="jadwal.html" class="footer-link">
+            <i class="fas fa-calendar-alt"></i> Jadwal Kelas
+          </a>
+          <a href="#" class="footer-link">
+            <i class="fas fa-info-circle"></i> Tentang Kelas
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Kelas XI MAN 3 BATANGHARI. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Variabel global untuk data jadwal
+    let scheduleData = {
+      "XI A": {},
+      "XI B": {}
+    };
+
+    // API URL untuk jadwal (gunakan GitHub raw URL)
+    const API_URL = 'https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/data/jadwal.json';
+
+    // Daftar hari dalam bahasa Indonesia
+    const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+    // Update tanggal dan hari
+    function updateDateTime() {
+      const now = new Date();
+      const dayIndex = now.getDay();
+      const dayName = days[dayIndex];
+      const date = now.getDate();
+      const month = now.toLocaleDateString('id-ID', { month: 'long' });
+      const year = now.getFullYear();
+      
+      document.getElementById('currentDate').textContent = `${date} ${month} ${year}`;
+      document.getElementById('currentDay').textContent = dayName;
+      
+      return dayName;
+    }
+
+    // Ambil data jadwal dari API
+    async function fetchScheduleData() {
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      const scheduleList = document.getElementById('todaySchedule');
+      
+      try {
+        loadingSpinner.style.display = 'flex';
+        scheduleList.innerHTML = '';
+        
+        const response = await fetch(API_URL);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Proses data jadwal
+        scheduleData = { "XI A": {}, "XI B": {} };
+        
+        data.forEach((item) => {
+          if (!scheduleData[item.class][item.day]) {
+            scheduleData[item.class][item.day] = [];
+          }
+          scheduleData[item.class][item.day].push(item);
+        });
+        
+        // Tampilkan jadwal hari ini
+        displayTodaySchedule();
+        
+      } catch (error) {
+        console.error('Error fetching schedule:', error);
+        scheduleList.innerHTML = `
+          <div class="empty-schedule">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Gagal memuat jadwal. Silakan coba lagi nanti.</p>
+            <p class="error-detail">${error.message}</p>
+          </div>
+        `;
+      } finally {
+        loadingSpinner.style.display = 'none';
+      }
+    }
+
+    // Tampilkan jadwal hari ini
+    function displayTodaySchedule() {
+      const todayName = updateDateTime();
+      const scheduleList = document.getElementById('todaySchedule');
+      
+      // Cek jika hari ini libur (Sabtu/Minggu)
+      if (todayName === 'Sabtu' || todayName === 'Minggu') {
+        scheduleList.innerHTML = `
+          <div class="empty-schedule">
+            <i class="fas fa-umbrella-beach"></i>
+            <p>Hari ini libur, tidak ada jadwal pelajaran.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Ambil jadwal untuk kelas XI A (default)
+      const todaySchedule = scheduleData["XI A"][todayName];
+      
+      if (!todaySchedule || todaySchedule.length === 0) {
+        scheduleList.innerHTML = `
+          <div class="empty-schedule">
+            <i class="fas fa-calendar-times"></i>
+            <p>Tidak ada jadwal untuk hari ini.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Urutkan berdasarkan waktu
+      todaySchedule.sort((a, b) => {
+        const timeA = convertTo24Hour(a.startTime);
+        const timeB = convertTo24Hour(b.startTime);
+        return timeA.localeCompare(timeB);
+      });
+      
+      // Tampilkan maksimal 4 pelajaran untuk preview
+      const previewCount = Math.min(todaySchedule.length, 4);
+      let html = '';
+      
+      for (let i = 0; i < previewCount; i++) {
+        const item = todaySchedule[i];
+        const isCurrent = checkIfCurrentClass(item.startTime, item.endTime);
+        
+        html += `
+          <div class="schedule-item ${isCurrent ? 'active' : ''}">
+            <div class="schedule-time">
+              <i class="far fa-clock"></i>
+              <span>${item.startTime} - ${item.endTime}</span>
+              ${isCurrent ? '<span class="current-badge">Sedang Berlangsung</span>' : ''}
+            </div>
+            <div class="schedule-details">
+              <h4 class="subject-name">${item.subject}</h4>
+              <p class="teacher-name">${item.teacher || 'Guru'}</p>
+            </div>
+            <div class="schedule-icon">
+              <i class="fas ${getSubjectIcon(item.subject)}"></i>
+            </div>
+          </div>
+        `;
+      }
+      
+      // Jika ada lebih dari 4 pelajaran, tambahkan indikator
+      if (todaySchedule.length > 4) {
+        html += `
+          <div class="schedule-more">
+            <i class="fas fa-ellipsis-h"></i>
+            <span>+${todaySchedule.length - 4} pelajaran lainnya</span>
+          </div>
+        `;
+      }
+      
+      scheduleList.innerHTML = html;
+    }
+
+    // Helper functions
+    function convertTo24Hour(timeStr) {
+      const match = timeStr.match(/(\d{1,2}):(\d{2})\s*([ap]m)?/i);
+      if (!match) return timeStr;
+
+      let hours = parseInt(match[1]);
+      const minutes = parseInt(match[2]);
+      const period = match[3] ? match[3].toLowerCase() : '';
+
+      if (period === 'pm' && hours < 12) hours += 12;
+      if (period === 'am' && hours === 12) hours = 0;
+
+      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    }
+
+    function checkIfCurrentClass(startTime, endTime) {
+      const now = new Date();
+      const currentHours = now.getHours();
+      const currentMinutes = now.getMinutes();
+      const currentTime = currentHours * 60 + currentMinutes;
+      
+      const start = convertTo24Hour(startTime);
+      const end = convertTo24Hour(endTime);
+      
+      const [startHours, startMinutes] = start.split(':').map(Number);
+      const [endHours, endMinutes] = end.split(':').map(Number);
+      
+      const startTotal = startHours * 60 + startMinutes;
+      const endTotal = endHours * 60 + endMinutes;
+      
+      return currentTime >= startTotal && currentTime <= endTotal;
+    }
+
+    function getSubjectIcon(subjectName) {
+      const subject = subjectName.toLowerCase();
+      if (subject.includes('matematika')) return 'fa-calculator';
+      if (subject.includes('fisika')) return 'fa-atom';
+      if (subject.includes('kimia')) return 'fa-flask';
+      if (subject.includes('biologi')) return 'fa-dna';
+      if (subject.includes('bahasa')) return 'fa-language';
+      if (subject.includes('inggris')) return 'fa-globe';
+      if (subject.includes('agama') || subject.includes('islam')) return 'fa-mosque';
+      if (subject.includes('olahraga')) return 'fa-running';
+      if (subject.includes('seni')) return 'fa-palette';
+      if (subject.includes('sejarah')) return 'fa-landmark';
+      if (subject.includes('tik') || subject.includes('komputer')) return 'fa-laptop';
+      return 'fa-book';
+    }
+
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      // Update tanggal dan hari
+      updateDateTime();
+      
+      // Ambil data jadwal
+      fetchScheduleData();
+      
+      // Refresh button
+      document.getElementById('refreshSchedule').addEventListener('click', function() {
+        this.classList.add('refreshing');
+        fetchScheduleData();
+        setTimeout(() => {
+          this.classList.remove('refreshing');
+        }, 1000);
+      });
+      
+      // Setup efek hover untuk momen cards
+      const momentCards = document.querySelectorAll('.moment-card');
+      momentCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-8px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+      
+      // Auto refresh jadwal setiap 5 menit
+      setInterval(fetchScheduleData, 5 * 60 * 1000);
+      
+      // Update time every minute
+      setInterval(displayTodaySchedule, 60 * 1000);
+    });
+
+    // Handle offline/online status
+    window.addEventListener('online', fetchScheduleData);
+    window.addEventListener('offline', function() {
+      const scheduleList = document.getElementById('todaySchedule');
+      scheduleList.innerHTML = `
+        <div class="empty-schedule">
+          <i class="fas fa-wifi-slash"></i>
+          <p>Koneksi internet terputus. Tidak dapat memuat jadwal terbaru.</p>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
