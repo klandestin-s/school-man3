@@ -232,9 +232,6 @@
       "XI B": {}
     };
 
-    // API URL untuk jadwal (gunakan GitHub raw URL)
-    const API_URL = 'https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/data/jadwal.json';
-
     // Daftar hari dalam bahasa Indonesia
     const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
@@ -253,8 +250,8 @@
       return dayName;
     }
 
-    // Ambil data jadwal dari API
-    async function fetchScheduleData() {
+    // Fungsi untuk mengambil data jadwal dari API
+    async function fetchSchedules() {
       const loadingSpinner = document.getElementById('loadingSpinner');
       const scheduleList = document.getElementById('todaySchedule');
       
@@ -262,34 +259,37 @@
         loadingSpinner.style.display = 'flex';
         scheduleList.innerHTML = '';
         
-        const response = await fetch(API_URL);
-        
+        // Menggunakan endpoint /api/jadwal yang sama dengan halaman jadwal
+        const response = await fetch("/api/jadwal");
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error("Gagal mengambil data jadwal");
         }
         
         const data = await response.json();
-        
-        // Proses data jadwal
+
+        // Reset scheduleData
         scheduleData = { "XI A": {}, "XI B": {} };
-        
+
+        // Kelompokkan data berdasarkan kelas dan hari
         data.forEach((item) => {
           if (!scheduleData[item.class][item.day]) {
             scheduleData[item.class][item.day] = [];
           }
           scheduleData[item.class][item.day].push(item);
         });
-        
+
         // Tampilkan jadwal hari ini
         displayTodaySchedule();
         
       } catch (error) {
-        console.error('Error fetching schedule:', error);
+        console.error("Error:", error);
+        // Tampilkan pesan error
         scheduleList.innerHTML = `
           <div class="empty-schedule">
-            <i class="fas fa-exclamation-circle"></i>
-            <p>Gagal memuat jadwal. Silakan coba lagi nanti.</p>
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Gagal memuat jadwal dari server</p>
             <p class="error-detail">${error.message}</p>
+            <p class="error-detail">Pastikan koneksi internet stabil atau coba lagi nanti</p>
           </div>
         `;
       } finally {
@@ -321,6 +321,7 @@
           <div class="empty-schedule">
             <i class="fas fa-calendar-times"></i>
             <p>Tidak ada jadwal untuk hari ini.</p>
+            <p class="error-detail">Data jadwal belum tersedia untuk ${todayName}</p>
           </div>
         `;
         return;
@@ -353,7 +354,7 @@
               <p class="teacher-name">${item.teacher || 'Guru'}</p>
             </div>
             <div class="schedule-icon">
-              <i class="fas ${getSubjectIcon(item.subject)}"></i>
+              <i class="fas ${item.icon || 'fa-book'}"></i>
             </div>
           </div>
         `;
@@ -405,34 +406,18 @@
       return currentTime >= startTotal && currentTime <= endTotal;
     }
 
-    function getSubjectIcon(subjectName) {
-      const subject = subjectName.toLowerCase();
-      if (subject.includes('matematika')) return 'fa-calculator';
-      if (subject.includes('fisika')) return 'fa-atom';
-      if (subject.includes('kimia')) return 'fa-flask';
-      if (subject.includes('biologi')) return 'fa-dna';
-      if (subject.includes('bahasa')) return 'fa-language';
-      if (subject.includes('inggris')) return 'fa-globe';
-      if (subject.includes('agama') || subject.includes('islam')) return 'fa-mosque';
-      if (subject.includes('olahraga')) return 'fa-running';
-      if (subject.includes('seni')) return 'fa-palette';
-      if (subject.includes('sejarah')) return 'fa-landmark';
-      if (subject.includes('tik') || subject.includes('komputer')) return 'fa-laptop';
-      return 'fa-book';
-    }
-
     // Event Listeners
     document.addEventListener('DOMContentLoaded', function() {
       // Update tanggal dan hari
       updateDateTime();
       
-      // Ambil data jadwal
-      fetchScheduleData();
+      // Ambil data jadwal dari API
+      fetchSchedules();
       
       // Refresh button
       document.getElementById('refreshSchedule').addEventListener('click', function() {
         this.classList.add('refreshing');
-        fetchScheduleData();
+        fetchSchedules();
         setTimeout(() => {
           this.classList.remove('refreshing');
         }, 1000);
@@ -451,20 +436,21 @@
       });
       
       // Auto refresh jadwal setiap 5 menit
-      setInterval(fetchScheduleData, 5 * 60 * 1000);
+      setInterval(fetchSchedules, 5 * 60 * 1000);
       
-      // Update time every minute
+      // Update time every minute untuk cek kelas aktif
       setInterval(displayTodaySchedule, 60 * 1000);
     });
 
     // Handle offline/online status
-    window.addEventListener('online', fetchScheduleData);
+    window.addEventListener('online', fetchSchedules);
     window.addEventListener('offline', function() {
       const scheduleList = document.getElementById('todaySchedule');
       scheduleList.innerHTML = `
         <div class="empty-schedule">
           <i class="fas fa-wifi-slash"></i>
           <p>Koneksi internet terputus. Tidak dapat memuat jadwal terbaru.</p>
+          <p class="error-detail">Silakan refresh saat koneksi tersedia</p>
         </div>
       `;
     });
