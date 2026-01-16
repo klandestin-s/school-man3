@@ -523,7 +523,7 @@ header {
   transition: transform 0.2s ease;
 }
 
-/* === PERBAIKAN MOBILE: HORIZONTAL SWIPE + VERTICAL SCROLL === */
+/* === MOBILE SWIPE NATIVE IMPLEMENTATION === */
 @media (max-width: 768px) {
   /* Reset layout mobile */
   .schedule-content {
@@ -531,18 +531,16 @@ header {
     width: 100%;
   }
   
-  /* Container utama dengan scroll horizontal + snap */
+  /* Container utama dengan scroll horizontal native + snap */
   .schedule-grid {
     display: flex !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
-    scroll-snap-type: x mandatory !important;
+    scroll-snap-type: x proximity !important;
     -webkit-overflow-scrolling: touch !important;
     
-    /* Kunci penting untuk scroll vertikal */
-    touch-action: pan-y !important;
-    overscroll-behavior-x: contain !important;
-    overscroll-behavior-y: auto !important;
+    /* Izinkan gesture natural */
+    touch-action: pan-x pan-y !important;
     
     gap: 16px;
     padding: 12px calc(50vw - 42.5vw) 24px !important;
@@ -565,22 +563,19 @@ header {
     width: 85vw !important;
     flex: 0 0 auto !important;
     scroll-snap-align: center !important;
-    scroll-snap-stop: always !important;
     margin: 0 !important;
     
     /* Visual effects */
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     transform: scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-    will-change: transform;
+    transition: transform 0.3s ease;
   }
   
-  /* Kartu aktif (di tengah) */
+  /* Kartu aktif (di tengah viewport) */
   .day-card.active-day {
     transform: scale(1) !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
-    z-index: 2;
   }
   
   /* Indikator hari (dots) */
@@ -619,36 +614,16 @@ header {
     opacity: 0.8;
   }
   
-  /* Scroll vertikal di dalam kartu */
+  /* Scroll vertikal di dalam kartu - NATIVE */
   .class-list {
     max-height: 60vh !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
-    touch-action: pan-y !important;
   }
   
-  /* Cursor untuk mode desktop */
-  .schedule-grid.grabbing {
-    cursor: grabbing !important;
-  }
-  
-  .schedule-grid.grabbing .day-card {
-    cursor: grabbing !important;
-  }
-  
-  /* Pastikan body tidak locked */
-  body {
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    position: relative;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .container {
-    overflow: visible !important;
-    width: 100%;
-    max-width: 100% !important;
-    padding: 0 10px !important;
+  /* Pastikan tidak ada elemen yang mengunci gesture */
+  .schedule-grid * {
+    touch-action: auto !important;
   }
   
   /* Nonaktifkan hover efek di mobile */
@@ -659,20 +634,10 @@ header {
 
 /* Animasi smooth snap */
 @keyframes smoothSnap {
-  0% { transform: scale(0.95) rotateY(0deg); }
-  100% { transform: scale(1) rotateY(0deg); }
+  0% { transform: scale(0.95); }
+  100% { transform: scale(1); }
 }
 
 .smooth-snap {
   animation: smoothSnap 0.3s ease-out forwards;
-}
-
-/* Inertia scroll effect */
-@keyframes inertiaScroll {
-  0% { transform: translateX(var(--start-x)) scale(0.95); }
-  100% { transform: translateX(var(--end-x)) scale(0.95); }
-}
-
-.inertia-scroll {
-  animation: inertiaScroll 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
