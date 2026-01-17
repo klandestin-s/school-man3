@@ -911,66 +911,63 @@ body {
 }
 
 @media (max-width: 480px) {
-  .container {
-    padding: 0 15px;
+
+  /* Rapatkan section jadwal */
+  .schedule-section.compact {
+    margin: 20px 0;
   }
-  
-  .class-title {
-    font-size: 2rem;
-  }
-  
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .info-card {
-    padding: 25px 20px;
-  }
-  
-  .moment-image {
-    height: 180px;
-  }
-  
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-  
-  .hero-section {
-    padding: 40px 0;
-  }
-  
-  .moments-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  
-  .moment-card {
-    margin-bottom: 0;
-  }
-  
-  .schedule-status {
-    flex-direction: column;
-    text-align: center;
-    gap: 8px;
-  }
-  
-  .empty-schedule i {
-    font-size: 2rem;
-  }
-  
-  .schedule-section.compact .schedule-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .schedule-section.compact .schedule-time {
-    width: 100%;
+
+  /* Header lebih rapat */
+  .schedule-section.compact .section-header {
     margin-bottom: 10px;
+    gap: 6px;
   }
-  
-  .schedule-section.compact .schedule-icon {
-    align-self: flex-end;
+
+  /* Container jadwal lebih tipis */
+  .schedule-section.compact .schedule-container {
+    padding: 10px;
+  }
+
+  /* Item jadwal lebih rapat */
+  .schedule-section.compact .schedule-item {
+    padding: 10px;
+    margin-bottom: 6px;
+  }
+
+  /* Jam & badge lebih kecil */
+  .schedule-section.compact .schedule-time {
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+  }
+
+  .schedule-section.compact .current-badge {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+  }
+
+  /* Nama mapel & guru dirapatkan */
+  .schedule-section.compact .subject-name {
+    font-size: 0.95rem;
+    margin-bottom: 1px;
+  }
+
+  .schedule-section.compact .teacher-name {
+    font-size: 0.75rem;
+  }
+
+  /* Status jadwal (ongoing / next) lebih tipis */
+  .schedule-status {
+    padding: 8px;
+    margin-bottom: 10px;
+    gap: 6px;
+  }
+
+  .schedule-status strong {
+    font-size: 0.85rem;
+  }
+
+  .schedule-status span {
+    font-size: 0.75rem;
   }
 }
 
