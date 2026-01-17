@@ -910,67 +910,256 @@ body {
   }
 }
 
+/* ============================================
+   PERBAIKAN KERAPATAN JADWAL MOBILE (COMPACT)
+   ============================================ */
+
+/* Target utama: schedule section compact di mobile */
 @media (max-width: 480px) {
-
-  /* Rapatkan section jadwal */
-  .schedule-section.compact {
-    margin: 20px 0;
-  }
-
-  /* Header lebih rapat */
-  .schedule-section.compact .section-header {
-    margin-bottom: 10px;
-    gap: 6px;
-  }
-
-  /* Container jadwal lebih tipis */
-  .schedule-section.compact .schedule-container {
-    padding: 10px;
-  }
-
-  /* Item jadwal lebih rapat */
   .schedule-section.compact .schedule-item {
-    padding: 10px;
-    margin-bottom: 6px;
+    /* Kurangi padding untuk hemat ruang */
+    padding: 10px 12px !important;
+    margin-bottom: 6px !important;
+    min-height: auto !important;
   }
-
-  /* Jam & badge lebih kecil */
+  
+  /* RAPATKAN JARAK VERTIKAL ANTAR ELEMEN */
   .schedule-section.compact .schedule-time {
-    font-size: 0.8rem;
-    margin-bottom: 6px;
+    /* Jam lebih dekat ke mapel */
+    margin-bottom: 6px !important;
+    flex: 0 0 auto !important;
+    width: 100%;
   }
-
-  .schedule-section.compact .current-badge {
-    font-size: 0.65rem;
-    padding: 2px 6px;
+  
+  .schedule-section.compact .schedule-time span {
+    font-size: 0.85rem !important;
+    line-height: 1.2 !important;
   }
-
-  /* Nama mapel & guru dirapatkan */
+  
+  /* HILANGKAN MARGIN DEFAULT DARI ELEMEN TEKS */
+  .schedule-section.compact .schedule-details {
+    width: 100%;
+    margin-bottom: 0 !important;
+  }
+  
   .schedule-section.compact .subject-name {
-    font-size: 0.95rem;
-    margin-bottom: 1px;
+    /* Hilangkan margin default h4 */
+    margin-top: 0 !important;
+    margin-bottom: 3px !important;
+    font-size: 1rem !important;
+    line-height: 1.2 !important;
+    font-weight: 600 !important;
   }
-
+  
   .schedule-section.compact .teacher-name {
-    font-size: 0.75rem;
+    /* Rapatkan ke mapel */
+    margin-top: 0 !important;
+    margin-bottom: 4px !important;
+    font-size: 0.8rem !important;
+    line-height: 1.2 !important;
+    color: #555 !important;
   }
-
-  /* Status jadwal (ongoing / next) lebih tipis */
-  .schedule-status {
-    padding: 8px;
-    margin-bottom: 10px;
-    gap: 6px;
+  
+  .schedule-section.compact .room-info {
+    /* Rapatkan ke guru */
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    font-size: 0.75rem !important;
+    line-height: 1.2 !important;
+    color: #777 !important;
   }
-
-  .schedule-status strong {
-    font-size: 0.85rem;
+  
+  /* Perbaikan untuk badge "Sekarang" */
+  .schedule-section.compact .current-badge {
+    margin-left: 8px !important;
+    padding: 2px 6px !important;
+    font-size: 0.7rem !important;
+    line-height: 1 !important;
   }
-
-  .schedule-status span {
-    font-size: 0.75rem;
+  
+  /* Atur ulang layout item untuk lebih compact */
+  .schedule-section.compact .schedule-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+  }
+  
+  /* Ikon kecil dan rapi */
+  .schedule-section.compact .schedule-icon {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.9rem !important;
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+  
+  /* Status info lebih compact */
+  .schedule-section.compact .schedule-status {
+    padding: 10px 12px !important;
+    margin-bottom: 15px !important;
+    gap: 8px !important;
+  }
+  
+  .schedule-section.compact .schedule-status i {
+    font-size: 1rem !important;
+  }
+  
+  .schedule-section.compact .schedule-status strong {
+    font-size: 0.85rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .schedule-section.compact .schedule-status span {
+    font-size: 0.75rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Perbaikan untuk empty state */
+  .schedule-section.compact .empty-schedule {
+    padding: 20px 15px !important;
+  }
+  
+  .schedule-section.compact .empty-schedule i {
+    font-size: 2rem !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .schedule-section.compact .empty-schedule h4 {
+    font-size: 1rem !important;
+    margin-bottom: 6px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .schedule-section.compact .empty-schedule p {
+    font-size: 0.85rem !important;
+    margin-bottom: 4px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .schedule-section.compact .schedule-detail {
+    font-size: 0.75rem !important;
+    margin-bottom: 3px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .schedule-section.compact .schedule-tip {
+    font-size: 0.7rem !important;
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Perbaikan untuk indikator "lebih banyak" */
+  .schedule-section.compact .schedule-more {
+    padding: 8px !important;
+    font-size: 0.8rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Tombol lihat lengkap lebih compact */
+  .schedule-section.compact .view-full-btn.compact {
+    padding: 6px 12px !important;
+    font-size: 0.8rem !important;
+    margin-top: 10px !important;
+    line-height: 1.2 !important;
   }
 }
 
+/* ============================================
+   OPTIMASI TAMBAHAN UNTUK TABLET
+   ============================================ */
+@media (min-width: 481px) and (max-width: 768px) {
+  .schedule-section.compact .schedule-item {
+    padding: 12px 15px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .schedule-section.compact .subject-name {
+    margin-bottom: 4px !important;
+    line-height: 1.25 !important;
+  }
+  
+  .schedule-section.compact .teacher-name {
+    margin-bottom: 5px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .schedule-section.compact .room-info {
+    margin-bottom: 0 !important;
+    line-height: 1.2 !important;
+  }
+}
+
+/* ============================================
+   PERBAIKAN GLOBAL UNTUK SEMUA JADWAL
+   ============================================ */
+/* Pastikan tidak ada margin berlebihan di semua jadwal */
+.schedule-section.compact h4,
+.schedule-section.compact p {
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
+}
+
+/* Reset khusus untuk elemen dalam schedule-details */
+.schedule-section.compact .schedule-details > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Atur spacing dengan gap yang terkontrol */
+.schedule-section.compact .schedule-details {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+}
+
+/* ============================================
+   FIX UNTUK TAMPILAN ACTIVE/HOVER
+   ============================================ */
+.schedule-section.compact .schedule-item.active {
+  padding: 10px 12px !important;
+}
+
+.schedule-section.compact .schedule-item:hover {
+  padding: 10px 12px !important;
+}
+
+/* ============================================
+   PERBAIKAN VISIBILITAS & PROFESIONALISME
+   ============================================ */
+.schedule-section.compact .schedule-time {
+  font-weight: 500 !important;
+  letter-spacing: -0.3px !important;
+}
+
+.schedule-section.compact .subject-name {
+  font-weight: 600 !important;
+  color: #1a1a1a !important;
+}
+
+.schedule-section.compact .teacher-name {
+  opacity: 0.85 !important;
+}
+
+/* ============================================
+   KONSISTENSI DENGAN DESKTOP
+   ============================================ */
+/* Pastikan perubahan hanya di mobile/tablet */
+@media (min-width: 769px) {
+  .schedule-section.compact .schedule-item {
+    /* Desktop tetap menggunakan styling asli */
+    padding: 12px 15px;
+    margin-bottom: 8px;
+  }
+  
+  .schedule-section.compact .schedule-details {
+    gap: 4px;
+  }
+}
 /* Animation untuk card */
 @keyframes fadeInUp {
   from {
