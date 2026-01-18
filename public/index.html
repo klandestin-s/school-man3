@@ -17,6 +17,22 @@
         <h1 class="class-title">Kelas XI</h1>
         <p class="class-subtitle">MAN 3 BATANGHARI</p>
         <p class="class-year">Tahun Ajaran 2025/2026</p>
+        
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav">
+          <a href="index.html" class="nav-link">
+            <i class="fas fa-home"></i>
+            <span class="nav-text">Home</span>
+          </a>
+          <a href="jadwal.html" class="nav-link">
+            <i class="fas fa-calendar-alt"></i>
+            <span class="nav-text">Jadwal</span>
+          </a>
+          <a href="#momentsGrid" class="nav-link">
+            <i class="fas fa-images"></i>
+            <span class="nav-text">Momen</span>
+          </a>
+        </nav>
       </div>
     </div>
   </header>
@@ -93,26 +109,33 @@
 
     <!-- Momen Kelas -->
     <section class="moments-section">
-      <h2 class="section-title">Momen Kelas</h2>
+      <div class="section-header">
+        <h2 class="section-title">Momen Kelas</h2>
+        <p class="section-subtitle">Koleksi kenangan dan kegiatan belajar mengajar</p>
+      </div>
       <div class="moments-grid" id="momentsGrid">
         <!-- Momen 1 -->
         <div class="moment-card">
+          <div class="moment-badge">photography </div>
           <div class="moment-image">
-            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+            <img src="https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/tmp/30b10cf3.jpg" 
                  alt="Belajar di kelas" 
                  loading="lazy">
           </div>
           <div class="moment-content">
-            <h3>Belajar Bersama di Kelas</h3>
-            <p>Sesi belajar intensif menjelang ujian semester. Semua siswa fokus dan serius mengerjakan latihan soal.</p>
-            <div class="moment-date">
-              <i class="far fa-calendar"></i> 15 Januari 2025
+            <h3>Gallery XI. A</h3>
+            <p class="moment-desc">Photo Kelas XI.A ~ Moment </p>
+            <div class="moment-footer">
+              <div class="moment-tag">
+                <i class="fas fa-users"></i> Kelas XI A
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Momen 2 -->
         <div class="moment-card">
+          <div class="moment-badge">Diskusi</div>
           <div class="moment-image">
             <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
                  alt="Diskusi kelompok" 
@@ -120,15 +143,18 @@
           </div>
           <div class="moment-content">
             <h3>Diskusi Kelompok</h3>
-            <p>Diskusi materi pelajaran dalam kelompok kecil. Berbagi pengetahuan dan saling membantu memahami konsep.</p>
-            <div class="moment-date">
-              <i class="far fa-calendar"></i> 10 Januari 2025
+            <p class="moment-desc">Diskusi materi pelajaran dalam kelompok kecil.</p>
+            <div class="moment-footer">
+              <div class="moment-tag">
+                <i class="fas fa-brain"></i> Kolaborasi
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Momen 3 -->
         <div class="moment-card">
+          <div class="moment-badge">Outdoor</div>
           <div class="moment-image">
             <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
                  alt="Kegiatan outdoor" 
@@ -136,15 +162,18 @@
           </div>
           <div class="moment-content">
             <h3>Kegiatan Outdoor</h3>
-            <p>Kegiatan belajar di luar kelas untuk refreshing dan mendapatkan suasana baru dalam belajar.</p>
-            <div class="moment-date">
-              <i class="far fa-calendar"></i> 5 Januari 2025
+            <p class="moment-desc">Kegiatan belajar di luar kelas untuk refreshing.</p>
+            <div class="moment-footer">
+              <div class="moment-tag">
+                <i class="fas fa-tree"></i> Alam
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Momen 4 -->
         <div class="moment-card">
+          <div class="moment-badge">Presentasi</div>
           <div class="moment-image">
             <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
                  alt="Presentasi project" 
@@ -152,15 +181,18 @@
           </div>
           <div class="moment-content">
             <h3>Presentasi Project</h3>
-            <p>Sesi presentasi hasil project kelompok di depan kelas. Melatih kemampuan public speaking dan komunikasi.</p>
-            <div class="moment-date">
-              <i class="far fa-calendar"></i> 20 Desember 2024
+            <p class="moment-desc">Sesi presentasi hasil project kelompok di depan kelas.</p>
+            <div class="moment-footer">
+              <div class="moment-tag">
+                <i class="fas fa-chart-line"></i> Skill
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Momen 5 -->
         <div class="moment-card">
+          <div class="moment-badge">Ekskul</div>
           <div class="moment-image">
             <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
                  alt="Kegiatan ekskul" 
@@ -168,15 +200,18 @@
           </div>
           <div class="moment-content">
             <h3>Kegiatan Ekstrakurikuler</h3>
-            <p>Partisipasi aktif dalam berbagai kegiatan ekstrakurikuler sekolah untuk pengembangan diri.</p>
-            <div class="moment-date">
-              <i class="far fa-calendar"></i> 15 Desember 2024
+            <p class="moment-desc">Partisipasi aktif dalam kegiatan ekstrakurikuler.</p>
+            <div class="moment-footer">
+              <div class="moment-tag">
+                <i class="fas fa-dumbbell"></i> Pengembangan
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Momen 6 -->
         <div class="moment-card">
+          <div class="moment-badge">Kompetisi</div>
           <div class="moment-image">
             <img src="https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
                  alt="Class meeting" 
@@ -184,9 +219,11 @@
           </div>
           <div class="moment-content">
             <h3>Class Meeting</h3>
-            <p>Kegiatan class meeting dengan berbagai perlombaan untuk meningkatkan kekompakan antar siswa.</p>
-            <div class="moment-date">
-              <i class="far fa-calendar"></i> 10 Desember 2024
+            <p class="moment-desc">Kegiatan class meeting dengan berbagai perlombaan.</p>
+            <div class="moment-footer">
+              <div class="moment-tag">
+                <i class="fas fa-trophy"></i> Kompetisi
+              </div>
             </div>
           </div>
         </div>
@@ -600,11 +637,34 @@
       const momentCards = document.querySelectorAll('.moment-card');
       momentCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
-          this.style.transform = 'translateY(-8px)';
+          this.style.transform = 'translateY(-8px) scale(1.02)';
+          this.style.boxShadow = '0 20px 40px rgba(175, 148, 77, 0.25)';
+          this.style.borderColor = 'var(--primary)';
         });
         
         card.addEventListener('mouseleave', function() {
-          this.style.transform = 'translateY(0)';
+          this.style.transform = 'translateY(0) scale(1)';
+          this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.08)';
+          this.style.borderColor = 'var(--accent)';
+        });
+      });
+      
+      // Smooth scroll untuk mobile navigation
+      document.querySelectorAll('.mobile-nav a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          
+          // Jika link internal (#), smooth scroll
+          if (href.startsWith('#')) {
+            e.preventDefault();
+            const targetElement = document.querySelector(href);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: 'smooth'
+              });
+            }
+          }
         });
       });
       
