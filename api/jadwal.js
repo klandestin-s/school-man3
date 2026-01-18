@@ -106,22 +106,30 @@ function validateSchedule(schedule) {
     errors.push("Guru harus berupa string");
   }
 
-  // Icon validation - PROFESSIONAL ICONS ONLY
+  // Icon validation - DIPERBAIKI: Menambahkan semua ikon dari admin panel
   const validIcons = [
+    // Ikon akademik umum
     "fa-book", "fa-calculator", "fa-flask", "fa-atom", "fa-dna",
     "fa-globe-asia", "fa-scroll", "fa-language", "fa-running",
     "fa-music", "fa-palette", "fa-laptop-code", "fa-scale-balanced",
-    "fa-landmark", "fa-chart-line", "fa-microscope", "fa-pencil-alt",
+    "fa-chart-line", "fa-microscope", "fa-pencil-alt",
     "fa-graduation-cap", "fa-clock", "fa-calendar", "fa-user-tie",
     "fa-chalkboard-teacher", "fa-brain", "fa-book-open", "fa-flask",
     "fa-code", "fa-history", "fa-music", "fa-paint-brush", "fa-dumbbell",
     "fa-heartbeat", "fa-pray", "fa-comments", "fa-globe", "fa-map",
-    "fa-balance-scale", "fa-economy", "fa-chart-bar", "fa-file-alt",
-    "fa-sitemap", "fa-network-wired", "fa-cogs"
+    "fa-balance-scale", "fa-chart-bar", "fa-file-alt", "fa-sitemap",
+    "fa-network-wired", "fa-cogs", "fa-landmark", "fa-flag", "fa-scissors",
+    "fa-heart", "fa-bowl-food", "fa-utensils", "fa-mug-hot", "fa-mosque",
+    "fa-quran", "fa-economy", "fa-scale-balanced", "fa-atom", "fa-dna",
+    "fa-language", "fa-running", "fa-music", "fa-palette", "fa-laptop-code",
+    "fa-scale-balanced", "fa-landmark"
   ];
   
-  if (!schedule.icon || !validIcons.includes(schedule.icon)) {
-    errors.push("Ikon mata pelajaran tidak valid. Gunakan ikon profesional.");
+  // Hapus duplikat untuk efisiensi
+  const uniqueValidIcons = [...new Set(validIcons)];
+  
+  if (!schedule.icon || !uniqueValidIcons.includes(schedule.icon)) {
+    errors.push("Ikon mata pelajaran tidak valid. Gunakan ikon yang tersedia di daftar.");
   }
 
   // Time validation
