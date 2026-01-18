@@ -1,0 +1,1412 @@
+:root {
+  --primary: #1a1a1a;
+  --accent: #af944d;
+  --bg: #fdfdfd;
+  --text: #333333;
+  --light-gray: #e0e0e0;
+  --white: #ffffff;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --radius: 12px;
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--primary) 0%, #2a2a2a 100%);
+  padding: 60px 0;
+  text-align: center;
+  color: var(--white);
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23af944d' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  opacity: 0.1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.class-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 3.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.class-subtitle {
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.class-year {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+  display: none;
+}
+
+/* Info Section */
+.info-section {
+  margin: 40px 0;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.info-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 30px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--light-gray);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: var(--accent);
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.info-icon {
+  font-size: 2.8rem;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.info-card h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.info-card p {
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.info-detail {
+  font-size: 0.9rem !important;
+  color: #666 !important;
+  font-weight: 400 !important;
+  margin-top: 5px;
+}
+
+/* Section Titles */
+.section-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2.2rem;
+  color: var(--primary);
+  margin-bottom: 25px;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--accent);
+}
+
+/* Section Subtitle */
+.section-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-top: -20px;
+  font-weight: 400;
+}
+
+/* Action Section */
+.action-section {
+  text-align: center;
+  margin: 50px 0;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: var(--transition);
+  min-width: 200px;
+  border: none;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+  box-shadow: 0 4px 15px rgba(26, 26, 26, 0.15);
+}
+
+.btn-primary:hover {
+  background: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(175, 148, 77, 0.25);
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.btn-secondary:hover {
+  background: var(--primary);
+  color: var(--white);
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow);
+}
+
+.btn-secondary.refreshing i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Schedule Section */
+.schedule-section {
+  margin: 60px 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.date-info {
+  text-align: right;
+}
+
+.date-text {
+  display: block;
+  font-size: 1.2rem;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.day-text {
+  display: block;
+  font-size: 1rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.schedule-container {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 30px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--light-gray);
+  position: relative;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  display: none;
+}
+
+.loading-spinner i {
+  font-size: 2.5rem;
+  color: var(--accent);
+  margin-bottom: 15px;
+}
+
+.loading-spinner p {
+  color: #666;
+}
+
+.schedule-list {
+  margin-bottom: 25px;
+}
+
+.schedule-item {
+  display: flex;
+  align-items: center;
+  padding: 18px;
+  border-bottom: 1px solid rgba(224, 224, 224, 0.6);
+  transition: var(--transition);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.schedule-item:hover {
+  background: rgba(175, 148, 77, 0.05);
+}
+
+.schedule-item.active {
+  background: rgba(175, 148, 77, 0.1);
+  border-left: 4px solid var(--accent);
+}
+
+.schedule-time {
+  flex: 0 0 180px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.schedule-time i {
+  font-size: 1.1rem;
+}
+
+.current-badge {
+  background: var(--accent);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.schedule-details {
+  flex: 1;
+}
+
+.subject-name {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.teacher-name {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.room-info {
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.room-info i {
+  font-size: 0.8rem;
+}
+
+.schedule-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(175, 148, 77, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.schedule-more {
+  text-align: center;
+  padding: 15px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.schedule-more i {
+  color: var(--accent);
+}
+
+/* Empty Schedule Styles */
+.empty-schedule {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.empty-schedule i {
+  font-size: 3rem;
+  color: var(--light-gray);
+  margin-bottom: 15px;
+  display: block;
+}
+
+.empty-schedule h4 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.empty-schedule p {
+  margin-bottom: 8px;
+}
+
+.schedule-detail {
+  font-size: 0.9rem !important;
+  color: #777 !important;
+}
+
+.schedule-tip {
+  font-size: 0.85rem !important;
+  color: #999 !important;
+  font-style: italic;
+  margin-top: 15px !important;
+  padding-top: 15px !important;
+  border-top: 1px solid var(--light-gray);
+}
+
+.view-full-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 12px 24px;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+
+.view-full-btn:hover {
+  background: var(--accent);
+  color: var(--white);
+  gap: 12px;
+}
+
+/* Schedule Status Styles */
+.schedule-status {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid;
+}
+
+.schedule-status i {
+  font-size: 1.5rem;
+}
+
+.schedule-status div {
+  flex: 1;
+}
+
+.schedule-status strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 3px;
+}
+
+.schedule-status span {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Status Colors */
+.schedule-status.ongoing {
+  background: rgba(175, 148, 77, 0.1);
+  border-left-color: var(--accent);
+}
+
+.schedule-status.ongoing i {
+  color: var(--accent);
+}
+
+.schedule-status.starting-soon {
+  background: rgba(255, 193, 7, 0.1);
+  border-left-color: #ffc107;
+}
+
+.schedule-status.starting-soon i {
+  color: #ffc107;
+}
+
+.schedule-status.next-soon {
+  background: rgba(25, 135, 84, 0.1);
+  border-left-color: #198754;
+}
+
+.schedule-status.next-soon i {
+  color: #198754;
+}
+
+.schedule-status.finished {
+  background: rgba(13, 110, 253, 0.1);
+  border-left-color: #0d6efd;
+}
+
+.schedule-status.finished i {
+  color: #0d6efd;
+}
+
+.schedule-status.not-started {
+  background: rgba(108, 117, 125, 0.1);
+  border-left-color: #6c757d;
+}
+
+.schedule-status.not-started i {
+  color: #6c757d;
+}
+
+/* Compact Schedule Section */
+.schedule-section.compact {
+  margin: 30px 0;
+}
+
+.schedule-section.compact .section-header {
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.schedule-section.compact .section-title {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+
+.schedule-section.compact .date-info {
+  font-size: 0.9rem;
+}
+
+.schedule-section.compact .date-text {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.schedule-section.compact .schedule-container {
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.schedule-section.compact .schedule-item {
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+}
+
+.schedule-section.compact .schedule-time {
+  flex: 0 0 130px;
+  font-size: 0.85rem;
+}
+
+.schedule-section.compact .subject-name {
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+
+.schedule-section.compact .teacher-name {
+  font-size: 0.8rem;
+}
+
+.schedule-section.compact .schedule-icon {
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+}
+
+.schedule-section.compact .current-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  margin-left: 8px;
+}
+
+.schedule-section.compact .schedule-more {
+  padding: 10px;
+  font-size: 0.9rem;
+}
+
+.schedule-section.compact .view-full-btn.compact {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  margin-top: 15px;
+}
+
+/* Empty schedule compact */
+.schedule-section.compact .empty-schedule {
+  padding: 30px 15px;
+}
+
+.schedule-section.compact .empty-schedule i {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.schedule-section.compact .empty-schedule h4 {
+  font-size: 1.1rem;
+}
+
+.schedule-section.compact .empty-schedule p {
+  font-size: 0.9rem;
+}
+
+.schedule-section.compact .schedule-detail {
+  font-size: 0.8rem !important;
+}
+
+.schedule-section.compact .schedule-tip {
+  font-size: 0.75rem !important;
+}
+
+/* ============================================
+   MOMEN KELAS - GRID ZIG-ZAG & BORDER TEBAL
+   ============================================ */
+
+/* Header Section untuk Momen */
+.moments-section .section-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* Grid Container - Zig-Zag Layout */
+.moments-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+/* Staggered/Zig-Zag Layout untuk Desktop */
+@media (min-width: 769px) {
+  .moments-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(200px, auto);
+  }
+  
+  /* Baris 1: Item kiri lebih rendah, kanan lebih tinggi */
+  .moment-card:nth-child(1) {
+    margin-top: 40px;
+  }
+  
+  .moment-card:nth-child(2) {
+    margin-top: 0;
+  }
+  
+  /* Baris 2: Item kiri lebih tinggi, kanan lebih rendah */
+  .moment-card:nth-child(3) {
+    margin-top: 0;
+  }
+  
+  .moment-card:nth-child(4) {
+    margin-top: 40px;
+  }
+  
+  /* Baris 3: Item kiri lebih rendah, kanan lebih tinggi */
+  .moment-card:nth-child(5) {
+    margin-top: 40px;
+  }
+  
+  .moment-card:nth-child(6) {
+    margin-top: 0;
+  }
+}
+
+/* Card Style dengan Border Tebal dan Sudut Kotak */
+.moment-card {
+  background: var(--white);
+  border-radius: 0; /* Sudut kotak */
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  border: 5px solid var(--accent); /* Border lebih tebal */
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+/* Efek Hover */
+.moment-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(175, 148, 77, 0.2);
+  border-color: var(--primary);
+}
+
+/* Badge */
+.moment-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--accent);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 0; /* Sudut kotak */
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  z-index: 2;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Image Container - Persegi */
+.moment-image {
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.moment-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.moment-card:hover .moment-image img {
+  transform: scale(1.05);
+}
+
+/* Konten Card - Lebih Ringkas */
+.moment-content {
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.moment-content h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.4rem;
+  color: var(--primary);
+  margin-bottom: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Deskripsi yang lebih kecil */
+.moment-desc {
+  color: var(--text);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 15px;
+  flex: 1;
+  opacity: 0.9;
+}
+
+/* Footer Card tanpa tanggal */
+.moment-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+  border-top: 1px solid rgba(224, 224, 224, 0.5);
+}
+
+.moment-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(175, 148, 77, 0.1);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 0; /* Sudut kotak */
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.moment-tag i {
+  font-size: 0.7rem;
+}
+
+/* Footer */
+.main-footer {
+  background: var(--primary);
+  color: var(--white);
+  padding: 50px 0 20px;
+  margin-top: 80px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.footer-logo h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.footer-logo p {
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.footer-info p {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+.footer-info i {
+  color: var(--accent);
+  width: 20px;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.footer-link {
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition);
+  padding: 8px 0;
+}
+
+.footer-link:hover {
+  color: var(--accent);
+  transform: translateX(5px);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablet - 2 Kolom dengan Zig-Zag lebih kecil */
+@media (min-width: 481px) and (max-width: 768px) {
+  .moments-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  /* Zig-Zag lebih kecil untuk tablet */
+  .moment-card:nth-child(1) {
+    margin-top: 20px;
+  }
+  
+  .moment-card:nth-child(2) {
+    margin-top: 0;
+  }
+  
+  .moment-card:nth-child(3) {
+    margin-top: 0;
+  }
+  
+  .moment-card:nth-child(4) {
+    margin-top: 20px;
+  }
+  
+  .moment-card:nth-child(5) {
+    margin-top: 20px;
+  }
+  
+  .moment-card:nth-child(6) {
+    margin-top: 0;
+  }
+  
+  .moment-image {
+    height: 180px;
+  }
+  
+  .moment-content {
+    padding: 12px;
+  }
+  
+  .moment-content h3 {
+    font-size: 1.3rem;
+  }
+  
+  .moment-desc {
+    font-size: 0.8rem;
+  }
+}
+
+/* ============================================
+   MOBILE ENHANCEMENTS (max-width: 480px)
+   ============================================ */
+
+@media (max-width: 480px) {
+  /* 1. Header kompak */
+  .hero-section {
+    padding: 40px 0 30px;
+    margin-bottom: 25px;
+  }
+  
+  .class-title {
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  
+  .class-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+  
+  .class-year {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+  
+  /* 2. Mobile Navigation */
+  .mobile-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  .nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--white);
+    transition: var(--transition);
+    padding: 8px;
+    min-width: 60px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+  }
+  
+  .nav-link i {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+  
+  .nav-text {
+    font-size: 0.7rem;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+  
+  /* 3. Momen Kelas - 2 Kolom Mobile dengan Zig-Zag */
+  .moments-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  /* Reset margin sebelumnya untuk mobile */
+  .moment-card {
+    margin-top: 0 !important;
+    border-width: 3px;
+    border-radius: 0;
+    min-height: 180px;
+  }
+  
+  /* Zig-Zag Pattern untuk Mobile */
+  .moment-card:nth-child(odd) {
+    transform: translateY(10px);
+  }
+  
+  .moment-card:nth-child(even) {
+    transform: translateY(-10px);
+  }
+  
+  .moment-card:hover {
+    transform: translateY(-8px) scale(1.02) !important;
+  }
+  
+  /* Ukuran gambar lebih kecil */
+  .moment-image {
+    height: 100px;
+  }
+  
+  /* Konten lebih kompak */
+  .moment-content {
+    padding: 10px;
+  }
+  
+  .moment-content h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  
+  .moment-desc {
+    font-size: 0.7rem;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  
+  .moment-badge {
+    top: 8px;
+    left: 8px;
+    padding: 3px 6px;
+    font-size: 0.6rem;
+    border-radius: 0;
+  }
+  
+  .moment-footer {
+    padding-top: 8px;
+  }
+  
+  .moment-tag {
+    padding: 2px 6px;
+    font-size: 0.6rem;
+    border-radius: 0;
+  }
+  
+  .moment-tag i {
+    font-size: 0.6rem;
+  }
+  
+  /* 4. Info Section lebih kompak */
+  .info-card {
+    padding: 20px;
+  }
+  
+  .info-icon {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+  }
+  
+  .info-card h3 {
+    font-size: 1.2rem;
+  }
+  
+  .info-card p {
+    font-size: 1rem;
+  }
+  
+  .info-detail {
+    font-size: 0.8rem !important;
+  }
+  
+  /* 5. Section Titles lebih kecil */
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .section-subtitle {
+    font-size: 0.9rem;
+    margin-top: -15px;
+  }
+  
+  /* 6. Action buttons lebih kompak */
+  .action-buttons {
+    gap: 12px;
+  }
+  
+  .action-btn {
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    min-width: auto;
+    width: 100%;
+  }
+  
+  /* 7. Schedule compact lebih rapat */
+  .schedule-section.compact .schedule-item {
+    padding: 10px 12px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .schedule-section.compact .schedule-time {
+    flex: 0 0 110px;
+    font-size: 0.8rem;
+  }
+  
+  .schedule-section.compact .subject-name {
+    font-size: 0.95rem;
+  }
+  
+  .schedule-section.compact .teacher-name {
+    font-size: 0.75rem;
+  }
+  
+  /* 8. Footer lebih kompak */
+  .footer-content {
+    gap: 25px;
+  }
+  
+  .footer-logo h3 {
+    font-size: 1.5rem;
+  }
+  
+  .footer-logo p {
+    font-size: 0.9rem;
+  }
+  
+  .footer-info p {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+  
+  .footer-link {
+    font-size: 0.9rem;
+    padding: 6px 0;
+  }
+  
+  /* 9. Spacing lebih hemat */
+  .moments-section {
+    margin-top: 30px;
+  }
+  
+  .action-section {
+    margin: 30px 0;
+  }
+  
+  .schedule-section.compact {
+    margin: 25px 0;
+  }
+  
+  .main-footer {
+    margin-top: 50px;
+    padding: 30px 0 15px;
+  }
+}
+
+/* ============================================
+   TABLET OPTIMIZATIONS (481px - 768px)
+   ============================================ */
+
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Navigasi mobile tetap tersembunyi di tablet */
+  .mobile-nav {
+    display: none;
+  }
+  
+  /* Momen kelas tablet - Zig-zag yang lebih halus */
+  .moment-card:nth-child(odd) {
+    transform: translateY(15px);
+  }
+  
+  .moment-card:nth-child(even) {
+    transform: translateY(-15px);
+  }
+  
+  .moment-card:hover {
+    transform: translateY(-8px) scale(1.02) !important;
+  }
+}
+
+/* ============================================
+   DESKTOP ENHANCEMENTS (min-width: 769px)
+   ============================================ */
+
+@media (min-width: 769px) {
+  /* Sembunyikan navigasi mobile di desktop */
+  .mobile-nav {
+    display: none;
+  }
+}
+
+/* ============================================
+   PERBAIKAN KERAPATAN JADWAL MOBILE (COMPACT)
+   ============================================ */
+
+/* Target utama: schedule section compact di mobile */
+@media (max-width: 480px) {
+  .schedule-section.compact .schedule-item {
+    padding: 10px 12px !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .schedule-section.compact .schedule-time {
+    margin-bottom: 6px !important;
+    flex: 0 0 auto !important;
+    width: 100%;
+  }
+  
+  .schedule-section.compact .schedule-time span {
+    font-size: 0.85rem !important;
+  }
+  
+  .schedule-section.compact .schedule-details {
+    width: 100%;
+    margin-bottom: 0 !important;
+  }
+  
+  .schedule-section.compact .subject-name {
+    margin-top: 0 !important;
+    margin-bottom: 3px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+  }
+  
+  .schedule-section.compact .teacher-name {
+    margin-top: 0 !important;
+    margin-bottom: 4px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .schedule-section.compact .room-info {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .schedule-section.compact .current-badge {
+    margin-left: 8px !important;
+    padding: 2px 6px !important;
+    font-size: 0.7rem !important;
+  }
+  
+  .schedule-section.compact .schedule-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+  }
+  
+  .schedule-section.compact .schedule-icon {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.9rem !important;
+    position: absolute !important;
+    right: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+  
+  .schedule-section.compact .schedule-status {
+    padding: 10px 12px !important;
+    margin-bottom: 15px !important;
+    gap: 8px !important;
+  }
+  
+  .schedule-section.compact .schedule-status i {
+    font-size: 1rem !important;
+  }
+  
+  .schedule-section.compact .schedule-status strong {
+    font-size: 0.85rem !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .schedule-section.compact .schedule-status span {
+    font-size: 0.75rem !important;
+  }
+  
+  .schedule-section.compact .empty-schedule {
+    padding: 20px 15px !important;
+  }
+  
+  .schedule-section.compact .empty-schedule i {
+    font-size: 2rem !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .schedule-section.compact .empty-schedule h4 {
+    font-size: 1rem !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .schedule-section.compact .empty-schedule p {
+    font-size: 0.85rem !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .schedule-section.compact .schedule-detail {
+    font-size: 0.75rem !important;
+    margin-bottom: 3px !important;
+  }
+  
+  .schedule-section.compact .schedule-tip {
+    font-size: 0.7rem !important;
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+  }
+  
+  .schedule-section.compact .schedule-more {
+    padding: 8px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .schedule-section.compact .view-full-btn.compact {
+    padding: 6px 12px !important;
+    font-size: 0.8rem !important;
+    margin-top: 10px !important;
+  }
+}
+
+/* ============================================
+   ANIMASI & EFFECTS
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.info-card, .schedule-container, .moment-card {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.info-card:nth-child(1) { animation-delay: 0.1s; }
+.info-card:nth-child(2) { animation-delay: 0.2s; }
+.info-card:nth-child(3) { animation-delay: 0.3s; }
+.moment-card:nth-child(1) { animation-delay: 0.1s; }
+.moment-card:nth-child(2) { animation-delay: 0.2s; }
+.moment-card:nth-child(3) { animation-delay: 0.3s; }
+.moment-card:nth-child(4) { animation-delay: 0.4s; }
+.moment-card:nth-child(5) { animation-delay: 0.5s; }
+.moment-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #967a3a;
+}
+
+/* Print styles */
+@media print {
+  .action-buttons,
+  .view-full-btn,
+  .footer-links {
+    display: none;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .info-card, .moment-card, .schedule-container {
+    break-inside: avoid;
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES & FIXES
+   ============================================ */
+
+/* Pastikan font tetap terbaca di mobile */
+.moment-desc, .info-detail, .schedule-detail {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Pastikan border tebal tetap terlihat */
+.moment-card {
+  border-style: solid;
+}

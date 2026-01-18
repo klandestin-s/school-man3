@@ -1,0 +1,643 @@
+:root {
+  --primary: #1a1a1a;
+  --accent: #af944d;
+  --bg: #fdfdfd;
+  --text: #333333;
+  --light-gray: #e0e0e0;
+  --white: #ffffff;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: 40px;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 0, 0, 0.02) 0%, transparent 20%),
+    radial-gradient(circle at 85% 30%, rgba(0, 0, 0, 0.02) 0%, transparent 20%);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header Styles */
+header {
+  background: var(--white);
+  padding: 40px 0;
+  text-align: center;
+  border-bottom: 1px solid var(--light-gray);
+  margin-bottom: 30px;
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+}
+
+.page-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 3rem;
+  color: var(--primary);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.page-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 25px;
+  font-weight: 300;
+}
+
+/* Class Toggle */
+.class-toggle {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto 30px;
+  max-width: 400px;
+  background: var(--white);
+  border-radius: 4px;
+  padding: 4px;
+  border: 1px solid var(--light-gray);
+}
+
+.class-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text);
+}
+
+.class-btn.active {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.class-btn:not(.active):hover {
+  background: rgba(26, 26, 26, 0.05);
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+  display: none;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 15px 0 20px;
+  padding: 0 10px;
+}
+
+.nav-mobile-btn {
+  background: var(--white);
+  color: var(--primary);
+  border: 1px solid var(--light-gray);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-mobile-btn i {
+  font-size: 0.8rem;
+}
+
+.nav-mobile-btn:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+
+/* Schedule Grid - Desktop Default */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.day-card {
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--light-gray);
+}
+
+.day-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.day-header {
+  padding: 20px;
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.5rem;
+  color: var(--primary);
+  position: relative;
+  overflow: hidden;
+  font-weight: 500;
+  border-bottom: 1px solid var(--light-gray);
+  background: var(--white);
+}
+
+/* Uniform design for all days */
+.monday .day-header,
+.tuesday .day-header,
+.wednesday .day-header,
+.thursday .day-header,
+.friday .day-header {
+  background: var(--white);
+  color: var(--primary);
+}
+
+.class-list {
+  padding: 20px;
+}
+
+.class-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(224, 224, 224, 0.5);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.class-item:last-child {
+  border-bottom: none;
+}
+
+.class-item:hover {
+  background: rgba(175, 148, 77, 0.05);
+}
+
+/* Style untuk kelas yang sedang berlangsung */
+.class-item.active {
+  background-color: rgba(175, 148, 77, 0.1) !important;
+  border-left: 3px solid var(--accent);
+}
+
+.class-icon {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  border-radius: 4px;
+  background: rgba(175, 148, 77, 0.1);
+  color: var(--accent);
+}
+
+.class-info {
+  flex: 1;
+}
+
+.class-name {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: var(--primary);
+}
+
+.class-time {
+  color: #666;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 400;
+}
+
+.class-teacher {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.time-left {
+  color: var(--accent);
+  font-weight: 500;
+  margin-left: 8px;
+  font-size: 0.8rem;
+  background: rgba(175, 148, 77, 0.1);
+  padding: 2px 8px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* Responsive Styles - Desktop First */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 2.2rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+  }
+
+  .class-btn {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+
+  .time-left {
+    display: block;
+    margin-left: 0;
+    margin-top: 5px;
+  }
+  
+  /* Tampilkan navigasi mobile */
+  .mobile-nav {
+    display: flex;
+  }
+}
+
+/* Footer Navigation */
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: var(--primary);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* Status indicator */
+.current-status {
+  text-align: center;
+  padding: 15px;
+  margin: 20px 0;
+  background: rgba(175, 148, 77, 0.05);
+  border-radius: 8px;
+  font-weight: 400;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid rgba(175, 148, 77, 0.2);
+}
+
+.current-status i {
+  font-size: 1.1rem;
+}
+
+.current-status.holiday {
+  background: rgba(0, 0, 0, 0.03);
+  color: #666;
+  border-color: var(--light-gray);
+}
+
+.debug-info {
+  display: none;
+}
+
+/* Time format toggle */
+.time-format-toggle {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 20px;
+  gap: 10px;
+}
+
+.format-btn {
+  background: var(--white);
+  border: 1px solid var(--light-gray);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text);
+  font-weight: 400;
+}
+
+.format-btn.active {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+
+/* Day highlight */
+.today-highlight {
+  position: absolute;
+  top: -8px;
+  right: 20px;
+  background: var(--accent);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 2px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  z-index: 10;
+  letter-spacing: 0.5px;
+}
+
+/* Empty schedule message */
+.empty-schedule {
+  text-align: center;
+  padding: 30px;
+  color: #999;
+  font-style: italic;
+}
+
+/* Style untuk jadwal istirahat dan sholat */
+.class-item.break {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+  border-left: 3px solid #999;
+}
+
+.class-item.break .class-icon {
+  background: rgba(0, 0, 0, 0.05);
+  color: #666;
+}
+
+.class-item.break .class-name {
+  color: #666;
+}
+
+.class-item.prayer {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+  border-left: 3px solid var(--accent);
+}
+
+.class-item.prayer .class-icon {
+  background: rgba(175, 148, 77, 0.1);
+  color: var(--accent);
+}
+
+.class-item.prayer .class-name {
+  color: var(--accent);
+}
+
+/* Style saat aktif untuk istirahat dan sholat */
+.class-item.break.active {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.class-item.prayer.active {
+  background-color: rgba(175, 148, 77, 0.15) !important;
+}
+
+/* Status informasi */
+.status-info {
+  text-align: center;
+  padding: 15px;
+  margin: 20px 0;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  border: 1px solid var(--light-gray);
+  color: #666;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.status-info i {
+  font-size: 1.1rem;
+}
+
+/* Responsive untuk card hari */
+@media (max-width: 768px) {
+  .day-card {
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+
+  .day-header {
+    padding: 15px 10px;
+    font-size: 1.3rem;
+  }
+
+  .class-list {
+    padding: 15px 10px;
+  }
+
+  .class-item {
+    padding: 10px 8px;
+  }
+
+  .class-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+    margin-right: 12px;
+  }
+
+  .class-name {
+    font-size: 0.95rem;
+    margin-bottom: 3px;
+  }
+
+  .class-time {
+    font-size: 0.8rem;
+  }
+
+  .class-teacher {
+    font-size: 0.75rem;
+  }
+
+  .today-highlight {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    top: -6px;
+  }
+
+  .time-left {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+  }
+}
+
+/* Efek flash untuk highlight */
+@keyframes flash {
+  0% { box-shadow: 0 0 0 0 rgba(175, 148, 77, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(175, 148, 77, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(175, 148, 77, 0); }
+}
+
+.highlight-flash {
+  animation: flash 1s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.clicked {
+  transform: scale(0.98);
+  transition: transform 0.2s ease;
+}
+
+/* === MOBILE SWIPE NATIVE IMPLEMENTATION === */
+@media (max-width: 768px) {
+  /* Reset layout mobile */
+  .schedule-content {
+    overflow: visible;
+    width: 100%;
+  }
+  
+  /* Container utama dengan scroll horizontal native + snap */
+  .schedule-grid {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x proximity !important;
+    -webkit-overflow-scrolling: touch !important;
+    
+    /* Izinkan gesture natural */
+    touch-action: pan-x pan-y !important;
+    
+    gap: 16px;
+    padding: 12px calc(50vw - 42.5vw) 24px !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    
+    /* Sembunyikan scrollbar */
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  
+  .schedule-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  /* Kartu hari - fixed size untuk snap */
+  .day-card {
+    min-width: 85vw !important;
+    width: 85vw !important;
+    flex: 0 0 auto !important;
+    scroll-snap-align: center !important;
+    margin: 0 !important;
+    
+    /* Visual effects */
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+  }
+  
+  /* Kartu aktif (di tengah viewport) */
+  .day-card.active-day {
+    transform: scale(1) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  /* Indikator hari (dots) */
+  .day-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0 25px;
+    padding: 0 10px;
+  }
+  
+  .day-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--light-gray);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .day-indicator.active {
+    background: var(--accent);
+    transform: scale(1.2);
+  }
+  
+  /* Petunjuk swipe */
+  .swipe-hint {
+    text-align: center;
+    color: #888;
+    font-size: 0.8rem;
+    margin: 10px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0.8;
+  }
+  
+  /* Scroll vertikal di dalam kartu - NATIVE */
+  .class-list {
+    max-height: 60vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* Pastikan tidak ada elemen yang mengunci gesture */
+  .schedule-grid * {
+    touch-action: auto !important;
+  }
+  
+  /* Nonaktifkan hover efek di mobile */
+  .day-card:hover {
+    transform: scale(0.95) !important;
+  }
+}
+
+/* Animasi smooth snap */
+@keyframes smoothSnap {
+  0% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.smooth-snap {
+  animation: smoothSnap 0.3s ease-out forwards;
+}
