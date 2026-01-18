@@ -8,6 +8,71 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Additional styles for clickable gallery cards */
+    .moment-card.clickable {
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .moment-card.clickable:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(175, 148, 77, 0.2);
+      border-color: var(--primary);
+    }
+    
+    .moment-card.clickable:hover .moment-image img {
+      transform: scale(1.05);
+    }
+    
+    .moment-card.clickable:hover::after {
+      opacity: 1;
+    }
+    
+    /* View More Button */
+    .view-more-container {
+      text-align: center;
+      margin: 40px 0 20px;
+    }
+    
+    .view-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 30px;
+      background: var(--primary);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 0;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      border: 3px solid var(--primary);
+      font-family: "Montserrat", sans-serif;
+    }
+    
+    .view-more-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(175, 148, 77, 0.25);
+      gap: 15px;
+    }
+    
+    /* Mobile responsive for clickable cards */
+    @media (max-width: 480px) {
+      .moment-card.clickable::after {
+        font-size: 0.7rem;
+        padding: 10px;
+      }
+      
+      .view-more-btn {
+        padding: 12px 24px;
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Hero Section -->
@@ -28,7 +93,7 @@
             <i class="fas fa-calendar-alt"></i>
             <span class="nav-text">Jadwal</span>
           </a>
-          <a href="#momentsGrid" class="nav-link">
+          <a href="moments1.html" class="nav-link">
             <i class="fas fa-images"></i>
             <span class="nav-text">Momen</span>
           </a>
@@ -114,9 +179,9 @@
         <p class="section-subtitle">Koleksi kenangan dan kegiatan belajar mengajar</p>
       </div>
       <div class="moments-grid" id="momentsGrid">
-        <!-- Momen 1 -->
-        <div class="moment-card">
-          <div class="moment-badge">photography </div>
+        <!-- Momen 1 - Clickable untuk XI A -->
+        <div class="moment-card clickable" data-category="xi-a" onclick="window.location.href='moments1.html?gallery=xi-a'">
+          <div class="moment-badge">photography</div>
           <div class="moment-image">
             <img src="https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/tmp/30b10cf3.jpg" 
                  alt="Belajar di kelas" 
@@ -124,7 +189,7 @@
           </div>
           <div class="moment-content">
             <h3>Gallery XI. A</h3>
-            <p class="moment-desc">Photo Kelas XI.A ~ Moment </p>
+            <p class="moment-desc">Photo Kelas XI.A ~ Moment</p>
             <div class="moment-footer">
               <div class="moment-tag">
                 <i class="fas fa-users"></i> Kelas XI A
@@ -133,8 +198,8 @@
           </div>
         </div>
 
-        <!-- Momen 2 -->
-        <div class="moment-card">
+        <!-- Momen 2 - Clickable untuk Diskusi Kelompok -->
+        <div class="moment-card clickable" data-category="event" onclick="window.location.href='moments2.html'">
           <div class="moment-badge">Diskusi</div>
           <div class="moment-image">
             <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
@@ -152,8 +217,8 @@
           </div>
         </div>
 
-        <!-- Momen 3 -->
-        <div class="moment-card">
+        <!-- Momen 3 - Clickable untuk Outdoor -->
+        <div class="moment-card clickable" data-category="outdoor" onclick="window.location.href='moments3.html'">
           <div class="moment-badge">Outdoor</div>
           <div class="moment-image">
             <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
@@ -171,8 +236,8 @@
           </div>
         </div>
 
-        <!-- Momen 4 -->
-        <div class="moment-card">
+        <!-- Momen 4 - Clickable untuk Presentasi -->
+        <div class="moment-card clickable" data-category="kegiatan" onclick="window.location.href='moments4.html'">
           <div class="moment-badge">Presentasi</div>
           <div class="moment-image">
             <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
@@ -190,8 +255,8 @@
           </div>
         </div>
 
-        <!-- Momen 5 -->
-        <div class="moment-card">
+        <!-- Momen 5 - Clickable untuk XI B -->
+        <div class="moment-card clickable" data-category="xi-b" onclick="window.location.href='moments5.html'">
           <div class="moment-badge">Ekskul</div>
           <div class="moment-image">
             <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
@@ -209,8 +274,8 @@
           </div>
         </div>
 
-        <!-- Momen 6 -->
-        <div class="moment-card">
+        <!-- Momen 6 - Clickable untuk Class Meeting -->
+        <div class="moment-card clickable" data-category="event" onclick="window.location.href='moments6.html'">
           <div class="moment-badge">Kompetisi</div>
           <div class="moment-image">
             <img src="https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
@@ -227,6 +292,15 @@
             </div>
           </div>
         </div>
+      </div>
+      
+      <!-- View More Button -->
+      <div class="view-more-container">
+        <a href="moments1.html" class="view-more-btn">
+          <i class="fas fa-images"></i>
+          <span>Lihat Semua Foto di Galeri Lengkap</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
       </div>
     </section>
   </main>
@@ -249,8 +323,8 @@
           <a href="jadwal.html" class="footer-link">
             <i class="fas fa-calendar-alt"></i> Jadwal Kelas
           </a>
-          <a href="#" class="footer-link">
-            <i class="fas fa-info-circle"></i> Tentang Kelas
+          <a href="moments1.html" class="footer-link">
+            <i class="fas fa-images"></i> Galeri Foto
           </a>
         </div>
       </div>
@@ -634,7 +708,7 @@
       });
       
       // Setup efek hover untuk momen cards
-      const momentCards = document.querySelectorAll('.moment-card');
+      const momentCards = document.querySelectorAll('.moment-card.clickable');
       momentCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
           this.style.transform = 'translateY(-8px) scale(1.02)';
@@ -646,6 +720,15 @@
           this.style.transform = 'translateY(0) scale(1)';
           this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.08)';
           this.style.borderColor = 'var(--accent)';
+        });
+        
+        // Tambahkan event click untuk mobile tap
+        card.addEventListener('touchstart', function() {
+          this.style.transform = 'translateY(-5px) scale(1.01)';
+        });
+        
+        card.addEventListener('touchend', function() {
+          this.style.transform = 'translateY(0) scale(1)';
         });
       });
       
