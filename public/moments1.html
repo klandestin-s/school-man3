@@ -3,16 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galeri Momen Kelas - MAN 3 BATANGHARI</title>
-  <link rel="icon" href="https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/tmp/a3dfa2f5.jpg" />
+  <title>Galeri Kelas XI A - MAN 3 BATANGHARI</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/tmp/1bacc07d.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
-    /* Additional styles specific to gallery page */
+    /* ============================================
+       GALERI KHUSUS - SATU FOKUS SAJA
+       ============================================ */
+
+    /* Hero Section yang sederhana dan fokus */
     .gallery-hero {
       background: linear-gradient(135deg, var(--primary) 0%, #2a2a2a 100%);
-      padding: 50px 0 30px;
+      padding: 60px 0 40px;
       text-align: center;
       color: var(--white);
       margin-bottom: 30px;
@@ -27,220 +31,116 @@
       left: 0;
       right: 0;
       height: 100%;
-      background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23af944d' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+      background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23af944d' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
       opacity: 0.1;
     }
     
     .gallery-header {
       position: relative;
       z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
     }
     
     .gallery-title {
       font-family: "Cormorant Garamond", serif;
       font-size: 3rem;
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 15px;
       letter-spacing: 1.5px;
+      color: var(--white);
     }
     
     .gallery-subtitle {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       color: var(--accent);
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       font-weight: 500;
     }
     
-    .breadcrumb {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.8);
-      margin-top: 15px;
+    .gallery-description {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-weight: 300;
     }
-    
-    .breadcrumb a {
-      color: var(--white);
-      text-decoration: none;
-      transition: var(--transition);
-    }
-    
-    .breadcrumb a:hover {
-      color: var(--accent);
-    }
-    
-    .breadcrumb span {
-      color: var(--accent);
-      font-weight: 500;
-    }
-    
-    /* Gallery Filter */
-    .gallery-filter {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 40px;
-      padding: 0 20px;
-    }
-    
-    .filter-btn {
-      padding: 10px 20px;
-      background: var(--white);
-      border: 2px solid var(--light-gray);
-      border-radius: 0;
-      font-family: "Montserrat", sans-serif;
-      font-weight: 500;
-      color: var(--text);
-      cursor: pointer;
-      transition: var(--transition);
-      font-size: 0.95rem;
-      position: relative;
-    }
-    
-    .filter-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    
-    .filter-btn.active {
-      background: var(--primary);
-      color: var(--white);
-      border-color: var(--primary);
-    }
-    
-    .filter-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 30px;
-      height: 3px;
-      background: var(--accent);
-    }
-    
-    /* Thick Canvas Gallery Grid */
+
+    /* Grid Galeri yang bersih */
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 25px;
-      margin-bottom: 50px;
+      margin-bottom: 60px;
     }
-    
-    .canvas-card {
+
+    /* Card yang sederhana */
+    .gallery-card {
       background: var(--white);
       overflow: hidden;
-      box-shadow: var(--card-shadow);
-      border: 5px solid var(--accent);
-      transition: all 0.4s ease;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      border: 4px solid var(--accent);
+      transition: all 0.3s ease;
       position: relative;
       display: flex;
       flex-direction: column;
       height: 100%;
       border-radius: 0;
     }
-    
-    .canvas-frame {
-      padding: 5px;
+
+    /* Bingkai foto */
+    .gallery-frame {
+      padding: 4px;
       background: var(--white);
       position: relative;
       overflow: hidden;
       flex: 1;
       display: flex;
     }
-    
-    .canvas-image {
+
+    /* Gambar dengan efek hover minimal */
+    .gallery-image {
       width: 100%;
-      height: 280px;
+      height: 320px;
       object-fit: cover;
-      transition: transform 0.6s ease;
+      transition: transform 0.5s ease;
       display: block;
     }
-    
-    .canvas-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(175, 148, 77, 0.25);
+
+    .gallery-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(175, 148, 77, 0.15);
       border-color: var(--primary);
     }
-    
-    .canvas-card:hover .canvas-image {
-      transform: scale(1.05);
+
+    .gallery-card:hover .gallery-image {
+      transform: scale(1.03);
     }
-    
-    /* Overlay on hover */
-    .canvas-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(26, 26, 26, 0.85);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      padding: 20px;
-      text-align: center;
-      color: var(--white);
-    }
-    
-    .canvas-card:hover .canvas-overlay {
-      opacity: 1;
-    }
-    
-    .canvas-overlay h3 {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.5rem;
-      margin-bottom: 10px;
-      color: var(--white);
-      font-weight: 600;
-    }
-    
-    .canvas-category {
-      display: inline-block;
-      background: var(--accent);
-      color: var(--white);
-      padding: 5px 15px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-top: 10px;
-      border-radius: 0;
-    }
-    
-    /* Canvas label */
-    .canvas-label {
+
+    /* Label minimal di bawah foto */
+    .gallery-label {
       padding: 15px;
       background: var(--white);
       border-top: 1px solid rgba(224, 224, 224, 0.5);
       text-align: center;
     }
-    
-    .canvas-label h3 {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.2rem;
-      color: var(--primary);
-      margin-bottom: 5px;
-      font-weight: 600;
-    }
-    
-    .canvas-label span {
-      font-size: 0.8rem;
+
+    .gallery-label span {
+      font-size: 0.9rem;
       color: var(--accent);
       font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
+      letter-spacing: 0.5px;
     }
-    
-    /* Lightbox Modal */
+
+    /* ============================================
+       LIGHTBOX MINIMALIS TANPA NAVIGASI TOMBOL
+       ============================================ */
+
+    /* Modal lightbox yang bersih */
     .lightbox-modal {
       display: none;
       position: fixed;
@@ -254,130 +154,83 @@
       align-items: center;
       animation: fadeIn 0.3s ease;
     }
-    
+
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
-    
+
     .lightbox-content {
       position: relative;
-      max-width: 90%;
-      max-height: 90%;
+      max-width: 85%;
+      max-height: 85%;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    
+
+    /* Bingkai foto yang tebal dan aesthetic */
     .lightbox-img {
       max-width: 100%;
-      max-height: 70vh;
+      max-height: 75vh;
       object-fit: contain;
-      border: 5px solid var(--accent);
-      background: var(--white);
-      padding: 5px;
+      border: 8px solid var(--accent);
+      background: #0a0a0a;
+      padding: 8px;
+      box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        inset 0 0 20px rgba(0, 0, 0, 0.3);
     }
-    
-    .lightbox-caption {
-      background: rgba(26, 26, 26, 0.9);
-      color: var(--white);
-      padding: 20px;
-      text-align: center;
-      width: 100%;
-      margin-top: -5px;
-      border: 5px solid var(--accent);
-      border-top: none;
-    }
-    
-    .lightbox-caption h3 {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 1.8rem;
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-    
-    .lightbox-category {
-      display: inline-block;
-      background: var(--accent);
-      color: var(--white);
-      padding: 5px 15px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-top: 10px;
-      border-radius: 0;
-    }
-    
+
+    /* Tombol close yang elegan */
     .close-lightbox {
       position: absolute;
-      top: 20px;
-      right: 30px;
+      top: 30px;
+      right: 40px;
       color: var(--white);
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       cursor: pointer;
       z-index: 1001;
-      transition: var(--transition);
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(175, 148, 77, 0.2);
-    }
-    
-    .close-lightbox:hover {
-      color: var(--accent);
-      transform: rotate(90deg);
-    }
-    
-    .lightbox-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--white);
-      font-size: 2.5rem;
-      cursor: pointer;
-      z-index: 1001;
-      transition: var(--transition);
+      transition: all 0.3s ease;
       width: 60px;
       height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: rgba(26, 26, 26, 0.4);
+      backdrop-filter: blur(5px);
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .close-lightbox:hover {
+      color: var(--accent);
       background: rgba(175, 148, 77, 0.2);
+      transform: rotate(90deg);
+      border-color: rgba(175, 148, 77, 0.3);
     }
-    
-    .lightbox-nav:hover {
-      background: rgba(175, 148, 77, 0.5);
-    }
-    
-    .prev-lightbox {
-      left: 30px;
-    }
-    
-    .next-lightbox {
-      right: 30px;
-    }
-    
-    /* Mobile Navigation for Gallery */
-    .gallery-mobile-nav {
-      display: none;
-    }
-    
-    /* Responsive Design */
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+
     @media (max-width: 992px) {
       .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 20px;
       }
       
-      .canvas-image {
-        height: 250px;
+      .gallery-image {
+        height: 280px;
       }
     }
     
     @media (max-width: 768px) {
+      .gallery-hero {
+        padding: 50px 0 30px;
+      }
+      
       .gallery-title {
         font-size: 2.5rem;
       }
@@ -386,42 +239,28 @@
         font-size: 1.1rem;
       }
       
-      .gallery-filter {
-        gap: 8px;
-        margin-bottom: 30px;
+      .gallery-description {
+        font-size: 1rem;
+        padding: 15px;
       }
       
-      .filter-btn {
-        padding: 8px 16px;
-        font-size: 0.9rem;
-      }
-      
-      .lightbox-nav {
-        width: 50px;
-        height: 50px;
-        font-size: 2rem;
-      }
-      
-      .prev-lightbox {
-        left: 15px;
-      }
-      
-      .next-lightbox {
-        right: 15px;
+      .lightbox-img {
+        border-width: 6px;
+        max-height: 70vh;
       }
       
       .close-lightbox {
-        top: 15px;
-        right: 20px;
-        font-size: 2rem;
-        width: 40px;
-        height: 40px;
+        top: 20px;
+        right: 25px;
+        width: 50px;
+        height: 50px;
+        font-size: 2.2rem;
       }
     }
     
     @media (max-width: 480px) {
       .gallery-hero {
-        padding: 40px 0 20px;
+        padding: 40px 0 25px;
         margin-bottom: 20px;
       }
       
@@ -434,478 +273,229 @@
         margin-bottom: 15px;
       }
       
-      .breadcrumb {
-        font-size: 0.8rem;
+      .gallery-description {
+        font-size: 0.95rem;
+        padding: 12px;
+        line-height: 1.5;
       }
       
       .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-        margin-bottom: 30px;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+        margin-bottom: 40px;
       }
       
-      .canvas-card {
+      .gallery-card {
         border-width: 3px;
       }
       
-      .canvas-image {
+      .gallery-image {
         height: 180px;
       }
       
-      .canvas-label {
-        padding: 12px 10px;
+      .gallery-label {
+        padding: 10px;
       }
       
-      .canvas-label h3 {
-        font-size: 1rem;
-      }
-      
-      .canvas-label span {
-        font-size: 0.7rem;
-      }
-      
-      .gallery-filter {
-        padding: 0 10px;
-        gap: 6px;
-        margin-bottom: 25px;
-      }
-      
-      .filter-btn {
-        padding: 6px 12px;
+      .gallery-label span {
         font-size: 0.8rem;
       }
       
-      .filter-btn.active::after {
-        bottom: -8px;
-        width: 20px;
-        height: 2px;
+      .lightbox-content {
+        max-width: 95%;
+        max-height: 80%;
       }
       
-      /* Mobile Navigation */
-      .gallery-mobile-nav {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 25px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255, 255, 255, 0.15);
+      .lightbox-img {
+        border-width: 4px;
+        padding: 4px;
+        max-height: 65vh;
       }
       
-      .nav-link {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-decoration: none;
-        color: var(--white);
-        transition: var(--transition);
-        padding: 8px;
-        min-width: 60px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.05);
-      }
-      
-      .nav-link:hover {
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateY(-3px);
-      }
-      
-      .nav-link i {
-        font-size: 1rem;
-        margin-bottom: 5px;
-      }
-      
-      .nav-text {
-        font-size: 0.7rem;
-        font-weight: 500;
-        opacity: 0.9;
-      }
-      
-      .lightbox-nav {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-      }
-      
-      .lightbox-caption {
-        padding: 15px;
-      }
-      
-      .lightbox-caption h3 {
-        font-size: 1.4rem;
-      }
-      
-      .lightbox-category {
-        font-size: 0.8rem;
-        padding: 4px 12px;
+      .close-lightbox {
+        top: 15px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.8rem;
       }
     }
-    
-    @media (max-width: 360px) {
-      .gallery-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-      }
-      
-      .canvas-image {
-        height: 220px;
-      }
+
+    /* ============================================
+       UTILITIES & MICRO-INTERACTIONS
+       ============================================ */
+
+    /* Smooth fade-in untuk grid items */
+    .gallery-card {
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0;
     }
-    
-    /* Zig-zag layout effect */
-    @media (min-width: 769px) {
-      .gallery-grid {
-        grid-auto-rows: minmax(300px, auto);
-      }
-      
-      .canvas-card:nth-child(3n+1) {
-        margin-top: 20px;
-      }
-      
-      .canvas-card:nth-child(3n+2) {
-        margin-top: 0;
-      }
-      
-      .canvas-card:nth-child(3n) {
-        margin-top: 20px;
-      }
+
+    .gallery-card:nth-child(1) { animation-delay: 0.1s; }
+    .gallery-card:nth-child(2) { animation-delay: 0.2s; }
+    .gallery-card:nth-child(3) { animation-delay: 0.3s; }
+    .gallery-card:nth-child(4) { animation-delay: 0.4s; }
+    .gallery-card:nth-child(5) { animation-delay: 0.5s; }
+    .gallery-card:nth-child(6) { animation-delay: 0.6s; }
+    .gallery-card:nth-child(7) { animation-delay: 0.7s; }
+    .gallery-card:nth-child(8) { animation-delay: 0.8s; }
+    .gallery-card:nth-child(9) { animation-delay: 0.9s; }
+
+    /* Loading state untuk gambar */
+    .gallery-image.loading {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
     }
-    
-    @media (min-width: 481px) and (max-width: 768px) {
-      .canvas-card:nth-child(odd) {
-        margin-top: 15px;
-      }
-      
-      .canvas-card:nth-child(even) {
-        margin-top: 0;
-      }
+
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
   </style>
 </head>
 <body>
-  <!-- Gallery Hero Section -->
+  <!-- Hero Section yang sederhana dan fokus -->
   <header class="gallery-hero">
     <div class="container">
       <div class="gallery-header">
-        <h1 class="gallery-title">Momen Kelas</h1>
-        <p class="gallery-subtitle">Kenangan & Perjalanan Kelas</p>
-        
-        <div class="breadcrumb">
-          <a href="index.html">Home</a> / <span>Momen Kelas</span>
+        <h1 class="gallery-title">Galeri Kelas XI A</h1>
+        <p class="gallery-subtitle">History Album Kenangan dan Perjalanan Belajar</p>
+        <div class="gallery-description">
+          Setiap foto mengabadikan cerita, setiap kenangan adalah bagian dari proses tumbuh bersama.
         </div>
-        
-        <!-- Mobile Navigation -->
-        <nav class="gallery-mobile-nav">
-          <a href="index.html" class="nav-link">
-            <i class="fas fa-home"></i>
-            <span class="nav-text">Home</span>
-          </a>
-          <a href="jadwal.html" class="nav-link">
-            <i class="fas fa-calendar-alt"></i>
-            <span class="nav-text">Jadwal</span>
-          </a>
-          <a href="#galleryGrid" class="nav-link">
-            <i class="fas fa-images"></i>
-            <span class="nav-text">Galeri</span>
-          </a>
-        </nav>
       </div>
     </div>
   </header>
 
   <main class="container">
-    <!-- Gallery Filter -->
-    <div class="gallery-filter">
-      <button class="filter-btn active" data-filter="all">Semua</button>
-      <button class="filter-btn" data-filter="xi-a">XI A</button>
-      <button class="filter-btn" data-filter="xi-b">XI B</button>
-      <button class="filter-btn" data-filter="event">Event</button>
-      <button class="filter-btn" data-filter="outdoor">Outdoor</button>
-      <button class="filter-btn" data-filter="kegiatan">Kegiatan</button>
-    </div>
-
-    <!-- Gallery Grid -->
+    <!-- Gallery Grid - Hanya foto saja -->
     <div class="gallery-grid" id="galleryGrid">
-      <!-- Item 1 -->
-      <div class="canvas-card" data-category="xi-a">
-        <div class="canvas-frame">
+      <!-- Foto 1 -->
+      <div class="gallery-card">
+        <div class="gallery-frame">
           <img src="https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/tmp/30b10cf3.jpg" 
-               alt="Gallery Kelas XI A" 
-               class="canvas-image"
+               alt="Photography" 
+               class="gallery-image"
                loading="lazy">
-          <div class="canvas-overlay">
-            <h3>Gallery XI A</h3>
-            <div class="canvas-category">XI A</div>
-          </div>
         </div>
-        <div class="canvas-label">
-          <h3>Gallery XI A</h3>
-          <span><i class="fas fa-users"></i> Kelas XI A</span>
+        <div class="gallery-label">
+          <span>Photography</span>
         </div>
       </div>
 
-      <!-- Item 2 -->
-      <div class="canvas-card" data-category="event">
-        <div class="canvas-frame">
-          <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-               alt="Diskusi Kelompok" 
-               class="canvas-image"
+      <!-- Foto 2 -->
+      <div class="gallery-card">
+        <div class="gallery-frame">
+          <img src="https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/tmp/34214780.jpg" 
+               alt="Photography" 
+               class="gallery-image"
                loading="lazy">
-          <div class="canvas-overlay">
-            <h3>Diskusi Kelompok</h3>
-            <div class="canvas-category">Event</div>
-          </div>
         </div>
-        <div class="canvas-label">
-          <h3>Diskusi Kelompok</h3>
-          <span><i class="fas fa-brain"></i> Kolaborasi</span>
+        <div class="gallery-label">
+          <span>Photography</span>
         </div>
       </div>
 
-      <!-- Item 3 -->
-      <div class="canvas-card" data-category="outdoor">
-        <div class="canvas-frame">
-          <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-               alt="Kegiatan Outdoor" 
-               class="canvas-image"
+      <!-- Foto 3 -->
+      <div class="gallery-card">
+        <div class="gallery-frame">
+          <img src="https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/tmp/2b8addab.jpg" 
+               alt="Photography" 
+               class="gallery-image"
                loading="lazy">
-          <div class="canvas-overlay">
-            <h3>Kegiatan Outdoor</h3>
-            <div class="canvas-category">Outdoor</div>
-          </div>
         </div>
-        <div class="canvas-label">
-          <h3>Kegiatan Outdoor</h3>
-          <span><i class="fas fa-tree"></i> Alam</span>
+        <div class="gallery-label">
+          <span>Photography</span>
         </div>
       </div>
 
-      <!-- Item 4 -->
-      <div class="canvas-card" data-category="kegiatan">
-        <div class="canvas-frame">
-          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-               alt="Presentasi Project" 
-               class="canvas-image"
+      <!-- Foto 4 -->
+      <div class="gallery-card">
+        <div class="gallery-frame">
+          <img src="https://raw.githubusercontent.com/klandestin-s/Cloud_v2/main/tmp/9146da1f.jpg" 
+               alt="Photography" 
+               class="gallery-image"
                loading="lazy">
-          <div class="canvas-overlay">
-            <h3>Presentasi Project</h3>
-            <div class="canvas-category">Kegiatan</div>
-          </div>
         </div>
-        <div class="canvas-label">
-          <h3>Presentasi Project</h3>
-          <span><i class="fas fa-chart-line"></i> Skill</span>
+        <div class="gallery-label">
+          <span>Photography</span>
         </div>
       </div>
 
-      <!-- Item 5 -->
-      <div class="canvas-card" data-category="xi-b">
-        <div class="canvas-frame">
-          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-               alt="Kegiatan Ekstrakurikuler" 
-               class="canvas-image"
-               loading="lazy">
-          <div class="canvas-overlay">
-            <h3>Kegiatan Ekskul</h3>
-            <div class="canvas-category">XI B</div>
-          </div>
-        </div>
-        <div class="canvas-label">
-          <h3>Kegiatan Ekskul</h3>
-          <span><i class="fas fa-dumbbell"></i> Pengembangan</span>
-        </div>
-      </div>
-
-      <!-- Item 6 -->
-      <div class="canvas-card" data-category="event">
-        <div class="canvas-frame">
-          <img src="https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-               alt="Class Meeting" 
-               class="canvas-image"
-               loading="lazy">
-          <div class="canvas-overlay">
-            <h3>Class Meeting</h3>
-            <div class="canvas-category">Event</div>
-          </div>
-        </div>
-        <div class="canvas-label">
-          <h3>Class Meeting</h3>
-          <span><i class="fas fa-trophy"></i> Kompetisi</span>
-        </div>
-      </div>
-
-      <!-- Item 7 -->
-      <div class="canvas-card" data-category="kegiatan">
-        <div class="canvas-frame">
-          <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-               alt="Studi Lapangan" 
-               class="canvas-image"
-               loading="lazy">
-          <div class="canvas-overlay">
-            <h3>Studi Lapangan</h3>
-            <div class="canvas-category">Kegiatan</div>
-          </div>
-        </div>
-        <div class="canvas-label">
-          <h3>Studi Lapangan</h3>
-          <span><i class="fas fa-microscope"></i> Eksperimen</span>
-        </div>
-      </div>
-
-      <!-- Item 8 -->
-      <div class="canvas-card" data-category="xi-a">
-        <div class="canvas-frame">
-          <img src="https://images.unsplash.com/photo-1524178234883-043d5c3f3cf4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-               alt="Moment Kelas XI A" 
-               class="canvas-image"
-               loading="lazy">
-          <div class="canvas-overlay">
-            <h3>Moment Kelas</h3>
-            <div class="canvas-category">XI A</div>
-          </div>
-        </div>
-        <div class="canvas-label">
-          <h3>Moment Kelas</h3>
-          <span><i class="fas fa-graduation-cap"></i> Akademik</span>
-        </div>
-      </div>
-
-      <!-- Item 9 -->
-      <div class="canvas-card" data-category="outdoor">
-        <div class="canvas-frame">
-          <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-               alt="Perkemahan" 
-               class="canvas-image"
-               loading="lazy">
-          <div class="canvas-overlay">
-            <h3>Perkemahan</h3>
-            <div class="canvas-category">Outdoor</div>
-          </div>
-        </div>
-        <div class="canvas-label">
-          <h3>Perkemahan</h3>
-          <span><i class="fas fa-campground"></i> Petualangan</span>
-        </div>
       </div>
     </div>
   </main>
 
-  <!-- Lightbox Modal -->
+  <!-- Lightbox Modal yang minimalis -->
   <div class="lightbox-modal" id="lightboxModal">
     <span class="close-lightbox" id="closeLightbox">&times;</span>
-    <div class="lightbox-nav prev-lightbox" id="prevLightbox">
-      <i class="fas fa-chevron-left"></i>
-    </div>
-    <div class="lightbox-nav next-lightbox" id="nextLightbox">
-      <i class="fas fa-chevron-right"></i>
-    </div>
     <div class="lightbox-content">
       <img id="lightboxImage" src="" alt="" class="lightbox-img">
-      <div class="lightbox-caption">
-        <h3 id="lightboxTitle"></h3>
-        <div class="lightbox-category" id="lightboxCategory"></div>
-      </div>
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- Footer sederhana -->
   <footer class="main-footer">
     <div class="container">
       <div class="footer-content">
         <div class="footer-logo">
-          <h3>Galeri Momen</h3>
-          <p>Kelas XI MAN 3 BATANGHARI</p>
+          <h3>Galeri Kelas XI A</h3>
+          <p>MAN 3 BATANGHARI</p>
         </div>
         <div class="footer-info">
           <p><i class="fas fa-user-graduate"></i> Angkatan 2024/2025</p>
           <p><i class="fas fa-calendar-alt"></i> Tahun Ajaran 2025/2026</p>
           <p><i class="fas fa-chalkboard-teacher"></i> Wali Kelas: SISKA FELANI S.PD.I</p>
-          <p><i class="fas fa-code"></i> Developed by: DDI M.A</p>
         </div>
         <div class="footer-links">
           <a href="index.html" class="footer-link">
-            <i class="fas fa-home"></i> Homepage
-          </a>
-          <a href="jadwal.html" class="footer-link">
-            <i class="fas fa-calendar-alt"></i> Jadwal Kelas
+            <i class="fas fa-home"></i> Kembali ke Home
           </a>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 Galeri Momen Kelas XI MAN 3 BATANGHARI. All rights reserved.</p>
+        <p>&copy; 2025 Galeri Kelas XI A. Album kenangan digital.</p>
       </div>
     </div>
   </footer>
 
   <script>
-    // Gallery Filter Functionality
+    // SIMPLE GALLERY FUNCTIONALITY
     document.addEventListener('DOMContentLoaded', function() {
-      const filterButtons = document.querySelectorAll('.filter-btn');
-      const galleryItems = document.querySelectorAll('.canvas-card');
+      const galleryCards = document.querySelectorAll('.gallery-card');
       const lightboxModal = document.getElementById('lightboxModal');
       const lightboxImage = document.getElementById('lightboxImage');
-      const lightboxTitle = document.getElementById('lightboxTitle');
-      const lightboxCategory = document.getElementById('lightboxCategory');
       const closeLightbox = document.getElementById('closeLightbox');
-      const prevLightbox = document.getElementById('prevLightbox');
-      const nextLightbox = document.getElementById('nextLightbox');
       
       let currentImageIndex = 0;
-      let filteredItems = Array.from(galleryItems);
+      let images = [];
       
-      // Filter functionality
-      filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          // Remove active class from all buttons
-          filterButtons.forEach(btn => btn.classList.remove('active'));
-          
-          // Add active class to clicked button
-          this.classList.add('active');
-          
-          const filterValue = this.getAttribute('data-filter');
-          
-          // Filter gallery items
-          galleryItems.forEach(item => {
-            const category = item.getAttribute('data-category');
-            
-            if (filterValue === 'all' || category === filterValue) {
-              item.style.display = 'flex';
-              item.style.animation = 'fadeInUp 0.6s ease-out forwards';
-            } else {
-              item.style.display = 'none';
-            }
-          });
+      // Collect all image data
+      galleryCards.forEach((card, index) => {
+        const img = card.querySelector('.gallery-image');
+        const label = card.querySelector('.gallery-label span').textContent;
+        
+        images.push({
+          src: img.src,
+          alt: img.alt,
+          label: label
         });
-      });
-      
-      // Lightbox functionality
-      galleryItems.forEach((item, index) => {
-        item.addEventListener('click', function() {
-          const imgSrc = this.querySelector('.canvas-image').getAttribute('src');
-          const title = this.querySelector('.canvas-label h3').textContent;
-          const category = this.querySelector('.canvas-label span').textContent;
-          
-          lightboxImage.src = imgSrc;
-          lightboxTitle.textContent = title;
-          lightboxCategory.textContent = category;
-          
+        
+        // Add click event to each card
+        card.addEventListener('click', function() {
           currentImageIndex = index;
-          lightboxModal.style.display = 'flex';
-          document.body.style.overflow = 'hidden';
-          
-          // Update filtered items based on current filter
-          const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
-          filteredItems = Array.from(galleryItems).filter(item => {
-            if (activeFilter === 'all') return true;
-            return item.getAttribute('data-category') === activeFilter;
-          });
-          
-          // Remove hidden items from filteredItems
-          filteredItems = filteredItems.filter(item => item.style.display !== 'none');
-          
-          // Find current index in filtered items
-          currentImageIndex = filteredItems.findIndex(filteredItem => filteredItem === this);
+          openLightbox(currentImageIndex);
         });
       });
+      
+      // Open lightbox
+      function openLightbox(index) {
+        lightboxImage.src = images[index].src;
+        lightboxImage.alt = images[index].alt;
+        lightboxModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
       
       // Close lightbox
       closeLightbox.addEventListener('click', function() {
@@ -921,32 +511,17 @@
         }
       });
       
-      // Navigate lightbox
-      prevLightbox.addEventListener('click', function(e) {
-        e.stopPropagation();
-        navigateLightbox(-1);
-      });
-      
-      nextLightbox.addEventListener('click', function(e) {
-        e.stopPropagation();
-        navigateLightbox(1);
-      });
-      
-      // Keyboard navigation
+      // Keyboard navigation (only escape key)
       document.addEventListener('keydown', function(e) {
         if (lightboxModal.style.display === 'flex') {
           if (e.key === 'Escape') {
             lightboxModal.style.display = 'none';
             document.body.style.overflow = 'auto';
-          } else if (e.key === 'ArrowLeft') {
-            navigateLightbox(-1);
-          } else if (e.key === 'ArrowRight') {
-            navigateLightbox(1);
           }
         }
       });
       
-      // Swipe support for mobile
+      // Touch/swipe navigation for mobile
       let touchStartX = 0;
       let touchEndX = 0;
       
@@ -964,66 +539,26 @@
         
         if (touchEndX < touchStartX - swipeThreshold) {
           // Swipe left - next image
-          navigateLightbox(1);
+          currentImageIndex = (currentImageIndex + 1) % images.length;
+          openLightbox(currentImageIndex);
         }
         
         if (touchEndX > touchStartX + swipeThreshold) {
           // Swipe right - previous image
-          navigateLightbox(-1);
+          currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+          openLightbox(currentImageIndex);
         }
       }
       
-      function navigateLightbox(direction) {
-        if (filteredItems.length === 0) return;
-        
-        currentImageIndex += direction;
-        
-        // Loop around
-        if (currentImageIndex < 0) {
-          currentImageIndex = filteredItems.length - 1;
-        } else if (currentImageIndex >= filteredItems.length) {
-          currentImageIndex = 0;
-        }
-        
-        const currentItem = filteredItems[currentImageIndex];
-        const imgSrc = currentItem.querySelector('.canvas-image').getAttribute('src');
-        const title = currentItem.querySelector('.canvas-label h3').textContent;
-        const category = currentItem.querySelector('.canvas-label span').textContent;
-        
-        lightboxImage.src = imgSrc;
-        lightboxTitle.textContent = title;
-        lightboxCategory.textContent = category;
-        
-        // Add fade effect
-        lightboxImage.style.opacity = 0;
-        setTimeout(() => {
-          lightboxImage.style.opacity = 1;
-        }, 150);
-      }
-      
-      // Add animation delay for gallery items
-      galleryItems.forEach((item, index) => {
-        item.style.animationDelay = `${(index % 6) * 0.1}s`;
-      });
-      
-      // Smooth scroll for mobile navigation
-      document.querySelectorAll('.gallery-mobile-nav a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          const href = this.getAttribute('href');
-          
-          // Jika link internal (#), smooth scroll
-          if (href.startsWith('#')) {
-            e.preventDefault();
-            const targetElement = document.querySelector(href);
-            if (targetElement) {
-              window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
-              });
-            }
-          }
+      // Preload images for better experience
+      function preloadImages() {
+        images.forEach(img => {
+          const image = new Image();
+          image.src = img.src;
         });
-      });
+      }
+      
+      preloadImages();
     });
   </script>
 </body>
